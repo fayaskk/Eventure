@@ -1,5 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { generateAndStoreOTP } from "../services/otp.service.js";
+import { OTP } from "../models/otp.model.js";
 
 export const signup = async (req, res) => {
   try {
@@ -84,15 +86,13 @@ export const signup = async (req, res) => {
       referredBy,
     });
 
-    return res.status(201).json({
+    const storeOtp = await generateAndStoreOTP(normalizedEmail);
+
+    console.log(`OTP for ${normalizedEmail}: ${storeOtp}`);
+
+    return res.status(200).json({
       success: true,
-      message: "User created successfully",
-      data: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        referralCode: user.referralCode,
-      },
+      message: "OTP sent to your email",
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -103,3 +103,62 @@ export const signup = async (req, res) => {
     });
   }
 };
+
+
+
+
+// export const verifyOTP = async (req, res) => {
+//   try {
+//     const { email, otp } = req.body;
+
+//     if (!otp || !email) {
+//       return res.status(400).json({
+//         success: false,
+//         message: " email and otp are required",
+//       });
+//     }
+//     let find = await OTP.findOne({ email: email });
+//     if (!find) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "OTP Not Found",
+//       });
+//     }
+//     let current = new Date();
+//     let experyTime = find.expiresAt;
+//     if (experyTime < current) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "OTP expired,Request for new OTP",
+//       });
+//     } else if (find.attempts >= 3) {
+//       return res.status(409).json({
+//         success: false,
+//         message: "Too Many Attempts",
+//       });
+//     } else {
+//       find.attempts++;
+//     }
+
+//     if (find.otp !== otp) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Entered OTP is not correct",
+//       });
+//     }
+//     let verifyUser = await User.findOne({ email });
+//     verifyUser.isVerified = true;
+//     let deleteOtp = await OTP.findOneAndDelete({ email });
+//     res.status(200).json({
+//       success: true,
+//       message: "Email verified successfully",
+//     });
+//   } catch (error) {
+//     console.error("OTP-Verify error:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
