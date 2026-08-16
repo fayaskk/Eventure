@@ -104,9 +104,6 @@ export const signup = async (req, res) => {
   }
 };
 
-
-
-
 export const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -117,7 +114,7 @@ export const verifyOTP = async (req, res) => {
         message: " email and otp are required",
       });
     }
-    let normalizedOTP = otp.trim()
+    let normalizedOTP = otp.trim().toLowerCase();
     let find = await OTP.findOne({ email: email });
     if (!find) {
       return res.status(404).json({
@@ -142,16 +139,15 @@ export const verifyOTP = async (req, res) => {
       await find.save();
     }
 
-  console.log("DB OTP:", find.otp);
-console.log("DB OTP type:", typeof find.otp);
+    console.log("DB OTP:", find.otp);
+    console.log("DB OTP type:", typeof find.otp);
 
-console.log("Request OTP:", normalizedOTP);
-console.log("Request OTP type:", typeof normalizedOTP);
+    console.log("Request OTP:", normalizedOTP);
+    console.log("Request OTP type:", typeof normalizedOTP);
 
-console.log("Are they equal:", find.otp === normalizedOTP);
+    console.log("Are they equal:", find.otp === normalizedOTP);
 
-if (find.otp !== normalizedOTP) {
-      
+    if (find.otp !== normalizedOTP) {
       return res.status(404).json({
         success: false,
         message: "Entered OTP is not correct",
@@ -167,6 +163,59 @@ if (find.otp !== normalizedOTP) {
     });
   } catch (error) {
     console.error("OTP-Verify error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+export const resendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email required",
+      });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const user = await User.findOne({
+      email: normalizedEmail,
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User doesn't exist",
+      });
+    }
+
+    if (user.isVerified) {
+      return res.status(409).json({
+        success: false,
+        message: "User already verified",
+      });
+    }
+
+    await OTP.findOneAndDelete({
+      email: normalizedEmail,
+    });
+
+    const storeOtp = await generateAndStoreOTP(normalizedEmail);
+
+    console.log(`OTP for ${normalizedEmail}: ${storeOtp}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "OTP sent to your email",
+    });
+
+  } catch (error) {
+    console.error("Resend OTP error:", error);
 
     return res.status(500).json({
       success: false,
