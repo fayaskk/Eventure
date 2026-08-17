@@ -140,12 +140,7 @@ export const verifyOTP = async (req, res) => {
     }
 
     console.log("DB OTP:", find.otp);
-    console.log("DB OTP type:", typeof find.otp);
-
-    console.log("Request OTP:", normalizedOTP);
-    console.log("Request OTP type:", typeof normalizedOTP);
-
-    console.log("Are they equal:", find.otp === normalizedOTP);
+  
 
     if (find.otp !== normalizedOTP) {
       return res.status(404).json({
@@ -213,9 +208,94 @@ export const resendOTP = async (req, res) => {
       success: true,
       message: "OTP sent to your email",
     });
-
   } catch (error) {
     console.error("Resend OTP error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+
+
+ 
+export const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+   
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
+   
+    const normalizedEmail = email.trim().toLowerCase();
+
+   
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (!emailRegex.test(normalizedEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email format",
+      });
+    }
+
+   
+    const user = await User.findOne({
+      email: normalizedEmail,
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    
+    if (user.isBlocked) {
+      return res.status(403).json({
+        success: false,
+        message: "Blocked by organization",
+      });
+    }
+
+    
+    if (!user.isVerified) {
+      return res.status(403).json({
+        success: false,
+        message: "Email is not verified",
+      });
+    }
+
+   
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+  
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+    });
+
+  } catch (error) {
+    console.error("Login error:", error);
 
     return res.status(500).json({
       success: false,
