@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import { generateAndStoreOTP } from "../services/otp.service.js";
 import { OTP } from "../models/otp.model.js";
+import { generateToken } from "../utils/jwt.js";
 
 export const signup = async (req, res) => {
   try {
@@ -140,7 +141,6 @@ export const verifyOTP = async (req, res) => {
     }
 
     console.log("DB OTP:", find.otp);
-  
 
     if (find.otp !== normalizedOTP) {
       return res.status(404).json({
@@ -218,14 +218,10 @@ export const resendOTP = async (req, res) => {
   }
 };
 
-
-
- 
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-   
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -233,12 +229,9 @@ export const userLogin = async (req, res) => {
       });
     }
 
-   
     const normalizedEmail = email.trim().toLowerCase();
 
-   
-    const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({
@@ -247,7 +240,6 @@ export const userLogin = async (req, res) => {
       });
     }
 
-   
     const user = await User.findOne({
       email: normalizedEmail,
     });
@@ -259,7 +251,6 @@ export const userLogin = async (req, res) => {
       });
     }
 
-    
     if (user.isBlocked) {
       return res.status(403).json({
         success: false,
@@ -267,7 +258,6 @@ export const userLogin = async (req, res) => {
       });
     }
 
-    
     if (!user.isVerified) {
       return res.status(403).json({
         success: false,
@@ -275,11 +265,7 @@ export const userLogin = async (req, res) => {
       });
     }
 
-   
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
@@ -288,12 +274,13 @@ export const userLogin = async (req, res) => {
       });
     }
 
-  
+    const token = generateToken(user);
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
+      token,
     });
-
   } catch (error) {
     console.error("Login error:", error);
 
