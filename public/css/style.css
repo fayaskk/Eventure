@@ -1,0 +1,349 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #1f2937;
+}
+
+a {
+  text-decoration: none;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-brand {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-brand a {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.auth-card {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-header {
+  margin-bottom: 30px;
+}
+
+.auth-header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-link {
+  font-size: 13px;
+  color: #2563eb;
+}
+
+.auth-button {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+}
+
+.auth-button:hover {
+  background: #1d4ed8;
+}
+
+.auth-switch {
+  margin-top: 25px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.auth-switch a {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* =========================================
+   ADMIN LAYOUT
+========================================= */
+
+.admin-layout {
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #f5f6fa;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 263px;
+
+  min-height: 100vh;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #101426;
+
+  color: white;
+
+  padding: 30px 20px;
+}
+
+
+.logo {
+  font-size: 30px;
+  font-weight: 700;
+
+  margin-bottom: 55px;
+
+  color: white;
+}
+
+
+/* NAVIGATION */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+
+  min-height: 51px;
+
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  color: #e4e7f0;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.sidebar-nav a:hover {
+  background: #1c2138;
+
+  color: white;
+}
+
+
+.sidebar-nav a.active {
+  background: #5b4bdb;
+
+  color: white;
+}
+
+
+/* LOGOUT */
+
+.logout {
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+
+  padding: 12px;
+
+  color: white;
+
+  font-size: 15px;
+
+  text-decoration: none;
+}
+
+
+.logout:hover {
+  color: #ffffff;
+}
+
+
+
+/* MAIN CONTENT */
+
+.main-content {
+  margin-left: 263px;
+
+  width: calc(100% - 263px);
+
+  min-height: 100vh;
+
+  padding: 45px 47px;
+
+  background: #f5f6fa;
+}
+
+
+/* PAGE HEADER */
+
+.page-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 35px;
+}
+
+
+.eyebrow {
+  margin-bottom: 8px;
+
+  color: #536b8b;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  letter-spacing: 4px;
+}
+
+
+.page-header h1 {
+  margin: 0 0 8px;
+
+  color: #10203a;
+
+  font-size: 38px;
+  font-weight: 700;
+}
+
+
+.page-header p {
+  margin: 0;
+
+  color: #58708f;
+
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 220px;
+  }
+
+
+  .main-content {
+    margin-left: 220px;
+
+    width: calc(100% - 220px);
+
+    padding: 30px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .sidebar {
+    width: 190px;
+  }
+
+
+  .main-content {
+    margin-left: 190px;
+
+    width: calc(100% - 190px);
+
+    padding: 25px;
+  }
+
+
+  .page-header {
+    flex-direction: column;
+
+    gap: 20px;
+  }
+
+
+  .page-header h1 {
+    font-size: 30px;
+  }
+
+}

@@ -1,0 +1,256 @@
+<%- include("../partials/head", { title: "Users | Eventure Admin" }) %>
+
+  <link rel="stylesheet" href="/css/admin/users.css">
+  <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+
+
+
+<body>
+
+  <div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "users" }) %>
+
+      <main class="admin-main">
+
+
+        <header class="page-header">
+
+          <div>
+
+            <p class="section-label">
+              USER MANAGEMENT
+            </p>
+
+            <h1>
+              Users
+            </h1>
+
+            <p>
+              View, search and manage registered Eventure users.
+            </p>
+
+          </div>
+
+        </header>
+
+
+
+        <!-- FILTER CARD -->
+
+        <section class="filter-card">
+
+
+          <div class="search-wrapper">
+
+            <label for="search">
+              Search
+            </label>
+
+            <input type="text" id="search" placeholder="Search by name or email...">
+
+          </div>
+
+
+
+          <div class="filter-wrapper">
+
+            <label for="blockedFilter">
+              Account Status
+            </label>
+
+            <select id="blockedFilter">
+
+              <option value="">
+                All Users
+              </option>
+
+              <option value="false">
+                Active
+              </option>
+
+              <option value="true">
+                Blocked
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="filter-wrapper">
+
+            <label for="verifiedFilter">
+              Verification
+            </label>
+
+            <select id="verifiedFilter">
+
+              <option value="">
+                All
+              </option>
+
+              <option value="true">
+                Verified
+              </option>
+
+              <option value="false">
+                Unverified
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <button id="searchBtn" class="primary-btn">
+            Search
+          </button>
+
+
+          <button id="clearBtn" class="secondary-btn">
+            Clear
+          </button>
+
+
+        </section>
+
+
+
+        <!-- USERS CARD -->
+
+        <section class="users-card">
+
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>
+                All Users
+              </h2>
+
+              <p id="resultCount">
+                Loading users...
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    User
+                  </th>
+
+                  <th>
+                    Email
+                  </th>
+
+                  <th>
+                    Verification
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Joined
+                  </th>
+
+                  <th>
+                    Action
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="userTable">
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+
+          <!-- EMPTY STATE -->
+
+          <div id="emptyState" class="empty-state" style="display: none;">
+
+            <div>
+              👥
+            </div>
+
+            <h3>
+              No users found
+            </h3>
+
+            <p>
+              Try changing your search or filters.
+            </p>
+
+          </div>
+
+
+
+          <!-- PAGINATION -->
+
+          <div class="pagination">
+
+            <button id="previousBtn" class="page-btn">
+              ← Previous
+            </button>
+
+
+            <span id="pageInfo">
+              Page 1
+            </span>
+
+
+            <button id="nextBtn" class="page-btn">
+              Next →
+            </button>
+
+          </div>
+
+
+        </section>
+
+
+        <p id="pageMessage" class="page-message"></p>
+
+
+      </main>
+
+  </div>
+
+
+  <!-- USER DETAILS MODAL -->
+
+  <div id="userModal" class="modal-overlay">
+
+
+
+    <script src="/js/admin/admin-auth.js"></script>
+    <script src="/js/admin/users.js"></script>
+
+</body>
+
+</html>

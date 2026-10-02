@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head", { title: "Eventure | Event Details" }) %>
+  <link rel="stylesheet" href="/css/host/event-details.css">
+</head>
+
+<body>
+
+  <!-- <%- include("../partials/sidebar", { activePage: "events" }) %> -->
+
+  <main class="host-main">
+
+    <header class="host-header">
+
+      <div>
+        <p class="section-label">HOST PANEL</p>
+        <h1>Event Details</h1>
+        <p>View the details of your event.</p>
+      </div>
+
+      <a href="/host/events" class="back-btn">
+        ← Back to My Events
+      </a>
+
+    </header>
+
+    <section id="event-details">
+      <p id="event-loading">
+        Loading event...
+      </p>
+    </section>
+
+  </main>
+
+  <script src="/js/host/event-details.js"></script>
+
+</body>
+
+</html>

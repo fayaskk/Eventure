@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", { title: "Become a Host | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/user/dashboard.css" />
+  <link rel="stylesheet" href="/css/user/apply-host.css" />
+
+</head>
+
+<body class="dashboard-page">
+
+  <script src="/js/auth-guard.js"></script>
+
+  <script>
+    redirectToLoginIfNotLoggedIn();
+  </script>
+
+  <div class="dashboard-layout">
+
+    <%- include("../partials/sidebar.ejs", { activePage: "apply-host" }) %>
+
+    <main class="dashboard-content">
+
+      <header class="host-page-header">
+
+        <p class="welcome-label">
+          BECOME AN EVENTURE HOST
+        </p>
+
+        <h1>
+          Become an Eventure Host
+        </h1>
+
+        <p class="welcome-text">
+          Share your events with the Eventure community and create
+          memorable experiences.
+        </p>
+
+      </header>
+
+      <section class="application-stepper">
+
+        <div class="step active" data-step="1">
+
+          <div class="step-number">
+            1
+          </div>
+
+          <div class="step-info">
+
+            <strong>
+              Contact
+            </strong>
+
+            <span>
+              Contact details
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step" data-step="2">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <div class="step-info">
+
+            <strong>
+              Organization
+            </strong>
+
+            <span>
+              Organization details
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step" data-step="3">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <div class="step-info">
+
+            <strong>
+              Bank & Documents
+            </strong>
+
+            <span>
+              Payment & verification
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step" data-step="4">
+
+          <div class="step-number">
+            4
+          </div>
+
+          <div class="step-info">
+
+            <strong>
+              Review
+            </strong>
+
+            <span>
+              Submit application
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <form
+        id="hostApplicationForm"
+        enctype="multipart/form-data"
+        novalidate
+      >
+
+        <section
+          class="application-card application-step"
+          data-step-content="1"
+        >
+
+          <div class="card-heading">
+
+            <p class="section-label">
+              STEP 1 OF 4
+            </p>
+
+            <h2>
+              Primary Contact Details
+            </h2>
+
+            <p>
+              Tell us who will be responsible for managing your
+              organization on Eventure.
+            </p>
+
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+
+              <label for="primaryContactName">
+                Primary Contact Name
+              </label>
+
+              <input
+                type="text"
+                id="primaryContactName"
+                name="primaryContactName"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="contactEmail">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                id="contactEmail"
+                name="contactEmail"
+                placeholder="example@email.com"
+                autocomplete="email"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="phoneNumber">
+                Phone Number
+              </label>
+
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder="+91 9876543210"
+                autocomplete="tel"
+                required
+              />
+
+            </div>
+
+            <div class="form-group full-width">
+
+              <label for="officeAddress">
+                Office Address
+              </label>
+
+              <textarea
+                id="officeAddress"
+                name="officeAddress"
+                rows="4"
+                placeholder="Enter your office or business address"
+                required
+              ></textarea>
+
+            </div>
+
+          </div>
+
+          <div class="step-actions">
+
+            <a
+              href="/dashboard"
+              class="secondary-btn"
+            >
+              ← Back
+            </a>
+
+            <button
+              type="button"
+              class="primary-btn next-step-btn"
+              data-next="2"
+            >
+              Continue →
+            </button>
+
+          </div>
+
+        </section>
+
+        <section
+          class="application-card application-step hidden"
+          data-step-content="2"
+        >
+
+          <div class="card-heading">
+
+            <p class="section-label">
+              STEP 2 OF 4
+            </p>
+
+            <h2>
+              Organization Details
+            </h2>
+
+            <p>
+              Tell us about the organization or group behind your events.
+            </p>
+
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="organizationName">
+                Organization Name
+              </label>
+
+              <input
+                type="text"
+                id="organizationName"
+                name="organizationName"
+                placeholder="Enter organization name"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="organizationType">
+                Organization Type
+              </label>
+
+              <select
+                id="organizationType"
+                name="organizationType"
+                required
+              >
+
+                <option value="">
+                  Select type
+                </option>
+
+                <option value="Event Management">
+                  Event Management
+                </option>
+
+                <option value="Educational Institution">
+                  Educational Institution
+                </option>
+
+                <option value="Sports Organization">
+                  Sports Organization
+                </option>
+
+                <option value="Company">
+                  Company
+                </option>
+
+                <option value="Community">
+                  Community
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group full-width">
+
+              <label for="website">
+
+                Website
+
+                <span class="optional">
+                  Optional
+                </span>
+
+              </label>
+
+              <input
+                type="url"
+                id="website"
+                name="website"
+                placeholder="https://example.com"
+              />
+
+            </div>
+
+            <div class="form-group full-width">
+
+              <label for="description">
+                Organization Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                rows="6"
+                placeholder="Tell us about your organization, the events you organize, and your experience."
+                required
+              ></textarea>
+
+            </div>
+
+          </div>
+
+          <div class="step-actions">
+
+            <button
+              type="button"
+              class="secondary-btn previous-step-btn"
+              data-previous="1"
+            >
+              ← Back
+            </button>
+
+            <button
+              type="button"
+              class="primary-btn next-step-btn"
+              data-next="3"
+            >
+              Continue →
+            </button>
+
+          </div>
+
+        </section>
+
+        <section
+          class="application-card application-step hidden"
+          data-step-content="3"
+        >
+
+          <div class="card-heading">
+
+            <p class="section-label">
+              STEP 3 OF 4
+            </p>
+
+            <h2>
+              Bank Details & Verification Documents
+            </h2>
+
+            <p>
+              Provide your bank information and upload the documents
+              required to verify your host application.
+            </p>
+
+          </div>
+
+          <div class="info-message">
+
+            <span>
+              🔒
+            </span>
+
+            <p>
+              Your banking information is used only for
+              Eventure payment processing.
+            </p>
+
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="bankName">
+                Bank Name
+              </label>
+
+              <input
+                type="text"
+                id="bankName"
+                name="bankName"
+                placeholder="Enter bank name"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="bankAccountName">
+                Account Holder Name
+              </label>
+
+              <input
+                type="text"
+                id="bankAccountName"
+                name="bankAccountName"
+                placeholder="Name as shown on bank account"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="bankAccountNumber">
+                Account Number
+              </label>
+
+              <input
+                type="text"
+                id="bankAccountNumber"
+                name="bankAccountNumber"
+                placeholder="Enter account number"
+                inputmode="numeric"
+                autocomplete="off"
+                required
+              />
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="ifscCode">
+                IFSC Code
+              </label>
+
+              <input
+                type="text"
+                id="ifscCode"
+                name="ifscCode"
+                placeholder="Example: SBIN0001234"
+                autocomplete="off"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <div class="card-heading document-heading">
+
+            <p class="section-label">
+              VERIFICATION DOCUMENTS
+            </p>
+
+            <h2>
+              Upload Required Documents
+            </h2>
+
+            <p>
+              Upload clear and valid documents. These will be reviewed
+              by the Eventure verification team.
+            </p>
+
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="identityProofType">
+                Identity Proof Type
+              </label>
+
+              <select
+                id="identityProofType"
+                name="identityProofType"
+                required
+              >
+
+                <option value="">
+                  Select document type
+                </option>
+
+                <option value="Aadhaar Card">
+                  Aadhaar Card
+                </option>
+
+                <option value="PAN Card">
+                  PAN Card
+                </option>
+
+                <option value="Passport">
+                  Passport
+                </option>
+
+                <option value="Driving License">
+                  Driving License
+                </option>
+
+                <option value="Voter ID">
+                  Voter ID
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="identityProof">
+                Identity Proof
+              </label>
+
+              <input
+                type="file"
+                id="identityProof"
+                name="identityProof"
+                accept=".jpg,.jpeg,.png,.pdf,.webp"
+                required
+              />
+
+              <small>
+                JPG, PNG, WEBP or PDF. Maximum 5 MB.
+              </small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="organizationProofType">
+                Organization Proof Type
+              </label>
+
+              <select
+                id="organizationProofType"
+                name="organizationProofType"
+                required
+              >
+
+                <option value="">
+                  Select document type
+                </option>
+
+                <option value="Registration Certificate">
+                  Registration Certificate
+                </option>
+
+                <option value="GST Certificate">
+                  GST Certificate
+                </option>
+
+                <option value="Company Registration">
+                  Company Registration
+                </option>
+
+                <option value="Society Registration">
+                  Society Registration
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="organizationProof">
+                Organization Proof
+              </label>
+
+              <input
+                type="file"
+                id="organizationProof"
+                name="organizationProof"
+                accept=".jpg,.jpeg,.png,.pdf,.webp"
+                required
+              />
+
+              <small>
+                JPG, PNG, WEBP or PDF. Maximum 5 MB.
+              </small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="addressProofType">
+                Address Proof Type
+              </label>
+
+              <select
+                id="addressProofType"
+                name="addressProofType"
+                required
+              >
+
+                <option value="">
+                  Select document type
+                </option>
+
+                <option value="Utility Bill">
+                  Utility Bill
+                </option>
+
+                <option value="Rental Agreement">
+                  Rental Agreement
+                </option>
+
+                <option value="Property Document">
+                  Property Document
+                </option>
+
+                <option value="Aadhaar Card">
+                  Aadhaar Card
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="addressProof">
+                Address Proof
+              </label>
+
+              <input
+                type="file"
+                id="addressProof"
+                name="addressProof"
+                accept=".jpg,.jpeg,.png,.pdf,.webp"
+                required
+              />
+
+              <small>
+                JPG, PNG, WEBP or PDF. Maximum 5 MB.
+              </small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="bankProofType">
+                Bank Proof Type
+              </label>
+
+              <select
+                id="bankProofType"
+                name="bankProofType"
+                required
+              >
+
+                <option value="">
+                  Select document type
+                </option>
+
+                <option value="Cancelled Cheque">
+                  Cancelled Cheque
+                </option>
+
+                <option value="Bank Statement">
+                  Bank Statement
+                </option>
+
+                <option value="Passbook">
+                  Passbook
+                </option>
+
+                <option value="Bank Certificate">
+                  Bank Certificate
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="bankProof">
+                Bank Proof
+              </label>
+
+              <input
+                type="file"
+                id="bankProof"
+                name="bankProof"
+                accept=".jpg,.jpeg,.png,.pdf,.webp"
+                required
+              />
+
+              <small>
+                JPG, PNG, WEBP or PDF. Maximum 5 MB.
+              </small>
+
+            </div>
+
+          </div>
+
+          <div class="info-message">
+
+            <span>
+              🔐
+            </span>
+
+            <p>
+              Your documents are securely uploaded and will only be
+              accessed by the Eventure verification team.
+            </p>
+
+          </div>
+
+          <div class="step-actions">
+
+            <button
+              type="button"
+              class="secondary-btn previous-step-btn"
+              data-previous="2"
+            >
+              ← Back
+            </button>
+
+            <button
+              type="button"
+              class="primary-btn next-step-btn"
+              data-next="4"
+            >
+              Continue to Review →
+            </button>
+
+          </div>
+
+        </section>
+
+        <section
+          class="application-card application-step hidden"
+          data-step-content="4"
+        >
+
+          <div class="card-heading">
+
+            <p class="section-label">
+              STEP 4 OF 4
+            </p>
+
+            <h2>
+              Review & Submit
+            </h2>
+
+            <p>
+              Please review your information carefully before
+              submitting your application.
+            </p>
+
+          </div>
+
+          <div class="review-section">
+
+            <div class="review-heading">
+
+              <h3>
+                Primary Contact
+              </h3>
+
+              <button
+                type="button"
+                class="edit-step-btn"
+                data-edit="1"
+              >
+                Edit
+              </button>
+
+            </div>
+
+            <div class="review-grid">
+
+              <div>
+                <span>
+                  Contact Name
+                </span>
+
+                <strong id="reviewContactName">
+                  —
+                </strong>
+              </div>
+
+              <div>
+                <span>
+                  Email
+                </span>
+
+                <strong id="reviewContactEmail">
+                  —
+                </strong>
+              </div>
+
+              <div>
+                <span>
+                  Phone
+                </span>
+
+                <strong id="reviewPhoneNumber">
+                  —
+                </strong>
+              </div>
+
+              <div class="full-width">
+                <span>
+                  Office Address
+                </span>
+
+                <strong id="reviewOfficeAddress">
+                  —
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="review-section">
+
+            <div class="review-heading">
+
+              <h3>
+                Organization
+              </h3>
+
+              <button
+                type="button"
+                class="edit-step-btn"
+                data-edit="2"
+              >
+                Edit
+              </button>
+
+            </div>
+
+            <div class="review-grid">
+
+              <div>
+
+                <span>
+                  Organization Name
+                </span>
+
+                <strong id="reviewOrganizationName">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Organization Type
+                </span>
+
+                <strong id="reviewOrganizationType">
+                  —
+                </strong>
+
+              </div>
+
+              <div class="full-width">
+
+                <span>
+                  Website
+                </span>
+
+                <strong id="reviewWebsite">
+                  —
+                </strong>
+
+              </div>
+
+              <div class="full-width">
+
+                <span>
+                  Description
+                </span>
+
+                <strong id="reviewDescription">
+                  —
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="review-section">
+
+            <div class="review-heading">
+
+              <h3>
+                Bank Details
+              </h3>
+
+              <button
+                type="button"
+                class="edit-step-btn"
+                data-edit="3"
+              >
+                Edit
+              </button>
+
+            </div>
+
+            <div class="review-grid">
+
+              <div>
+
+                <span>
+                  Bank Name
+                </span>
+
+                <strong id="reviewBankName">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Account Holder
+                </span>
+
+                <strong id="reviewBankAccountName">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Account Number
+                </span>
+
+                <strong id="reviewBankAccountNumber">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  IFSC Code
+                </span>
+
+                <strong id="reviewIfscCode">
+                  —
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="review-section">
+
+            <div class="review-heading">
+
+              <h3>
+                Verification Documents
+              </h3>
+
+              <button
+                type="button"
+                class="edit-step-btn"
+                data-edit="3"
+              >
+                Edit
+              </button>
+
+            </div>
+
+            <div class="review-grid">
+
+              <div>
+
+                <span>
+                  Identity Proof
+                </span>
+
+                <strong id="reviewIdentityProof">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Organization Proof
+                </span>
+
+                <strong id="reviewOrganizationProof">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Address Proof
+                </span>
+
+                <strong id="reviewAddressProof">
+                  —
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Bank Proof
+                </span>
+
+                <strong id="reviewBankProof">
+                  —
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="terms-box">
+
+            <label>
+
+              <input
+                type="checkbox"
+                id="termsAccepted"
+              />
+
+              <span>
+                I confirm that the information provided above
+                is accurate and I agree to Eventure's terms
+                and conditions for hosts.
+              </span>
+
+            </label>
+
+          </div>
+
+          <p
+            id="applicationMessage"
+            class="form-message"
+          ></p>
+
+          <div class="step-actions">
+
+            <button
+              type="button"
+              class="secondary-btn previous-step-btn"
+              data-previous="3"
+            >
+              ← Back
+            </button>
+
+            <button
+              type="submit"
+              class="primary-btn"
+              id="submitApplicationBtn"
+            >
+              Submit Application
+            </button>
+
+          </div>
+
+        </section>
+
+      </form>
+
+    </main>
+
+  </div>
+
+  <script src="/js/user/apply-host.js"></script>
+
+</body>
+
+</html>

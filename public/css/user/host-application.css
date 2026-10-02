@@ -1,0 +1,707 @@
+/* =========================================================
+   HOST APPLICATION PAGE
+   ========================================================= */
+
+:root {
+  --host-primary: #6355e7;
+  --host-primary-light: #7568f0;
+  --host-text: #1e293b;
+  --host-muted: #64748b;
+  --host-border: #e2e8f0;
+  --host-bg: #f6f7fb;
+  --host-card: #ffffff;
+}
+
+
+/* =========================================================
+   PAGE LAYOUT
+   ========================================================= */
+
+.dashboard-page {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--host-bg);
+}
+
+
+.dashboard-layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.dashboard-content {
+  flex: 1;
+  min-width: 0;
+  margin-left: 270px;
+  padding: 44px 56px 70px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.host-page-header {
+  max-width: 1100px;
+  margin: 0 auto 34px;
+}
+
+
+.welcome-label {
+  margin: 0 0 10px;
+
+  color: var(--host-primary);
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+
+
+.host-page-header h1 {
+  margin: 0;
+
+  color: var(--host-text);
+
+  font-size: 42px;
+  line-height: 1.15;
+  font-weight: 750;
+
+  letter-spacing: -1.2px;
+}
+
+
+.welcome-text {
+  margin: 12px 0 0;
+
+  color: var(--host-muted);
+
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   APPLICATION CARD
+   ========================================================= */
+
+.application-card {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 36px;
+
+  box-sizing: border-box;
+
+  background: var(--host-card);
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 35px rgba(15, 23, 42, 0.055);
+}
+
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-state {
+  min-height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  color: var(--host-muted);
+
+  font-size: 15px;
+}
+
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+
+  border: 3px solid #e5e7eb;
+  border-top-color: var(--host-primary);
+
+  border-radius: 50%;
+
+  animation: hostSpinner 0.8s linear infinite;
+}
+
+
+@keyframes hostSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   APPLICATION STATUS HEADER
+   ========================================================= */
+
+.application-status-header {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding-bottom: 30px;
+
+  border-bottom: 1px solid var(--host-border);
+}
+
+
+.status-icon {
+  width: 72px;
+  height: 72px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background:
+    rgba(99, 85, 231, 0.1);
+
+  color: var(--host-primary);
+
+  font-size: 30px;
+}
+
+
+.status-header-content {
+  min-width: 0;
+}
+
+
+.section-label {
+  margin: 0 0 8px;
+
+  color: var(--host-primary);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+
+.application-status-header h2 {
+  margin: 0;
+
+  color: var(--host-text);
+
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+
+  letter-spacing: -0.4px;
+}
+
+
+.application-status-header p:not(.section-label) {
+  margin: 8px 0 0;
+
+  color: var(--host-muted);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   STATUS ROW
+   ========================================================= */
+
+.status-row {
+  min-height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  border-bottom: 1px solid var(--host-border);
+}
+
+
+.status-row-label {
+  color: var(--host-muted);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 13px;
+
+  border-radius: 8px;
+
+  color: #b7791f;
+
+  background: rgba(245, 158, 11, 0.12);
+
+  font-size: 12px;
+  font-weight: 750;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   APPLICATION DETAILS
+   ========================================================= */
+
+.application-details {
+  padding: 30px 0;
+
+  border-bottom: 1px solid var(--host-border);
+}
+
+
+.application-details h3 {
+  margin: 0 0 22px;
+
+  color: var(--host-text);
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+.details-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+.detail-item {
+  min-width: 0;
+
+  padding: 20px;
+
+  background: #f8f9fc;
+
+  border: 1px solid #edf0f5;
+
+  border-radius: 13px;
+}
+
+
+.detail-item span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--host-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.detail-item strong {
+  display: block;
+
+  color: var(--host-text);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   REJECTION
+   ========================================================= */
+
+.rejection-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  margin-top: 28px;
+  padding: 20px;
+
+  border: 1px solid rgba(244, 63, 94, 0.18);
+
+  border-radius: 13px;
+
+  background: rgba(244, 63, 94, 0.055);
+}
+
+
+.rejection-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(244, 63, 94, 0.1);
+
+  font-size: 19px;
+}
+
+
+.rejection-section h3 {
+  margin: 0 0 7px;
+
+  color: #be123c;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.rejection-section p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.application-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 28px;
+}
+
+
+.action-info {
+  width: 100%;
+
+  margin: 0;
+
+  color: var(--host-muted);
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.primary-btn {
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 22px;
+
+  box-sizing: border-box;
+
+  border: 0;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--host-primary),
+      #5749d2
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 20px rgba(99, 85, 231, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.primary-btn:hover {
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 25px rgba(99, 85, 231, 0.28);
+}
+
+
+/* =========================================================
+   NO APPLICATION
+   ========================================================= */
+
+.empty-state {
+  min-height: 350px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  text-align: center;
+}
+
+
+.empty-state-icon {
+  width: 76px;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+
+  background: rgba(99, 85, 231, 0.1);
+
+  font-size: 34px;
+}
+
+
+.empty-state h2 {
+  margin: 0;
+
+  color: var(--host-text);
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+.empty-state p:not(.section-label) {
+  max-width: 560px;
+
+  margin: 12px 0 24px;
+
+  color: var(--host-muted);
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.form-message {
+  max-width: 1100px;
+
+  margin: 18px auto 0;
+
+  color: #dc2626;
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .dashboard-content {
+    padding: 38px 35px 60px;
+  }
+
+  .host-page-header h1 {
+    font-size: 36px;
+  }
+
+  .application-card {
+    padding: 30px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-content {
+    margin-left: 0;
+
+    padding:
+      85px 22px 50px;
+  }
+
+
+  .host-page-header {
+    margin-bottom: 25px;
+  }
+
+
+  .host-page-header h1 {
+    font-size: 32px;
+  }
+
+
+  .welcome-text {
+    font-size: 15px;
+  }
+
+
+  .application-card {
+    padding: 24px;
+
+    border-radius: 17px;
+  }
+
+
+  .application-status-header {
+    align-items: flex-start;
+
+    gap: 16px;
+  }
+
+
+  .status-icon {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 15px;
+
+    font-size: 24px;
+  }
+
+
+  .application-status-header h2 {
+    font-size: 21px;
+  }
+
+
+  .application-status-header p:not(.section-label) {
+    font-size: 14px;
+  }
+
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .application-actions {
+    justify-content: stretch;
+  }
+
+
+  .primary-btn {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .dashboard-content {
+    padding:
+      80px 15px 40px;
+  }
+
+
+  .host-page-header h1 {
+    font-size: 28px;
+  }
+
+
+  .application-card {
+    padding: 20px;
+  }
+
+
+  .application-status-header {
+    flex-direction: column;
+  }
+
+
+  .status-row {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 18px 0;
+  }
+
+
+  .rejection-section {
+    flex-direction: column;
+  }
+
+}

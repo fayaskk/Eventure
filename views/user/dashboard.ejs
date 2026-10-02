@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", { title: "Dashboard | Eventure" }) %>
+
+  <link
+    rel="stylesheet"
+    href="/css/user/dashboard.css"
+  />
+
+</head>
+
+<body class="dashboard-page">
+
+  <div class="dashboard-layout">
+
+    <%- include("../partials/sidebar", {
+      activePage: "dashboard"
+    }) %>
+
+    <main class="dashboard-content">
+
+      <header class="dashboard-header">
+
+        <div>
+
+          <p class="welcome-label">
+            YOUR EVENTURE JOURNEY
+          </p>
+
+          <h1>
+            Welcome back
+            <span id="userName"></span>! 👋
+          </h1>
+
+          <p class="welcome-text">
+            Discover exciting events and create unforgettable memories.
+          </p>
+
+        </div>
+
+      </header>
+
+      <section class="search-section">
+
+        <input
+          type="text"
+          placeholder="Search events..."
+          class="event-search"
+          id="eventSearch"
+        />
+
+        <select id="categoryFilter">
+          <option>All Categories</option>
+          <option>Music</option>
+          <option>Sports</option>
+          <option>Workshop</option>
+        </select>
+
+        <select id="locationFilter">
+          <option>Any Location</option>
+          <option>Kochi</option>
+          <option>Calicut</option>
+          <option>Bangalore</option>
+        </select>
+
+        <button
+          class="search-btn"
+          id="searchBtn"
+          type="button"
+        >
+          Search
+        </button>
+
+      </section>
+
+      <section class="dashboard-section">
+
+        <div class="section-header">
+
+          <div>
+
+            <p class="section-label">
+              DISCOVER WHAT'S NEXT
+            </p>
+
+            <h2>
+              Upcoming Events
+            </h2>
+
+          </div>
+
+          <a
+            href="/events"
+            class="view-all"
+          >
+            View All Events →
+          </a>
+
+        </div>
+
+        <div class="event-grid">
+
+          <div
+            class="event-card"
+            data-name="Summer Music Festival"
+            data-category="Music"
+            data-location="Kochi"
+          >
+
+            <div class="event-image">
+              🎵
+            </div>
+
+            <div class="event-info">
+
+              <span class="event-category">
+                MUSIC
+              </span>
+
+              <h3>
+                Summer Music Festival
+              </h3>
+
+              <p>
+                📍 Kochi
+              </p>
+
+              <p>
+                📅 August 2026
+              </p>
+
+              <a
+                href="#"
+                class="book-btn"
+              >
+                View Event
+              </a>
+
+            </div>
+
+          </div>
+
+          <div
+            class="event-card"
+            data-name="Football Championship"
+            data-category="Sports"
+            data-location="Calicut"
+          >
+
+            <div class="event-image">
+              ⚽
+            </div>
+
+            <div class="event-info">
+
+              <span class="event-category">
+                SPORTS
+              </span>
+
+              <h3>
+                Football Championship
+              </h3>
+
+              <p>
+                📍 Calicut
+              </p>
+
+              <p>
+                📅 September 2026
+              </p>
+
+              <a
+                href="#"
+                class="book-btn"
+              >
+                View Event
+              </a>
+
+            </div>
+
+          </div>
+
+          <div
+            class="event-card"
+            data-name="Creative Workshop"
+            data-category="Workshop"
+            data-location="Bangalore"
+          >
+
+            <div class="event-image">
+              🎨
+            </div>
+
+            <div class="event-info">
+
+              <span class="event-category">
+                WORKSHOP
+              </span>
+
+              <h3>
+                Creative Workshop
+              </h3>
+
+              <p>
+                📍 Bangalore
+              </p>
+
+              <p>
+                📅 October 2026
+              </p>
+
+              <a
+                href="#"
+                class="book-btn"
+              >
+                View Event
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="dashboard-section quick-section">
+
+        <p class="section-label">
+          QUICK ACTIONS
+        </p>
+
+        <h2>
+          Continue Exploring
+        </h2>
+
+        <div class="quick-actions">
+
+          <a
+            href="/events"
+            class="quick-card"
+          >
+
+            <span>
+              🔍
+            </span>
+
+            <div>
+
+              <h3>
+                Explore Events
+              </h3>
+
+              <p>
+                Find events happening around you.
+              </p>
+
+            </div>
+
+          </a>
+
+          <a
+            href="/profile"
+            class="quick-card"
+          >
+
+            <span>
+              👤
+            </span>
+
+            <div>
+
+              <h3>
+                My Profile
+              </h3>
+
+              <p>
+                View and manage your account.
+              </p>
+
+            </div>
+
+          </a>
+
+          <a
+            href="/apply-host"
+            class="quick-card"
+          >
+
+            <span>
+              🏢
+            </span>
+
+            <div>
+
+              <h3>
+                Become a Host
+              </h3>
+
+              <p>
+                Create and manage your own events.
+              </p>
+
+            </div>
+
+          </a>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+
+  <script src="/js/user/dashboard.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,505 @@
+<%- include("../partials/head", { title: "Host Applications | Eventure Admin" }) %>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/admin/host-application-details.css">
+
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+<body>
+
+  <div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "host-application-details" }) %>
+
+    <main class="main-content">
+
+      <header class="page-header">
+
+        <div>
+
+          <div class="eyebrow">
+            HOST MANAGEMENT
+          </div>
+
+          <h1>
+            Host Application
+          </h1>
+
+          <p>
+            Review and manage this host application.
+          </p>
+
+        </div>
+
+        <a
+          href="/admin/host-applications"
+          class="back-btn"
+        >
+          ← Back to Applications
+        </a>
+
+      </header>
+
+
+
+      <section
+        id="loadingState"
+        class="application-card loading-state"
+      >
+
+        <div class="spinner"></div>
+
+        <p>
+          Loading application details...
+        </p>
+
+      </section>
+
+
+
+      <section
+        id="errorState"
+        class="application-card error-state"
+        style="display: none;"
+      >
+
+        <h2>
+          Unable to load application
+        </h2>
+
+        <p id="errorMessage"></p>
+
+        <a
+          href="/admin/host-applications"
+          class="back-btn"
+        >
+          ← Back to Applications
+        </a>
+
+      </section>
+
+
+
+      <section
+        id="applicationContent"
+        class="application-card"
+        style="display: none;"
+      >
+
+        <div class="application-header">
+
+          <div>
+
+            <div class="eyebrow">
+              APPLICATION DETAILS
+            </div>
+
+            <h2 id="applicantName">
+              -
+            </h2>
+
+            <p id="applicantEmail">
+              -
+            </p>
+
+          </div>
+
+          <span
+            id="statusBadge"
+            class="status-badge"
+          >
+            Pending
+          </span>
+
+        </div>
+
+
+
+        <div class="details-section">
+
+          <h3>
+            Organization Information
+          </h3>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Organization Name
+              </span>
+
+              <strong id="organizationName">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Organization Type
+              </span>
+
+              <strong id="organizationType">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Website
+              </span>
+
+              <strong id="website">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Submitted
+              </span>
+
+              <strong id="submittedDate">
+                -
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="description-block">
+
+            <span class="detail-label">
+              Description
+            </span>
+
+            <p id="description">
+              -
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="details-section">
+
+          <h3>
+            Contact Information
+          </h3>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Primary Contact
+              </span>
+
+              <strong id="primaryContact">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Email
+              </span>
+
+              <strong id="contactEmail">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Phone Number
+              </span>
+
+              <strong id="phoneNumber">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Office Address
+              </span>
+
+              <strong id="officeAddress">
+                -
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="details-section">
+
+          <h3>
+            Bank Information
+          </h3>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Account Name
+              </span>
+
+              <strong id="bankAccountName">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Account Number
+              </span>
+
+              <strong id="bankAccountNumber">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                IFSC Code
+              </span>
+
+              <strong id="ifscCode">
+                -
+              </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Bank Name
+              </span>
+
+              <strong id="bankName">
+                -
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="details-section documents-section">
+
+          <h3>
+            Submitted Documents
+          </h3>
+
+          <p class="documents-description">
+            Documents submitted by the applicant for verification.
+          </p>
+
+          <div
+            id="documentsContainer"
+            class="documents-grid"
+          ></div>
+
+        </div>
+
+
+
+        <div
+          id="rejectionSection"
+          class="rejection-section"
+          style="display: none;"
+        >
+
+          <h3>
+            Rejection Reason
+          </h3>
+
+          <p id="rejectionReason">
+            -
+          </p>
+
+        </div>
+
+
+
+        <div
+          id="applicationActions"
+          class="application-actions"
+        >
+
+          <button
+            type="button"
+            id="rejectBtn"
+            class="reject-btn"
+          >
+            Reject Application
+          </button>
+
+          <button
+            type="button"
+            id="approveBtn"
+            class="approve-btn"
+          >
+            Approve Application
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <p
+        id="pageMessage"
+        class="page-message"
+      ></p>
+
+    </main>
+
+  </div>
+
+
+
+  <div
+    id="actionModal"
+    class="action-modal-overlay"
+    style="display: none;"
+  >
+
+    <div class="action-modal">
+
+      <button
+        type="button"
+        id="closeActionModal"
+        class="modal-close"
+      >
+        ×
+      </button>
+
+
+
+      <div
+        class="modal-icon"
+        id="modalIcon"
+      >
+        !
+      </div>
+
+
+
+      <h2 id="modalTitle">
+        Confirm Action
+      </h2>
+
+
+
+      <p id="modalDescription">
+        Are you sure you want to continue?
+      </p>
+
+
+
+      <div
+        id="rejectionReasonWrapper"
+        class="reason-wrapper"
+        style="display: none;"
+      >
+
+        <label for="rejectionReasonInput">
+          Reason for rejection
+        </label>
+
+        <textarea
+          id="rejectionReasonInput"
+          rows="4"
+          placeholder="Enter the reason for rejecting this application..."
+        ></textarea>
+
+      </div>
+
+
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          id="cancelActionBtn"
+          class="secondary-btn"
+        >
+          Cancel
+        </button>
+
+
+
+        <button
+          type="button"
+          id="confirmActionBtn"
+          class="confirm-btn"
+        >
+          Confirm
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="/js/admin/admin-auth.js"></script>
+
+  <script src="/js/admin/host-application-details.js"></script>
+
+</body>
+
+</html>

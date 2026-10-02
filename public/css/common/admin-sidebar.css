@@ -1,0 +1,176 @@
+:root {
+  --admin-sidebar-width: 250px;
+  --admin-sidebar-bg: #111426;
+  --admin-sidebar-text: #c5c8d8;
+  --admin-sidebar-active: #5746d8;
+}
+
+
+.admin-sidebar {
+  width: var(--admin-sidebar-width);
+  min-height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px 18px;
+
+  box-sizing: border-box;
+
+  background: var(--admin-sidebar-bg);
+  color: #ffffff;
+}
+
+
+.admin-sidebar-logo {
+  padding: 0 14px;
+
+  margin-bottom: 45px;
+
+  color: #ffffff;
+
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 48px;
+
+  padding: 0 14px;
+
+  border-radius: 9px;
+
+  color: var(--admin-sidebar-text);
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.admin-nav-item span {
+  width: 20px;
+
+  flex-shrink: 0;
+
+  text-align: center;
+}
+
+
+.admin-nav-item:hover {
+  background: #1c1f35;
+
+  color: #ffffff;
+}
+
+
+.admin-nav-item.active {
+  background: var(--admin-sidebar-active);
+
+  color: #ffffff;
+}
+
+
+.admin-logout-btn {
+  width: 100%;
+
+  min-height: 48px;
+
+  margin-top: auto;
+
+  padding: 0 14px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: var(--admin-sidebar-text);
+
+  text-align: left;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.admin-logout-btn:hover {
+  background: #1c1f35;
+
+  color: #ffffff;
+}
+
+
+.admin-logout-btn:focus {
+  outline: none;
+}
+
+
+.admin-logout-btn:active {
+  transform: translateY(1px);
+}
+
+
+.admin-main,
+.main-content {
+  margin-left: var(--admin-sidebar-width);
+
+  width: calc(100% - var(--admin-sidebar-width));
+
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 700px) {
+
+  .admin-sidebar {
+    display: none;
+  }
+
+
+  .admin-main,
+  .main-content {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+}

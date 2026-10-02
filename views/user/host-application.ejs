@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", {
+    title: "Host Application | Eventure"
+  }) %>
+
+  <link
+    rel="stylesheet"
+    href="/css/user/host-application.css"
+  >
+
+</head>
+
+<body class="dashboard-page">
+
+  <script src="/js/auth-guard.js"></script>
+
+  <script>
+    redirectToLoginIfNotLoggedIn();
+  </script>
+
+  <div class="dashboard-layout">
+
+    <%- include("../partials/sidebar", { activePage: "host-application" }) %>
+
+    <main class="dashboard-content">
+
+      <header class="host-page-header">
+
+        <p class="welcome-label">
+          HOST APPLICATION
+        </p>
+
+        <h1>
+          Host Application
+        </h1>
+
+        <p class="welcome-text">
+          Track the status of your Eventure host application.
+        </p>
+
+      </header>
+
+      <section
+        id="applicationLoading"
+        class="application-card"
+      >
+
+        <div class="loading-state">
+
+          <div class="loading-spinner"></div>
+
+          <span>
+            Loading application status...
+          </span>
+
+        </div>
+
+      </section>
+
+      <section
+        id="applicationContent"
+        class="application-card hidden"
+      >
+
+        <div class="application-status-header">
+
+          <div
+            id="statusIcon"
+            class="status-icon"
+          >
+            ⏳
+          </div>
+
+          <div class="status-header-content">
+
+            <p class="section-label">
+              APPLICATION STATUS
+            </p>
+
+            <h2 id="statusTitle">
+              Application Under Review
+            </h2>
+
+            <p id="statusDescription">
+              Your application is currently being reviewed.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="status-row">
+
+          <span class="status-row-label">
+            Current Status
+          </span>
+
+          <strong
+            id="statusBadge"
+            class="status-badge"
+          >
+            Pending
+          </strong>
+
+        </div>
+
+        <div class="application-details">
+
+          <h3>
+            Application Details
+          </h3>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+
+              <span>
+                Organization
+              </span>
+
+              <strong id="organizationName">
+                —
+              </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span>
+                Organization Type
+              </span>
+
+              <strong id="organizationType">
+                —
+              </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span>
+                Submitted
+              </span>
+
+              <strong id="submittedDate">
+                —
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div
+          id="rejectionSection"
+          class="rejection-section hidden"
+        >
+
+          <div class="rejection-icon">
+            ⚠️
+          </div>
+
+          <div>
+
+            <h3>
+              Reason for Rejection
+            </h3>
+
+            <p id="rejectionReason">
+            </p>
+
+          </div>
+
+        </div>
+
+        <div
+          id="applicationActions"
+          class="application-actions"
+        >
+        </div>
+
+      </section>
+
+      <section
+        id="noApplication"
+        class="application-card hidden"
+      >
+
+        <div class="empty-state">
+
+          <div class="empty-state-icon">
+            🏢
+          </div>
+
+          <p class="section-label">
+            HOST APPLICATION
+          </p>
+
+          <h2>
+            No Host Application
+          </h2>
+
+          <p>
+            You haven't submitted a host application yet.
+            Become a host and start creating memorable
+            events on Eventure.
+          </p>
+
+          <a
+            href="/apply-host"
+            class="primary-btn"
+          >
+            Become a Host →
+          </a>
+
+        </div>
+
+      </section>
+
+      <p
+        id="applicationMessage"
+        class="form-message"
+      ></p>
+
+    </main>
+
+  </div>
+
+  <script src="/js/user/host-application.js"></script>
+
+</body>
+
+</html>

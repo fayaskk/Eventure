@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", { title: "My Profile | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/user/profile.css" />
+
+</head>
+
+<body class="profile-page">
+
+  <div class="app-layout">
+
+    <%- include("../partials/sidebar", { activePage: "profile" }) %>
+
+    <main class="profile-content">
+
+      <header class="profile-header">
+
+        <div class="profile-header-text">
+
+          <p class="profile-eyebrow">ACCOUNT</p>
+
+          <h1>My Profile</h1>
+
+          <p>
+            Manage your Eventure account, personal information and preferences.
+          </p>
+
+        </div>
+
+        <a
+          href="/edit-profile"
+          class="edit-profile-btn"
+        >
+          Edit Profile
+        </a>
+
+      </header>
+
+      <section class="profile-overview">
+
+        <div class="identity-card">
+
+          <div class="avatar-wrapper">
+
+            <div class="profile-avatar">
+              <span id="profileInitial">U</span>
+            </div>
+
+            <span class="avatar-status"></span>
+
+          </div>
+
+          <div class="identity-info">
+
+            <p class="identity-label">EVENTURE MEMBER</p>
+
+            <h2 id="profileName">
+              Loading...
+            </h2>
+
+            <p
+              class="identity-email"
+              id="profileEmail"
+            ></p>
+
+            <span
+              class="role-badge"
+              id="profileRole"
+            >
+              USER
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="account-card">
+
+          <div class="card-heading">
+
+            <div>
+
+              <p class="card-eyebrow">PERSONAL INFORMATION</p>
+
+              <h2>Account Details</h2>
+
+            </div>
+
+            <div class="card-icon">
+              ◇
+            </div>
+
+          </div>
+
+          <div class="account-details">
+
+            <div class="account-detail">
+
+              <div class="detail-icon">
+                A
+              </div>
+
+              <div class="detail-content">
+
+                <span class="detail-label">
+                  Full Name
+                </span>
+
+                <span
+                  class="detail-value"
+                  id="detailName"
+                ></span>
+
+              </div>
+
+            </div>
+
+            <div class="account-detail">
+
+              <div class="detail-icon">
+                @
+              </div>
+
+              <div class="detail-content">
+
+                <span class="detail-label">
+                  Email Address
+                </span>
+
+                <span
+                  class="detail-value"
+                  id="detailEmail"
+                ></span>
+
+              </div>
+
+            </div>
+
+            <div class="account-detail">
+
+              <div class="detail-icon">
+                Aa
+              </div>
+
+              <div class="detail-content">
+
+                <span class="detail-label">
+                  Preferred Language
+                </span>
+
+                <span
+                  class="detail-value"
+                  id="detailLanguage"
+                ></span>
+
+              </div>
+
+            </div>
+
+            <div class="account-detail">
+
+              <div class="detail-icon">
+                ◷
+              </div>
+
+              <div class="detail-content">
+
+                <span class="detail-label">
+                  Member Since
+                </span>
+
+                <span
+                  class="detail-value"
+                  id="memberSince"
+                ></span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="referral-card">
+
+        <div class="referral-info">
+
+          <div class="referral-icon">
+            ↗
+          </div>
+
+          <div>
+
+            <p class="card-eyebrow">
+              REFER & EARN
+            </p>
+
+            <h2>
+              Invite friends to Eventure
+            </h2>
+
+            <p>
+              Share your referral code with friends and invite them to join
+              the Eventure community.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="referral-action">
+
+          <div class="referral-code-box">
+
+            <span
+              id="referralCode"
+              class="referral-code"
+            >
+              Loading...
+            </span>
+
+            <button
+              id="copyReferralBtn"
+              type="button"
+            >
+              Copy
+            </button>
+
+          </div>
+
+          <p
+            id="copyMessage"
+            class="copy-message"
+          ></p>
+
+        </div>
+
+      </section>
+
+      <section class="profile-note">
+
+        <div class="note-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <h3>
+            Your Eventure identity
+          </h3>
+
+          <p>
+            Your account gives you access to discovering events, managing
+            your profile and becoming a host.
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/common/sidebar.js"></script>
+  <script src="/js/user/profile.js"></script>
+
+</body>
+
+</html>

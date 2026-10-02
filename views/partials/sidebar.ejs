@@ -1,0 +1,137 @@
+<link rel="stylesheet" href="/css/common/sidebar.css">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-brand">
+
+    <a
+      href="/dashboard"
+      class="sidebar-logo"
+    >
+
+      <span class="logo-mark">E</span>
+
+      <span class="logo-text">
+        Eventure
+      </span>
+
+    </a>
+
+    <button
+      type="button"
+      class="sidebar-close"
+      id="sidebarClose"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <nav class="sidebar-nav">
+
+    <div class="nav-group">
+
+      <a
+        href="/dashboard"
+        class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>"
+      >
+
+        <span class="nav-icon">
+          ⌂
+        </span>
+
+        <span class="nav-text">
+          Dashboard
+        </span>
+
+      </a>
+
+
+      <a
+        href="/events"
+        class="nav-link <%= activePage === 'events' ? 'active' : '' %>"
+      >
+
+        <span class="nav-icon">
+          ◈
+        </span>
+
+        <span class="nav-text">
+          Explore Events
+        </span>
+
+      </a>
+
+
+      <a
+        href="/profile"
+        class="nav-link <%= activePage === 'profile' ? 'active' : '' %>"
+      >
+
+        <span class="nav-icon">
+          ♙
+        </span>
+
+        <span class="nav-text">
+          My Profile
+        </span>
+
+      </a>
+
+    </div>
+
+
+    <div
+      class="host-navigation"
+      id="hostNavigation"
+    >
+    </div>
+
+  </nav>
+
+
+  <div class="sidebar-bottom">
+
+    <button
+      type="button"
+      id="logoutBtn"
+      class="logout-btn"
+    >
+
+      <span class="nav-icon">
+        ↪
+      </span>
+
+      <span class="nav-text">
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</aside>
+
+
+<button
+  type="button"
+  class="sidebar-overlay"
+  id="sidebarOverlay"
+  aria-label="Close menu"
+>
+</button>
+
+
+<button
+  type="button"
+  class="mobile-menu-btn"
+  id="mobileMenuBtn"
+  aria-label="Open menu"
+>
+  ☰
+</button>
+
+
+<script src="/js/common/sidebar.js"></script>
