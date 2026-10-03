@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", { title: "Login | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/auth/login.css" />
+
+</head>
+
+<body>
+
+  <main class="login-page">
+
+    <section class="login-content">
+
+      <div class="login-brand">
+
+        <h2>
+          Eventure
+        </h2>
+
+      </div>
+
+      <div class="login-hero">
+
+        <h1>
+          Discover Events<br />
+          That Create<br />
+          Memories
+        </h1>
+
+        <p>
+          Discover concerts, festivals, workshops,
+          sports events and unforgettable experiences.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section class="login-form-section">
+
+      <div class="login-card">
+
+        <h2>
+          Welcome Back
+        </h2>
+
+        <p class="login-subtitle">
+          Sign in to continue your Eventure journey.
+        </p>
+
+
+        <form id="loginForm" novalidate>
+
+          <div class="form-group">
+
+            <label for="email">
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <div class="password-label">
+
+              <label for="password">
+                Password
+              </label>
+
+              <a href="/forgot-password">
+                Forgot Password?
+              </a>
+
+            </div>
+
+
+            <div class="password-wrapper">
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="password"
+                aria-label="Show password"
+              >
+                👁
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="remember-section">
+
+            <label for="rememberMe">
+
+              <input
+                type="checkbox"
+                id="rememberMe"
+              />
+
+              <span>
+                Remember me
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="login-button"
+          >
+            Sign In →
+          </button>
+
+        </form>
+
+
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+
+        <button
+          type="button"
+          class="google-btn"
+          id="googleAuthBtn"
+        >
+
+          <span class="google-icon">
+            G
+          </span>
+
+          Continue with Google
+
+        </button>
+
+
+        <p class="register-text">
+
+          Don't have an account?
+
+          <a href="/register">
+            Sign Up
+          </a>
+
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <%- include("../partials/footer") %>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/auth/login.js"></script>
+
+</body>
+
+</html>

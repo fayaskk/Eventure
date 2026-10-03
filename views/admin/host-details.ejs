@@ -1,0 +1,426 @@
+<%- include("../partials/head", { title: "Host Details | Eventure Admin" }) %>
+
+<link rel="stylesheet" href="/css/admin/users.css">
+<link rel="stylesheet" href="/css/admin/host-details.css">
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+<body>
+
+  <div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "host-details" }) %>
+
+    <main class="admin-main">
+
+      <header class="page-header">
+
+        <div>
+
+          <p class="section-label">
+            HOST MANAGEMENT
+          </p>
+
+          <h1>
+            Host Details
+          </h1>
+
+          <p>
+            View and manage Eventure host information.
+          </p>
+
+        </div>
+
+        <a href="/admin/hosts" class="back-btn">
+          ← Back to Hosts
+        </a>
+
+      </header>
+
+      <section id="hostDetailsContainer" class="host-details-container">
+
+        <div id="loadingState" class="state-card">
+
+          <div class="spinner"></div>
+
+          <p>
+            Loading host details...
+          </p>
+
+        </div>
+
+        <div id="errorState" class="state-card error-state" style="display: none;">
+
+          <h2>
+            Unable to load host
+          </h2>
+
+          <p id="errorMessage"></p>
+
+          <a href="/admin/hosts" class="back-btn">
+            ← Back to Hosts
+          </a>
+
+        </div>
+
+        <div id="hostContent" style="display: none;">
+
+          <section class="host-summary-card">
+
+            <div class="host-summary-content">
+
+              <div class="host-avatar">
+                <span id="hostInitial">H</span>
+              </div>
+
+              <div>
+
+                <p class="section-label">
+                  HOST DETAILS
+                </p>
+
+                <h2 id="hostName">
+                  -
+                </h2>
+
+                <p id="hostEmail">
+                  -
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="host-summary-action">
+
+              <span id="statusBadge" class="status-badge status-active">
+                Active
+              </span>
+
+              <button type="button" id="blockHostBtn" class="danger-btn">
+                Block Host
+              </button>
+
+            </div>
+
+          </section>
+
+          <section class="information-card">
+
+            <div class="card-header">
+
+              <h2>
+                Organization Information
+              </h2>
+
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Organization Name
+                </span>
+
+                <strong id="organizationName">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Organization Type
+                </span>
+
+                <strong id="organizationType">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Website
+                </span>
+
+                <strong id="website">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Verification
+                </span>
+
+                <strong id="verificationStatus">
+                  -
+                </strong>
+
+              </div>
+
+            </div>
+
+            <div class="description-block">
+
+              <span class="detail-label">
+                Description
+              </span>
+
+              <p id="description">
+                -
+              </p>
+
+            </div>
+
+          </section>
+
+          <section class="information-card">
+
+            <div class="card-header">
+
+              <h2>
+                Contact Information
+              </h2>
+
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Primary Contact
+                </span>
+
+                <strong id="primaryContact">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Email
+                </span>
+
+                <strong id="contactEmail">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Phone Number
+                </span>
+
+                <strong id="phoneNumber">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Office Address
+                </span>
+
+                <strong id="officeAddress">
+                  -
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <section class="information-card">
+
+            <div class="card-header">
+
+              <h2>
+                Bank Information
+              </h2>
+
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Account Name
+                </span>
+
+                <strong id="bankAccountName">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Account Number
+                </span>
+
+                <strong id="bankAccountNumber">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  IFSC Code
+                </span>
+
+                <strong id="ifscCode">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Bank Name
+                </span>
+
+                <strong id="bankName">
+                  -
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <section class="information-card">
+
+            <div class="card-header">
+
+              <h2>
+                Account Information
+              </h2>
+
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Account Status
+                </span>
+
+                <strong id="accountStatus">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Email Verification
+                </span>
+
+                <strong id="emailVerification">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Role
+                </span>
+
+                <strong id="hostRole">
+                  -
+                </strong>
+
+              </div>
+
+              <div class="detail-item">
+
+                <span class="detail-label">
+                  Joined
+                </span>
+
+                <strong id="joinedDate">
+                  -
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </section>
+
+      <p id="pageMessage" class="page-message"></p>
+
+    </main>
+
+  </div>
+
+  <div id="actionModal" class="modal-overlay" style="display: none;">
+
+    <div class="action-modal">
+
+      <button id="closeActionModal" class="modal-close" type="button">
+        ×
+      </button>
+
+      <div id="modalIcon" class="modal-icon">
+        !
+      </div>
+
+      <h2 id="modalTitle">
+        Block Host
+      </h2>
+
+      <p id="modalDescription">
+        Are you sure you want to block this host?
+      </p>
+
+      <div class="modal-actions">
+
+        <button id="cancelActionBtn" class="modal-cancel-btn" type="button">
+          Cancel
+        </button>
+
+        <button id="confirmActionBtn" class="modal-confirm-btn" type="button">
+          Confirm
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/js/admin/admin-auth.js"></script>
+  <script src="/js/admin/host-details.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,249 @@
+<%- include("../partials/head", { title: "Hosts | Eventure Admin" }) %>
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/css/admin/hosts.css">
+  <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+
+
+
+<body>
+
+  <div class="admin-layout">
+
+<%- include("../partials/admin-sidebar", { activePage: "hosts" }) %>
+
+    <main class="main-content">
+
+
+      <header class="page-header">
+
+        <div>
+
+          <div class="eyebrow">
+            HOST MANAGEMENT
+          </div>
+
+          <h1>
+            Hosts
+          </h1>
+
+          <p>
+            View, search and manage approved Eventure hosts.
+          </p>
+
+        </div>
+
+      </header>
+
+
+
+      <section class="filter-card">
+
+
+        <div class="search-wrapper">
+
+          <label for="search">
+            Search
+          </label>
+
+          <input type="text" id="search" placeholder="Search by organization...">
+
+        </div>
+
+
+        <div class="filter-wrapper">
+
+          <label for="blockedFilter">
+            Account Status
+          </label>
+
+          <select id="blockedFilter">
+
+            <option value="">
+              All Hosts
+            </option>
+
+            <option value="false">
+              Active
+            </option>
+
+            <option value="true">
+              Blocked
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-wrapper">
+
+          <label for="verifiedFilter">
+            Verification
+          </label>
+
+          <select id="verifiedFilter">
+
+            <option value="">
+              All
+            </option>
+
+            <option value="true">
+              Verified
+            </option>
+
+            <option value="false">
+              Unverified
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button type="button" id="searchBtn" class="primary-btn">
+          Search
+        </button>
+
+
+        <button type="button" id="clearBtn" class="secondary-btn">
+          Clear
+        </button>
+
+
+      </section>
+
+
+
+      <section class="hosts-card">
+
+
+        <div class="card-header">
+
+          <div>
+
+            <h2>
+              All Hosts
+            </h2>
+
+            <p id="resultCount">
+              Loading hosts...
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Host
+                </th>
+
+                <th>
+                  Organization
+                </th>
+
+                <th>
+                  Organization Type
+                </th>
+
+                <th>
+                  Verification
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Joined
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="hostTable">
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+
+          <div>
+            ♟
+          </div>
+
+          <h3>
+            No hosts found
+          </h3>
+
+          <p>
+            Try changing your search or filters.
+          </p>
+
+        </div>
+
+
+
+        <div class="pagination">
+
+          <button type="button" id="previousBtn" class="page-btn">
+            ← Previous
+          </button>
+
+
+          <span id="pageInfo">
+            Page 1
+          </span>
+
+
+          <button type="button" id="nextBtn" class="page-btn">
+            Next →
+          </button>
+
+        </div>
+
+
+      </section>
+
+
+      <p id="pageMessage" class="page-message"></p>
+
+
+    </main>
+
+  </div>
+
+
+  <!-- ADMIN AUTH MUST LOAD FIRST -->
+
+  <script src="/js/admin/admin-auth.js"></script>
+
+  <script src="/js/admin/hosts.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+<%- include("../partials/head", { title: "Edit Host Profile | Eventure" }) %>
+
+<link rel="stylesheet" href="/css/host/profile.css">
+
+<body>
+
+<body>
+
+<div class="host-layout">
+
+    <%- include("../partials/sidebar", { activePage: "host-profile" }) %>
+
+    <main class="host-main">
+
+        <header class="host-header">
+
+            <div>
+
+                <p class="section-label">
+                    HOST SETTINGS
+                </p>
+
+                <h1>
+                    Edit Host Profile
+                </h1>
+
+                <p>
+                    Update your organization, contact and payment information.
+                </p>
+
+            </div>
+
+            <a
+                href="/host/profile"
+                class="secondary-btn"
+            >
+                ← Back to Profile
+            </a>
+
+        </header>
+
+
+        <div id="editMessage" class="profile-message"></div>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Organization Details</h2>
+
+                    <p>
+                        Information about your organization.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="organizationForm" novalidate>
+
+                <div class="details-grid">
+
+                    <div class="form-group">
+
+                        <label for="organizationName">
+                            Organization Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="organizationName"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="organizationType">
+                            Organization Type
+                        </label>
+
+                        <select
+                            id="organizationType"
+                            required
+                        >
+
+                            <option value="">
+                                Select type
+                            </option>
+
+                            <option value="Event Management">
+                                Event Management
+                            </option>
+
+                            <option value="Educational Institution">
+                                Educational Institution
+                            </option>
+
+                            <option value="Sports Organization">
+                                Sports Organization
+                            </option>
+
+                            <option value="Company">
+                                Company
+                            </option>
+
+                            <option value="Community">
+                                Community
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group detail-full">
+
+                        <label for="website">
+                            Website
+                        </label>
+
+                        <input
+                            type="url"
+                            id="website"
+                            placeholder="https://example.com"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group detail-full">
+
+                        <label for="description">
+                            Organization Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            rows="5"
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <button
+                        type="submit"
+                        id="saveOrganizationBtn"
+                        class="primary-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Organization Contact</h2>
+
+                    <p>
+                        Primary contact information for your organization.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="contactForm" novalidate>
+
+                <div class="details-grid">
+
+                    <div class="form-group">
+
+                        <label for="primaryContactName">
+                            Primary Contact Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="primaryContactName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contactEmail">
+                            Organization Contact Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="contactEmail"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="phoneNumber">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phoneNumber"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group detail-full">
+
+                        <label for="officeAddress">
+                            Office Address
+                        </label>
+
+                        <textarea
+                            id="officeAddress"
+                            rows="4"
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <button
+                        type="submit"
+                        id="saveContactBtn"
+                        class="primary-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Bank Details</h2>
+
+                    <p>
+                        Bank information used for event-related payments.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="bankForm" novalidate>
+
+                <div class="details-grid">
+
+                    <div class="form-group">
+
+                        <label for="bankName">
+                            Bank Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bankName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="bankAccountName">
+                            Account Holder Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bankAccountName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="bankAccountNumber">
+                            Account Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bankAccountNumber"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="ifscCode">
+                            IFSC Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="ifscCode"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <button
+                        type="submit"
+                        id="saveBankBtn"
+                        class="primary-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="/js/auth-guard.js"></script>
+<script src="/js/common/sidebar.js"></script>
+<script src="/js/host/host-auth.js"></script>
+<script src="/js/host/profile-edit.js"></script>
+
+</body>
+
+</html>

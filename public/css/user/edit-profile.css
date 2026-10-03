@@ -1,0 +1,318 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+
+  margin: 0;
+
+  background: #f7f7f7;
+
+  color: #111;
+
+  font-family: Arial, sans-serif;
+
+}
+
+.edit-profile-page {
+
+  width: min(760px, 90%);
+
+  margin: 0 auto;
+
+  padding: 70px 0 100px;
+
+}
+
+
+/* HEADER */
+
+.edit-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 30px;
+
+  margin-bottom: 50px;
+
+}
+
+.eyebrow {
+
+  margin: 0 0 12px;
+
+  color: #6355e7;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+}
+
+.edit-header h1 {
+
+  margin: 0 0 12px;
+
+  color: #111;
+
+  font-size: 42px;
+
+}
+
+.edit-header p:not(.eyebrow) {
+
+  margin: 0;
+
+  color: #777;
+
+  line-height: 1.6;
+
+}
+
+.back-btn {
+
+  padding: 12px 18px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  color: #111;
+
+  background: #ffffff;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+}
+
+.back-btn:hover {
+
+  border-color: #6355e7;
+
+  background: #fafafa;
+
+}
+
+
+/* CARDS */
+
+.settings-card {
+
+  margin-bottom: 25px;
+
+  padding: 32px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.04);
+
+}
+
+.card-heading {
+
+  margin-bottom: 28px;
+
+}
+
+.card-heading h2 {
+
+  margin: 0 0 8px;
+
+  color: #111;
+
+  font-size: 22px;
+
+}
+
+.card-heading p {
+
+  margin: 0;
+
+  color: #777;
+
+  font-size: 15px;
+
+}
+
+
+/* FORM */
+
+.form-group {
+
+  margin-bottom: 22px;
+
+}
+
+.form-group label {
+
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #333;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+}
+
+.form-group input,
+.form-group select {
+
+  width: 100%;
+
+  padding: 14px 15px;
+
+  border: 1px solid #d7d7d7;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #111;
+
+  font-size: 15px;
+
+}
+
+.form-group input:focus,
+.form-group select:focus {
+
+  border-color: #6355e7;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 85, 231, 0.08);
+
+}
+
+.primary-btn,
+.secondary-btn {
+
+  border: none;
+
+  border-radius: 9px;
+
+  padding: 14px 22px;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+}
+
+.primary-btn {
+
+  background: linear-gradient(
+    135deg,
+    #6956e8,
+    #5744d3
+  );
+
+}
+
+.primary-btn:hover {
+
+  filter: brightness(1.06);
+
+}
+
+.secondary-btn {
+
+  background: #f0f0f0;
+
+  color: #111;
+
+  border: 1px solid #ddd;
+
+}
+
+.secondary-btn:hover {
+
+  background: #e7e7e7;
+
+}
+
+.password-help {
+
+  margin: -5px 0 22px;
+
+  color: #777;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+.form-message {
+
+  min-height: 20px;
+
+  margin: 15px 0 0;
+
+  font-size: 14px;
+
+}
+
+.hidden {
+
+  display: none;
+
+}
+
+.otp-section {
+
+  margin-top: 25px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #eee;
+
+}
+
+
+@media (max-width: 600px) {
+
+  .edit-header {
+
+    flex-direction: column;
+
+  }
+
+  .edit-header h1 {
+
+    font-size: 34px;
+
+  }
+
+  .settings-card {
+
+    padding: 24px;
+
+  }
+
+}

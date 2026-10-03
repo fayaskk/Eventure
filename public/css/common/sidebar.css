@@ -1,0 +1,519 @@
+:root {
+  --sidebar-width: 270px;
+  --sidebar-bg: #0d1124;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-text: #aeb6d0;
+  --sidebar-text-active: #ffffff;
+  --sidebar-primary: #6355e7;
+  --sidebar-primary-light: #7568f0;
+  --sidebar-hover: rgba(255, 255, 255, 0.055);
+  --sidebar-section: #69728d;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 26px 18px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(99, 85, 231, 0.12),
+      transparent 35%
+    ),
+    var(--sidebar-bg);
+
+  border-right: 1px solid var(--sidebar-border);
+
+  color: var(--sidebar-text);
+
+  transition: transform 0.3s ease;
+}
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.sidebar-brand {
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 10px;
+  margin-bottom: 26px;
+
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  text-decoration: none;
+  color: #ffffff;
+
+  min-width: 0;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--sidebar-primary),
+      var(--sidebar-primary-light)
+    );
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 25px rgba(99, 85, 231, 0.3);
+}
+
+.logo-text {
+  font-size: 21px;
+  font-weight: 750;
+
+  letter-spacing: -0.4px;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.sidebar-nav {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+
+  scrollbar-width: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+/* =========================================================
+   NAV LINK
+   ========================================================= */
+
+.nav-link {
+  position: relative;
+
+  width: 100%;
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 13px;
+
+  color: var(--sidebar-text);
+
+  text-decoration: none;
+
+  font-size: 14.5px;
+  font-weight: 550;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+
+  background: var(--sidebar-hover);
+
+  transform: translateX(2px);
+}
+
+.nav-link.active {
+  color: var(--sidebar-text-active);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--sidebar-primary),
+      #5749d2
+    );
+
+  box-shadow:
+    0 8px 24px rgba(99, 85, 231, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.nav-link.active::before {
+  content: "";
+
+  position: absolute;
+
+  left: -18px;
+
+  width: 3px;
+  height: 24px;
+
+  border-radius: 0 4px 4px 0;
+
+  background: #9b91ff;
+}
+
+/* =========================================================
+   NAV ICON
+   ========================================================= */
+
+.nav-icon {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+  line-height: 1;
+
+  flex-shrink: 0;
+}
+
+.nav-text {
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   HOST NAVIGATION
+   ========================================================= */
+
+.host-navigation {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-top: 25px;
+  padding-top: 20px;
+
+  border-top: 1px solid var(--sidebar-border);
+}
+
+/*
+   IMPORTANT:
+   The host navigation should always be visible.
+*/
+
+.host-navigation.visible {
+  display: flex;
+}
+
+/* =========================================================
+   HOST SECTION TITLE
+   ========================================================= */
+
+.nav-section-title {
+  padding: 0 15px 8px;
+
+  color: var(--sidebar-section);
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 1.8px;
+}
+
+/* =========================================================
+   APPLICATION STATUS
+   ========================================================= */
+
+.nav-status {
+  margin-left: auto;
+
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  flex-shrink: 0;
+}
+
+.nav-status.pending {
+  color: #fbbf24;
+
+  background:
+    rgba(251, 191, 36, 0.12);
+}
+
+.nav-status.rejected {
+  color: #fb7185;
+
+  background:
+    rgba(251, 113, 133, 0.12);
+}
+
+/* =========================================================
+   SIDEBAR BOTTOM
+   ========================================================= */
+
+.sidebar-bottom {
+  padding-top: 18px;
+  margin-top: 18px;
+
+  border-top: 1px solid var(--sidebar-border);
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.logout-btn {
+  width: 100%;
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 0 15px;
+
+  border: 0;
+  border-radius: 13px;
+
+  background: transparent;
+
+  color: #aeb6d0;
+
+  font: inherit;
+
+  font-size: 14.5px;
+  font-weight: 550;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background:
+    rgba(239, 68, 68, 0.1);
+
+  color: #ff8c8c;
+}
+
+/* =========================================================
+   MOBILE CONTROLS
+   ========================================================= */
+
+.mobile-menu-btn,
+.sidebar-overlay,
+.sidebar-close {
+  display: none;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: min(280px, 82vw);
+
+    transform: translateX(-100%);
+
+    box-shadow:
+      20px 0 50px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 0;
+    border-radius: 11px;
+
+    background:
+      rgba(255, 255, 255, 0.06);
+
+    color: #ffffff;
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+  }
+
+  .sidebar-overlay {
+    display: block;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    border: 0;
+
+    background:
+      rgba(5, 8, 20, 0.65);
+
+    backdrop-filter: blur(4px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .sidebar-overlay.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+
+    position: fixed;
+
+    top: 16px;
+    left: 16px;
+
+    z-index: 1100;
+
+    width: 44px;
+    height: 44px;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+      1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 12px;
+
+    background:
+      rgba(13, 17, 36, 0.94);
+
+    color: #ffffff;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: min(300px, 88vw);
+  }
+
+  .sidebar-brand {
+    padding: 0 8px;
+  }
+
+  .nav-link {
+    min-height: 52px;
+
+    padding: 0 14px;
+  }
+}

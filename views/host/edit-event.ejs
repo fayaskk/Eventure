@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head", { title: "Eventure | Edit Event" }) %>
+  <link rel="stylesheet" href="/css/host/create-event.css">
+</head>
+
+<body>
+
+  <main class="host-main">
+
+    <header class="host-header">
+      <div>
+        <p class="section-label">HOST PANEL</p>
+        <h1>Edit Event</h1>
+        <p>Update your event details.</p>
+      </div>
+    </header>
+
+    <form id="editEventForm">
+
+      <section class="form-section">
+
+        <h2>Basic Information</h2>
+
+        <div class="form-group">
+          <label for="eventName">Event Name</label>
+          <input
+            type="text"
+            id="eventName"
+            name="eventName"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            required
+          >
+            <option value="">Select Category</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="banner">Banner</label>
+          <input
+            type="text"
+            id="banner"
+            name="banner"
+            placeholder="Banner image URL"
+            required
+          >
+        </div>
+
+      </section>
+
+      <section class="form-section">
+
+        <h2>Location</h2>
+
+        <div class="form-group">
+          <label for="venue">Venue</label>
+          <input
+            type="text"
+            id="venue"
+            name="venue"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="pincode">Pincode</label>
+          <input
+            type="text"
+            id="pincode"
+            name="pincode"
+            required
+          >
+        </div>
+
+      </section>
+
+      <section class="form-section">
+
+        <h2>Schedule</h2>
+
+        <div class="form-group">
+          <label for="eventDate">Event Date</label>
+          <input
+            type="date"
+            id="eventDate"
+            name="eventDate"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="startTime">Start Time</label>
+          <input
+            type="time"
+            id="startTime"
+            name="startTime"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="endTime">End Time</label>
+          <input
+            type="time"
+            id="endTime"
+            name="endTime"
+            required
+          >
+        </div>
+
+      </section>
+
+      <section class="form-section">
+
+        <h2>Tickets</h2>
+
+        <div id="ticketsContainer"></div>
+
+        <button
+          type="button"
+          id="addTicketBtn"
+        >
+          + Add Ticket Type
+        </button>
+
+      </section>
+
+      <button
+        type="submit"
+        id="updateEventBtn"
+      >
+        Update Event
+      </button>
+
+      <p id="formMessage"></p>
+
+    </form>
+
+  </main>
+
+  <script src="/js/host/edit-event.js"></script>
+
+</body>
+
+</html>

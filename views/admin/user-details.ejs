@@ -1,0 +1,282 @@
+<%- include("../partials/head", { title: "User Details | Eventure Admin" }) %>
+
+<link rel="stylesheet" href="/css/admin/users.css">
+<link rel="stylesheet" href="/css/admin/user-details.css">
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+<body>
+
+<div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "user-details" }) %>
+
+    <main class="admin-main">
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="section-label">
+                    USER MANAGEMENT
+                </p>
+
+                <h1>
+                    User Details
+                </h1>
+
+                <p>
+                    View and manage registered Eventure user information.
+                </p>
+
+            </div>
+
+            <a href="/admin/users" class="back-btn">
+                ← Back to Users
+            </a>
+
+        </header>
+
+
+        <section class="user-details-card">
+
+            <div id="loadingState" class="state-card">
+
+                <div class="spinner"></div>
+
+                <p>Loading user details...</p>
+
+            </div>
+
+
+            <div id="errorState" class="error-state" style="display: none;">
+
+                <h2>
+                    Unable to load user
+                </h2>
+
+                <p id="errorMessage"></p>
+
+                <a href="/admin/users" class="back-btn">
+                    ← Back to Users
+                </a>
+
+            </div>
+
+
+            <div id="userContent" style="display: none;">
+
+                <div class="user-summary-card">
+
+                    <div class="user-summary-left">
+
+                        <div class="large-avatar" id="userInitial">
+                            U
+                        </div>
+
+                        <div>
+
+                            <p class="section-label">
+                                USER DETAILS
+                            </p>
+
+                            <h2 id="userName">
+                                -
+                            </h2>
+
+                            <p id="userEmail">
+                                -
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="user-summary-right">
+
+                        <span id="statusBadge" class="badge active">
+                            Active
+                        </span>
+
+                        <button
+                            id="blockUserBtn"
+                            type="button"
+                            class="danger-btn"
+                        >
+                            Block User
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="information-card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Account information and verification details.
+                        </p>
+
+                    </div>
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Email
+                            </span>
+
+                            <strong id="detailEmail">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Role
+                            </span>
+
+                            <strong id="detailRole">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Verification
+                            </span>
+
+                            <strong id="detailVerification">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Account Status
+                            </span>
+
+                            <strong id="detailStatus">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Referral Code
+                            </span>
+
+                            <strong id="detailReferral">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Joined
+                            </span>
+
+                            <strong id="detailJoined">
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <p id="pageMessage" class="page-message"></p>
+
+    </main>
+
+</div>
+
+
+<div
+    id="actionModal"
+    class="modal-overlay"
+    style="display: none;"
+>
+
+    <div class="action-modal">
+
+        <button
+            id="closeActionModal"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div id="modalIcon" class="modal-icon">
+            !
+        </div>
+
+        <h2 id="modalTitle">
+            Block User
+        </h2>
+
+        <p id="modalDescription">
+            Are you sure you want to block this user?
+        </p>
+
+        <div class="modal-actions">
+
+            <button
+                id="cancelActionBtn"
+                type="button"
+                class="modal-cancel-btn"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="confirmActionBtn"
+                type="button"
+                class="modal-confirm-btn"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="/js/admin/admin-auth.js"></script>
+<script src="/js/admin/user-details.js"></script>
+
+</body>
+
+</html>

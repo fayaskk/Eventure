@@ -1,12 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Eventure</title>
+  <%- include("partials/head", {
+    title: "Eventure | Discover Events"
+  }) %>
+
+  <link rel="stylesheet" href="/css/home.css" />
 </head>
+
 <body>
 
-    <h1>Welcome to Eventure</h1>
-    <p>Event management platform</p>
+  <nav class="home-navbar">
+
+    <div class="home-logo">
+      <a href="/">
+        Eventure
+      </a>
+    </div>
+
+    <div class="home-nav-links">
+      <a href="/">
+        Home
+      </a>
+
+      <a href="/events">
+        Events
+      </a>
+
+      <a href="/about">
+        About
+      </a>
+    </div>
+
+    <div class="home-nav-actions">
+      <a
+        href="/login"
+        class="signin-link"
+      >
+        Sign In
+      </a>
+
+      <a
+        href="/register"
+        class="create-account-btn"
+      >
+        Create Account
+      </a>
+    </div>
+
+  </nav>
+
+
+  <main class="home-main">
+
+    <section class="home-hero">
+
+      <div class="hero-content">
+
+        <p class="hero-tagline">
+          DISCOVER • EXPERIENCE • REMEMBER
+        </p>
+
+        <h1>
+          Discover Events<br />
+          That Create<br />
+          <span>Memories.</span>
+        </h1>
+
+        <p class="hero-description">
+          Discover concerts, festivals, workshops, sports events
+          and unforgettable experiences near you.
+        </p>
+
+        <div class="hero-actions">
+
+          <a
+            href="/events"
+            class="explore-btn"
+          >
+            Explore Events →
+          </a>
+
+          <a
+            href="/register"
+            class="join-btn"
+          >
+            Join Eventure
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-visual">
+
+        <div class="event-visual-card visual-card-music">
+          <span class="event-icon">
+            🎵
+          </span>
+
+          <p>
+            Music Events
+          </p>
+        </div>
+
+        <div class="event-visual-card visual-card-workshop">
+          <span class="event-icon">
+            🎨
+          </span>
+
+          <p>
+            Creative Workshops
+          </p>
+        </div>
+
+        <div class="event-visual-card visual-card-sports">
+          <span class="event-icon">
+            ⚽
+          </span>
+
+          <p>
+            Sports Events
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="home-categories">
+
+      <div class="category-heading">
+
+        <p class="category-tagline">
+          EXPLORE
+        </p>
+
+        <h2>
+          Browse by Category
+        </h2>
+
+        <p class="category-description">
+          Find events that match your interests.
+        </p>
+
+      </div>
+
+
+      <div
+        id="category-container"
+        class="category-container"
+      >
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <%- include("partials/footer") %>
+
+
+  <script src="/js/auth-guard.js"></script>
+
+  <script>
+    redirectToDashboardIfLoggedIn();
+
+    window.addEventListener(
+      "pageshow",
+      () => {
+        redirectToDashboardIfLoggedIn();
+      }
+    );
+  </script>
+
+  <script src="/js/home.js"></script>
 
 </body>
 </html>

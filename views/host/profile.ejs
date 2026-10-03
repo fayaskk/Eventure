@@ -1,0 +1,462 @@
+<%- include("../partials/head", { title: "My Profile | Eventure" }) %>
+
+<link rel="stylesheet" href="/css/host/profile.css">
+
+<body>
+
+    <%- include("../partials/sidebar", { activePage: "host-profile" }) %>
+
+    <main class="host-main">
+
+        <header class="host-header">
+
+            <div>
+
+                <p class="section-label">
+                    ACCOUNT SETTINGS
+                </p>
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    View and manage your Eventure host account.
+                </p>
+
+            </div>
+
+            <a href="/host/profile/edit" class="primary-btn">
+                Edit Profile
+            </a>
+
+        </header>
+
+
+        <div id="profileMessage" class="profile-message"></div>
+
+
+        <section class="profile-card profile-hero">
+
+            <div class="profile-avatar">
+                <span id="profileInitial">H</span>
+            </div>
+
+            <div class="profile-hero-info">
+
+                <p class="profile-role">
+                    EVENT HOST
+                </p>
+
+                <h2 id="profileName">
+                    Loading...
+                </h2>
+
+                <p id="profileEmail">
+                    Loading...
+                </p>
+
+                <span class="role-badge">
+                    Host
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Account Information</h2>
+                    <p>Your Eventure account details.</p>
+                </div>
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">Name</span>
+                    <strong id="detailName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Email Address</span>
+                    <strong id="detailEmail">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Account Role</span>
+                    <strong>Event Host</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Organization Details</h2>
+                    <p>Information about your organization.</p>
+                </div>
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">Organization Name</span>
+                    <strong id="organizationName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Organization Type</span>
+                    <strong id="organizationType">-</strong>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <span class="detail-label">Website</span>
+                    <strong id="website">-</strong>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <span class="detail-label">Description</span>
+                    <strong id="description">-</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Contact Details</h2>
+                    <p>Primary contact information for your organization.</p>
+                </div>
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">Primary Contact Name</span>
+                    <strong id="primaryContactName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Contact Email</span>
+                    <strong id="contactEmail">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Phone Number</span>
+                    <strong id="phoneNumber">-</strong>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <span class="detail-label">Office Address</span>
+                    <strong id="officeAddress">-</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Bank Details</h2>
+                    <p>Bank information used for event-related payments.</p>
+                </div>
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">Bank Name</span>
+                    <strong id="bankName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Account Holder Name</span>
+                    <strong id="bankAccountName">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Account Number</span>
+                    <strong id="bankAccountNumber">-</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">IFSC Code</span>
+                    <strong id="ifscCode">-</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="profile-card security-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Security</h2>
+                    <p>Manage your password and email address.</p>
+                </div>
+
+            </div>
+
+
+            <div class="security-item">
+
+                <div>
+                    <h3>Password</h3>
+                    <p>Change your account password.</p>
+                </div>
+
+                <button
+                    type="button"
+                    id="changePasswordBtn"
+                    class="secondary-btn"
+                >
+                    Change Password
+                </button>
+
+            </div>
+
+
+            <div class="security-item">
+
+                <div>
+                    <h3>Email Address</h3>
+                    <p>Change the email address associated with your account.</p>
+                </div>
+
+                <button
+                    type="button"
+                    id="changeEmailBtn"
+                    class="secondary-btn"
+                >
+                    Change Email
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <div id="passwordModal" class="modal hidden">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <div>
+                        <p class="section-label">SECURITY</p>
+                        <h2>Change Password</h2>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="close-modal"
+                        data-close="passwordModal"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                    >
+
+                </div>
+
+
+                <p id="passwordMessage" class="modal-message"></p>
+
+
+                <button
+                    type="button"
+                    id="submitPasswordBtn"
+                    class="primary-btn"
+                >
+                    Update Password
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div id="emailModal" class="modal hidden">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <div>
+                        <p class="section-label">SECURITY</p>
+                        <h2>Change Email</h2>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="close-modal"
+                        data-close="emailModal"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div id="emailStepOne">
+
+                    <div class="form-group">
+
+                        <label for="newEmail">
+                            New Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="newEmail"
+                        >
+
+                    </div>
+
+
+                    <p id="emailMessage" class="modal-message"></p>
+
+
+                    <button
+                        type="button"
+                        id="requestEmailOtpBtn"
+                        class="primary-btn"
+                    >
+                        Send OTP
+                    </button>
+
+                </div>
+
+
+                <div id="emailStepTwo" class="hidden">
+
+                    <div class="form-group">
+
+                        <label for="emailOtp">
+                            Verification OTP
+                        </label>
+
+                        <input
+                            type="text"
+                            id="emailOtp"
+                            maxlength="6"
+                        >
+
+                    </div>
+
+
+                    <div class="resend-otp-container">
+
+                        <button
+                            type="button"
+                            id="resendEmailOtpBtn"
+                            class="secondary-btn"
+                            disabled
+                        >
+                            Resend OTP
+                        </button>
+
+                    </div>
+
+
+                    <p id="emailOtpMessage" class="modal-message"></p>
+
+
+                    <button
+                        type="button"
+                        id="verifyEmailOtpBtn"
+                        class="primary-btn"
+                    >
+                        Verify & Update Email
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/common/sidebar.js"></script>
+    <script src="/js/host/profile.js"></script>
+
+    <script>
+
+        if (!redirectToLoginIfNotLoggedIn()) {
+            protectDashboardHistory();
+        }
+
+    </script>
+
+</body>
+
+</html>

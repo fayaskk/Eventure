@@ -1,0 +1,244 @@
+.profile-card {
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.profile-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+    background: #eeeaff;
+    color: #5146d8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.profile-header h2 {
+    margin: 6px 0;
+    color: #172033;
+    font-size: 24px;
+}
+
+.profile-header p:last-child {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.profile-body {
+    padding: 28px 30px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+}
+
+.section-title h2 {
+    margin: 0 0 6px;
+    color: #172033;
+    font-size: 20px;
+}
+
+.section-title p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #172033;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d7dce5;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    color: #172033;
+    background: white;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #5146d8;
+    box-shadow: 0 0 0 3px rgba(81, 70, 216, 0.08);
+}
+
+.form-group input:disabled {
+    background: #f5f6f8;
+    cursor: not-allowed;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 7px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.form-group .field-error {
+    min-height: 16px;
+    margin-top: 6px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-group input:has(+ .field-error:not(:empty)) {
+    border-color: #ef4444;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.primary-btn,
+.secondary-btn,
+.success-btn {
+    min-width: 140px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-sizing: border-box;
+}
+
+.primary-btn {
+    border: none;
+    background: #5146d8;
+}
+
+.primary-btn:hover {
+    background: #4338b8;
+}
+
+.secondary-btn {
+    border: 1px solid #d7dce5;
+    background: #ffffff;
+    color: #172033;
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background: #f5f6f8;
+    border-color: #bfc6d2;
+}
+
+.success-btn {
+    border: none;
+    background: #16a34a;
+}
+
+.success-btn:hover {
+    background: #15803d;
+}
+
+.primary-btn:active,
+.secondary-btn:active,
+.success-btn:active {
+    transform: translateY(1px);
+}
+
+.primary-btn:disabled,
+.secondary-btn:disabled,
+.success-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.page-message {
+    margin: 0 0 20px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.page-message.success {
+    display: block;
+    background: #e7f7ef;
+    color: #087443;
+}
+
+.page-message.error {
+    display: block;
+    background: #fee8e8;
+    color: #c62828;
+}
+
+.otp-section {
+    margin-top: 5px;
+}
+
+#verifyOtpBtn {
+    background: #16a34a;
+}
+
+#verifyOtpBtn:hover {
+    background: #15803d;
+}
+
+#resendOtpBtn {
+    color: #26364d;
+}
+
+#resendOtpBtn:disabled {
+    color: #8b95a5;
+    background: #f5f6f8;
+    border-color: #e1e5ec;
+}
+
+@media (max-width: 700px) {
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-body {
+        padding: 24px 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .success-btn {
+        width: 100%;
+    }
+}

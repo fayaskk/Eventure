@@ -1,0 +1,361 @@
+<%- include("../partials/head", { title: "My Profile | Eventure Admin" }) %>
+
+<link rel="stylesheet" href="/css/admin/users.css">
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+<link rel="stylesheet" href="/css/admin/admin-profile.css">
+
+<body>
+
+  <div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "admin-profile" }) %>
+
+    <main class="admin-main">
+
+      <header class="page-header">
+
+        <div>
+
+          <p class="section-label">
+            ACCOUNT SETTINGS
+          </p>
+
+          <h1>
+            My Profile
+          </h1>
+
+          <p>
+            Manage your administrator account and security settings.
+          </p>
+
+        </div>
+
+      </header>
+
+      <div id="pageMessage" class="page-message"></div>
+
+      <section class="profile-card">
+
+        <div class="profile-header">
+
+          <div class="profile-avatar">
+
+            <span id="profileInitial">
+              A
+            </span>
+
+          </div>
+
+          <div>
+
+            <p class="section-label">
+              ADMINISTRATOR
+            </p>
+
+            <h2 id="profileName">
+              Loading...
+            </h2>
+
+            <p id="profileEmail">
+              Loading...
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="profile-body">
+
+          <div class="section-title">
+
+            <div>
+
+              <h2>
+                Personal Information
+              </h2>
+
+              <p>
+                Update your administrator name.
+              </p>
+
+            </div>
+
+          </div>
+
+          <form id="profileForm" novalidate>
+
+            <div class="form-group">
+
+              <label for="name">
+                Name
+              </label>
+
+              <input
+                type="text"
+                id="name"
+                autocomplete="name"
+                maxlength="50"
+              >
+
+              <small
+                id="nameError"
+                class="field-error"
+              ></small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="email">
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="email"
+                disabled
+              >
+
+              <small>
+                To change your email, use the email verification section below.
+              </small>
+
+            </div>
+
+            <div class="form-actions">
+
+              <button
+                type="submit"
+                id="saveProfileBtn"
+                class="primary-btn"
+              >
+                Save Changes
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </section>
+
+      <section class="profile-card">
+
+        <div class="profile-body">
+
+          <div class="section-title">
+
+            <div>
+
+              <h2>
+                Change Password
+              </h2>
+
+              <p>
+                Update your administrator account password.
+              </p>
+
+            </div>
+
+          </div>
+
+          <form id="passwordForm" novalidate>
+
+            <div class="form-group">
+
+              <label for="currentPassword">
+                Current Password
+              </label>
+
+              <input
+                type="password"
+                id="currentPassword"
+                autocomplete="current-password"
+              >
+
+              <small
+                id="currentPasswordError"
+                class="field-error"
+              ></small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="newPassword">
+                New Password
+              </label>
+
+              <input
+                type="password"
+                id="newPassword"
+                autocomplete="new-password"
+              >
+
+              <small>
+                Minimum 8 characters with uppercase, lowercase and number.
+              </small>
+
+              <small
+                id="newPasswordError"
+                class="field-error"
+              ></small>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="confirmPassword">
+                Confirm New Password
+              </label>
+
+              <input
+                type="password"
+                id="confirmPassword"
+                autocomplete="new-password"
+              >
+
+              <small
+                id="confirmPasswordError"
+                class="field-error"
+              ></small>
+
+            </div>
+
+            <div class="form-actions">
+
+              <button
+                type="submit"
+                id="changePasswordBtn"
+                class="primary-btn"
+              >
+                Change Password
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </section>
+
+      <section class="profile-card">
+
+        <div class="profile-body">
+
+          <div class="section-title">
+
+            <div>
+
+              <h2>
+                Change Email
+              </h2>
+
+              <p>
+                Verify your new email address using an OTP.
+              </p>
+
+            </div>
+
+          </div>
+
+          <form id="emailForm" novalidate>
+
+            <div class="form-group">
+
+              <label for="newEmail">
+                New Email
+              </label>
+
+              <input
+                type="email"
+                id="newEmail"
+                autocomplete="email"
+                maxlength="100"
+              >
+
+              <small
+                id="newEmailError"
+                class="field-error"
+              ></small>
+
+            </div>
+
+            <div
+              id="otpSection"
+              class="otp-section"
+              style="display: none;"
+            >
+
+              <div class="form-group">
+
+                <label for="emailOtp">
+                  Verification OTP
+                </label>
+
+                <input
+                  type="text"
+                  id="emailOtp"
+                  maxlength="6"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                  placeholder="Enter 6-digit OTP"
+                >
+
+                <small
+                  id="emailOtpError"
+                  class="field-error"
+                ></small>
+
+              </div>
+
+            </div>
+
+            <div class="form-actions">
+
+              <button
+                type="button"
+                id="requestOtpBtn"
+                class="primary-btn"
+              >
+                Send OTP
+              </button>
+
+              <button
+                type="button"
+                id="resendOtpBtn"
+                class="secondary-btn"
+                style="display: none;"
+                disabled
+              >
+                Resend OTP (60s)
+              </button>
+
+              <button
+                type="button"
+                id="verifyOtpBtn"
+                class="success-btn"
+                style="display: none;"
+              >
+                Verify Email
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/js/admin/admin-auth.js"></script>
+  <script src="/js/admin/admin-profile.js"></script>
+
+</body>
+</html>

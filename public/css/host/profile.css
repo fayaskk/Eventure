@@ -1,0 +1,380 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f6f7fb;
+  color: #1f2937;
+  font-family: Arial, sans-serif;
+}
+
+.host-main {
+    margin-left: 270px;
+    min-height: 100vh;
+    padding: 44px;
+    max-width: 1500px;
+}
+
+.host-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.section-label {
+    margin: 0 0 9px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #6355e7;
+}
+
+.host-header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+
+.host-header p:last-child {
+    margin: 8px 0 0;
+    color: #777;
+    font-size: 16px;
+}
+
+.profile-message {
+    min-height: 22px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-message.success {
+    color: #198754;
+}
+
+.profile-message.error {
+    color: #dc3545;
+}
+
+.profile-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 22px;
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+}
+
+.profile-avatar {
+    width: 84px;
+    height: 84px;
+    min-width: 84px;
+    border-radius: 50%;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.profile-role {
+    margin: 0 0 8px;
+    color: #6355e7;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.profile-hero-info h2 {
+    margin: 0 0 6px;
+    font-size: 27px;
+}
+
+.profile-hero-info > p:not(.profile-role) {
+    margin: 0 0 12px;
+    color: #777;
+    font-size: 15px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-header {
+    margin-bottom: 24px;
+}
+
+.card-header h2 {
+    margin: 0 0 6px;
+    font-size: 21px;
+}
+
+.card-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 30px;
+}
+
+.detail-item {
+    min-width: 0;
+    padding: 18px 0;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-full {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    color: #777;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.detail-item strong {
+    color: #111;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.security-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+}
+
+.security-item h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+}
+
+.security-item p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.primary-btn,
+.secondary-btn {
+    border: 0;
+    border-radius: 8px;
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-btn {
+    background: #111;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #292929;
+}
+
+.secondary-btn {
+    background: #f0f0f0;
+    color: #111;
+}
+
+.secondary-btn:hover {
+    background: #e3e3e3;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.close-modal {
+    border: 0;
+    background: transparent;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    color: #555;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+    padding: 13px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    background: white;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #6355e7;
+}
+
+.modal-message {
+    min-height: 20px;
+    font-size: 14px;
+    margin: 5px 0 15px;
+}
+
+.modal-message.success {
+    color: #198754;
+}
+
+.modal-message.error {
+    color: #dc3545;
+}
+
+.hidden {
+    display: none !important;
+}
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+.profile-actions .primary-btn {
+    min-width: 130px;
+}
+
+@media (max-width: 650px) {
+    .profile-actions {
+        justify-content: stretch;
+    }
+
+    .profile-actions .primary-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .host-main {
+        padding: 35px;
+    }
+}
+
+@media (max-width: 900px) {
+    .host-main {
+        margin-left: 0;
+        padding: 30px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-full {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .host-main {
+        padding: 22px;
+    }
+
+    .host-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .host-header h1 {
+        font-size: 30px;
+    }
+
+    .profile-hero {
+        align-items: flex-start;
+    }
+
+    .security-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

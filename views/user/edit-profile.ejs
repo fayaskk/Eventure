@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <%- include("../partials/head", { title: "Edit Profile | Eventure" }) %>
+
+  <link
+    rel="stylesheet"
+    href="/css/user/edit-profile.css"
+  />
+
+</head>
+
+<body>
+
+  <%- include("../partials/sidebar", { activePage: "profile" }) %>
+
+  <main class="edit-profile-page">
+
+    <div class="edit-header">
+
+      <div>
+
+        <p class="eyebrow">
+          ACCOUNT SETTINGS
+        </p>
+
+        <h1>
+          Edit Profile
+        </h1>
+
+        <p>
+          Update your personal information and account security.
+        </p>
+
+      </div>
+
+      <a
+        href="/profile"
+        class="back-btn"
+      >
+        Back to Profile
+      </a>
+
+    </div>
+
+    <section class="settings-card">
+
+      <div class="card-heading">
+
+        <h2>
+          Profile Information
+        </h2>
+
+        <p>
+          Update your personal information.
+        </p>
+
+      </div>
+
+      <form
+        id="profileForm"
+        novalidate
+      >
+
+        <div class="form-group">
+
+          <label for="name">
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="language">
+            Preferred Language
+          </label>
+
+          <select
+            id="language"
+            name="language"
+          >
+
+            <option value="English">
+              English
+            </option>
+
+            <option value="Malayalam">
+              Malayalam
+            </option>
+
+            <option value="Hindi">
+              Hindi
+            </option>
+
+          </select>
+
+        </div>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Save Changes
+        </button>
+
+        <p
+          id="profileMessage"
+          class="form-message"
+        ></p>
+
+      </form>
+
+    </section>
+
+    <section class="settings-card">
+
+      <div class="card-heading">
+
+        <h2>
+          Change Email
+        </h2>
+
+        <p>
+          A verification code will be sent to your new email address.
+        </p>
+
+      </div>
+
+      <form
+        id="emailRequestForm"
+        novalidate
+      >
+
+        <div class="form-group">
+
+          <label for="newEmail">
+            New Email Address
+          </label>
+
+          <input
+            type="email"
+            id="newEmail"
+            required
+          />
+
+        </div>
+
+        <button
+          type="submit"
+          class="secondary-btn"
+        >
+          Send Verification Code
+        </button>
+
+      </form>
+
+      <form
+        id="emailVerifyForm"
+        class="otp-section hidden"
+        novalidate
+      >
+
+        <div class="form-group">
+
+          <label for="emailOtp">
+            Enter OTP
+          </label>
+
+          <input
+            type="text"
+            id="emailOtp"
+            maxlength="6"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            required
+          />
+
+          <div class="resend-otp-container">
+
+            <button
+              type="button"
+              id="resendEmailOtpBtn"
+              class="secondary-btn"
+              disabled
+            >
+              Resend OTP in
+              <span id="emailOtpTimer">60</span>s
+            </button>
+
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Verify & Change Email
+        </button>
+
+      </form>
+
+      <p
+        id="emailMessage"
+        class="form-message"
+      ></p>
+
+    </section>
+
+    <section
+      class="settings-card"
+      id="passwordSection"
+    >
+
+      <div class="card-heading">
+
+        <h2>
+          Change Password
+        </h2>
+
+        <p>
+          Use a strong password to protect your account.
+        </p>
+
+      </div>
+
+      <form
+        id="passwordForm"
+        novalidate
+      >
+
+        <div class="form-group">
+
+          <label for="currentPassword">
+            Current Password
+          </label>
+
+          <input
+            type="password"
+            id="currentPassword"
+            required
+            autocomplete="current-password"
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="newPassword">
+            New Password
+          </label>
+
+          <input
+            type="password"
+            id="newPassword"
+            required
+            autocomplete="new-password"
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirm New Password
+          </label>
+
+          <input
+            type="password"
+            id="confirmPassword"
+            required
+            autocomplete="new-password"
+          />
+
+        </div>
+
+        <p class="password-help">
+          Password must contain at least 8 characters,
+          including uppercase, lowercase and a number.
+        </p>
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Change Password
+        </button>
+
+        <p
+          id="passwordMessage"
+          class="form-message"
+        ></p>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/common/sidebar.js"></script>
+  <script src="/js/user/edit-profile.js"></script>
+
+  <script>
+    redirectToLoginIfNotLoggedIn();
+  </script>
+
+</body>
+
+</html>

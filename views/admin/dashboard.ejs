@@ -1,0 +1,446 @@
+<%- include("../partials/head", { title: "Admin Dashboard | Eventure Admin" }) %>
+
+<link rel="stylesheet" href="/css/admin/dashboard.css">
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+<body>
+
+  <div class="admin-layout">
+
+    <%- include("../partials/admin-sidebar", { activePage: "dashboard" }) %>
+    
+    <main class="admin-main">
+
+      <header class="admin-header">
+
+        <div>
+          <p class="section-label">
+            ADMIN PANEL
+          </p>
+
+          <h1>
+            Admin Dashboard
+          </h1>
+
+          <p>
+            Platform overview and key metrics.
+          </p>
+        </div>
+
+      </header>
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div>
+            <span>Total Users</span>
+            <strong id="totalUsers">-</strong>
+            <small>Platform users</small>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🛡️</div>
+          <div>
+            <span>Verified Hosts</span>
+            <strong id="verifiedHosts">-</strong>
+            <small>Approved hosts</small>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div>
+            <span>Active Events</span>
+            <strong id="activeEvents">0</strong>
+            <small>Currently active</small>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🎟️</div>
+          <div>
+            <span>Total Bookings</span>
+            <strong id="totalBookings">0</strong>
+            <small>All time</small>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div>
+            <span>Revenue</span>
+            <strong id="totalRevenue">₹0</strong>
+            <small>Platform revenue</small>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div>
+            <span>Pending Applications</span>
+            <strong id="pendingApplications">-</strong>
+            <small>Action required</small>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="analytics-grid">
+
+        <!-- Revenue -->
+        <div class="dashboard-card revenue-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Platform Revenue Trend</h2>
+              <p>Revenue generated over the last 6 months.</p>
+            </div>
+
+            <span class="dummy-badge">
+              Demo Data
+            </span>
+
+          </div>
+
+          <div class="chart-container">
+
+            <div class="chart-bars">
+
+              <div class="bar" style="height: 35%;">
+                <span>₹18K</span>
+              </div>
+
+              <div class="bar" style="height: 48%;">
+                <span>₹25K</span>
+              </div>
+
+              <div class="bar" style="height: 42%;">
+                <span>₹22K</span>
+              </div>
+
+              <div class="bar" style="height: 65%;">
+                <span>₹34K</span>
+              </div>
+
+              <div class="bar" style="height: 78%;">
+                <span>₹41K</span>
+              </div>
+
+              <div class="bar" style="height: 92%;">
+                <span>₹48K</span>
+              </div>
+
+            </div>
+
+            <div class="chart-labels">
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Aug</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- User Growth -->
+        <div class="dashboard-card growth-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>User Growth</h2>
+              <p>New registrations.</p>
+            </div>
+
+            <span class="dummy-badge">
+              Demo
+            </span>
+
+          </div>
+
+          <div class="growth-chart">
+
+            <div class="growth-bar" style="height: 35%;">
+              <span>120</span>
+            </div>
+
+            <div class="growth-bar" style="height: 50%;">
+              <span>180</span>
+            </div>
+
+            <div class="growth-bar" style="height: 65%;">
+              <span>240</span>
+            </div>
+
+            <div class="growth-bar" style="height: 52%;">
+              <span>195</span>
+            </div>
+
+            <div class="growth-bar" style="height: 82%;">
+              <span>310</span>
+            </div>
+
+          </div>
+
+          <div class="chart-labels">
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+            <span>Jul</span>
+            <span>Aug</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="dashboard-columns">
+
+        <!-- Pending Applications -->
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Pending Applications</h2>
+              <p>Host applications waiting for review.</p>
+            </div>
+
+            <a href="/admin/host-applications" class="view-link">
+              View All →
+            </a>
+
+          </div>
+
+          <div class="application-list">
+
+            <div class="application-row">
+
+              <div>
+                <strong>Nexus Tech Events</strong>
+                <span>Submitted Aug 28, 2026</span>
+              </div>
+
+              <span class="status pending">
+                Awaiting Review
+              </span>
+
+            </div>
+
+            <div class="application-row">
+
+              <div>
+                <strong>Creative Arts Collective</strong>
+                <span>Submitted Aug 27, 2026</span>
+              </div>
+
+              <span class="status pending">
+                Awaiting Review
+              </span>
+
+            </div>
+
+            <div class="application-row">
+
+              <div>
+                <strong>Global Summits LLC</strong>
+                <span>Submitted Aug 26, 2026</span>
+              </div>
+
+              <span class="status pending">
+                Awaiting Review
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Quick Actions</h2>
+              <p>Frequently used administration tools.</p>
+            </div>
+
+          </div>
+
+          <div class="quick-actions">
+
+            <a href="/admin/host-applications" class="quick-action">
+              <span>🤝</span>
+              <strong>Approve Hosts</strong>
+            </a>
+
+            <a href="/admin/users" class="quick-action">
+              <span>👥</span>
+              <strong>Manage Users</strong>
+            </a>
+
+            <a href="#" class="quick-action">
+              <span>📂</span>
+              <strong>Categories</strong>
+            </a>
+
+            <a href="#" class="quick-action">
+              <span>💳</span>
+              <strong>Payments</strong>
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="dashboard-columns">
+
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Top Performing Events</h2>
+              <p>Events generating the most bookings.</p>
+            </div>
+
+            <span class="dummy-badge">
+              Demo Data
+            </span>
+
+          </div>
+
+          <div class="top-events">
+
+            <div class="event-row">
+
+              <div class="event-rank">
+                1
+              </div>
+
+              <div class="event-info">
+                <strong>Future Tech Conference 2026</strong>
+                <span>Hosted by Nexus Tech</span>
+              </div>
+
+              <strong class="event-revenue">
+                ₹1,24,500
+              </strong>
+
+            </div>
+
+            <div class="event-row">
+
+              <div class="event-rank">
+                2
+              </div>
+
+              <div class="event-info">
+                <strong>Design Leadership Summit</strong>
+                <span>Hosted by Creative Arts</span>
+              </div>
+
+              <strong class="event-revenue">
+                ₹89,200
+              </strong>
+
+            </div>
+
+            <div class="event-row">
+
+              <div class="event-rank">
+                3
+              </div>
+
+              <div class="event-info">
+                <strong>Startup Growth Meetup</strong>
+                <span>Hosted by Global Summits</span>
+              </div>
+
+              <strong class="event-revenue">
+                ₹72,800
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="dashboard-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Recent Activity</h2>
+              <p>Latest platform activity.</p>
+            </div>
+
+          </div>
+
+          <div class="activity-list">
+
+            <div class="activity-item">
+              <span>📅</span>
+              <div>
+                <strong>New Event Published</strong>
+                <p>Nexus Tech published an event.</p>
+                <small>10 minutes ago</small>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <span>👤</span>
+              <div>
+                <strong>New User Registered</strong>
+                <p>A new user joined Eventure.</p>
+                <small>1 hour ago</small>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <span>🤝</span>
+              <div>
+                <strong>Host Application Received</strong>
+                <p>A new host applied.</p>
+                <small>2 hours ago</small>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <span>✏️</span>
+              <div>
+                <strong>Event Updated</strong>
+                <p>An existing event was updated.</p>
+                <small>3 hours ago</small>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <p id="dashboardMessage" class="dashboard-message"></p>
+
+    </main>
+
+  </div>
+
+  <script src="/js/admin/admin-auth.js"></script>
+  <script src="/js/admin/dashboard.js"></script>
+
+</body>
+
+</html>
