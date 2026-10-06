@@ -17,8 +17,12 @@ import categoryRoutes from "./modules/category/routes/category.routes.js"
 import eventRoutes from "./modules/event/routes/event.routes.js"
 import eventPageRoutes from "./modules/event/routes/event.page.routes.js";
 import hostEventRoutes from "./modules/event/routes/hostEvent.routes.js"
+import adminEventRoutes from "./modules/event/routes/adminEvent.routes.js"
 import eventReportRoutes from "./modules/eventReport/routes/eventReport.routes.js"
 import adminEventReportRoutes from "./modules/eventReport/routes/adminEventReport.routes.js"
+import bookingRoutes from "./modules/booking/routes/booking.routes.js"
+import paymentRoutes from "./modules/payment/routes/payment.routes.js"
+import paymentPageRoutes from "./modules/payment/routes/payment.page.routes.js";
 export const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,11 +52,16 @@ app.use("/api/host", hostRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/events", eventRoutes)
 app.use("/api/host/events", hostEventRoutes)
+app.use("/api/admin/events", adminEventRoutes)
 
 
 app.use("/api/events", eventReportRoutes);
 app.use("/api/admin/event-reports", adminEventReportRoutes);
 
+app.use("/api/events/bookings", bookingRoutes);
+
+app.use("/api/payments", paymentRoutes)
+app.use("/payment", paymentPageRoutes);
 app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,
