@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventure Payment</title>
+</head>
+
+<body>
+
+    <h1>Eventure Payment</h1>
+
+    <p>Booking ID: <span id="bookingId"></span></p>
+
+    <button id="payButton">Pay Now</button>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const bookingId = "<%= bookingId %>";
+        const razorpayKeyId = "<%= razorpayKeyId %>";
+
+        document.getElementById("bookingId").textContent = bookingId;
+
+        document.getElementById("payButton").addEventListener("click", async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                const response = await fetch(
+                    `/api/payments/${bookingId}/order`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    console.error(result);
+                    alert(
+                        result.message ||
+                        "Unable to create payment order",
+                    );
+                    return;
+                }
+
+                const payment = result.data;
+
+                const options = {
+                    key: razorpayKeyId,
+                    amount: payment.amount,
+                    currency: payment.currency,
+                    name: "Eventure",
+                    description: "Event Ticket Booking",
+                    order_id: payment.razorpayOrderId,
+
+                    handler: async function (response) {
+                        try {
+                            console.log(
+                                "Razorpay payment response:",
+                                response,
+                            );
+
+                            const token = localStorage.getItem("token");
+
+                            const verifyResponse = await fetch(
+                                "/api/payments/verify",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: `Bearer ${token}`,
+                                    },
+                                    body: JSON.stringify({
+                                        razorpayPaymentId:
+                                            response.razorpay_payment_id,
+
+                                        razorpayOrderId:
+                                            response.razorpay_order_id,
+
+                                        razorpaySignature:
+                                            response.razorpay_signature,
+                                    }),
+                                },
+                            );
+
+                            const result =
+                                await verifyResponse.json();
+
+                            console.log(
+                                "Verification response:",
+                                result,
+                            );
+
+                            if (!verifyResponse.ok) {
+                                alert(
+                                    result.message ||
+                                    "Payment verification failed",
+                                );
+                                return;
+                            }
+
+                            alert(
+                                "Payment successful! Booking confirmed.",
+                            );
+                        } catch (error) {
+                            console.error(
+                                "Payment verification error:",
+                                error,
+                            );
+
+                            alert(
+                                "Payment completed, but verification failed. Please contact support.",
+                            );
+                        }
+                    },
+
+                    prefill: {
+                        name: "",
+                        email: "",
+                    },
+
+                    theme: {
+                        color: "#3399cc",
+                    },
+
+                    modal: {
+                        ondismiss: function () {
+                            console.log(
+                                "Razorpay checkout closed",
+                            );
+                        },
+                    },
+                };
+
+                const razorpay = new Razorpay(options);
+
+                razorpay.on(
+                    "payment.failed",
+                    async function (response) {
+                        console.log(
+                            "Razorpay payment failed:",
+                            response,
+                        );
+
+                        try {
+                            const token =
+                                localStorage.getItem("token");
+
+                            const failureResponse =
+                                await fetch(
+                                    "/api/payments/failure",
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json",
+                                            Authorization:
+                                                `Bearer ${token}`,
+                                        },
+                                        body: JSON.stringify({
+                                            razorpayOrderId:
+                                                response.error
+                                                    .metadata
+                                                    .order_id,
+
+                                            razorpayPaymentId:
+                                                response.error
+                                                    .metadata
+                                                    .payment_id,
+
+                                            failureReason:
+                                                response.error
+                                                    .description,
+                                        }),
+                                    },
+                                );
+
+                            const result =
+                                await failureResponse.json();
+
+                            console.log(
+                                "Payment failure response:",
+                                result,
+                            );
+
+                            if (!failureResponse.ok) {
+                                alert(
+                                    result.message ||
+                                    "Payment failed",
+                                );
+                                return;
+                            }
+
+                            alert(
+                                "Payment failed. You can try again.",
+                            );
+                        } catch (error) {
+                            console.error(
+                                "Payment failure handling error:",
+                                error,
+                            );
+
+                            alert(
+                                "Payment failed. Please try again.",
+                            );
+                        }
+                    },
+                );
+
+                razorpay.open();
+            } catch (error) {
+                console.error(
+                    "Payment error:",
+                    error,
+                );
+
+                alert(
+                    "Unable to start payment. Please try again.",
+                );
+            }
+        });
+    </script>
+
+</body>
+
+</html>

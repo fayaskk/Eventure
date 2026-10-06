@@ -1,10 +1,13 @@
 import express from "express";
 import { approveEvent, getAdminEventById, getPendingEvents, rejectEvent } from "../controllers/adminEvent.controller.js";
+import { authMiddleware } from "../../../middleware/auth.middleware.js";
+import { authorizeRole } from "../../../middleware/role.middleware.js";
 const router = express.Router()
 
-router.get("/events", getPendingEvents);
-router.get("/events/:eventId", getAdminEventById)
-router.patch("/events/:eventId/approve", approveEvent)
-router.patch("/events/:eventId/reject", rejectEvent)
+router.use(authMiddleware, authorizeRole("admin"))
+router.get("/", getPendingEvents);
+router.get("/:eventId", getAdminEventById)
+router.patch("/:eventId/approve", approveEvent)
+router.patch("/:eventId/reject", rejectEvent)
 
 export default router;
