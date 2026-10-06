@@ -68,8 +68,13 @@ const bookingSchema = new mongoose.Schema(
 
     paymentStatus: {
       type: String,
-      enum: ["pending", "successful", "failed", "refunded"],
+      enum: ["pending", "successful", "failed", "expired", "refunded"],
       default: "pending",
+    },
+
+    paymentExpiresAt: {
+      type: Date,
+      required: true,
     },
   },
   {
@@ -77,7 +82,7 @@ const bookingSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
 export const Booking = mongoose.model("Booking", bookingSchema);

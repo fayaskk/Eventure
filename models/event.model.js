@@ -37,21 +37,25 @@ const eventSchema = new mongoose.Schema(
         required: true,
         trim: true,
       },
+
       address: {
         type: String,
         required: true,
         trim: true,
       },
+
       city: {
         type: String,
         required: true,
         trim: true,
       },
+
       state: {
         type: String,
         required: true,
         trim: true,
       },
+
       pincode: {
         type: String,
         required: true,
@@ -92,6 +96,12 @@ const eventSchema = new mongoose.Schema(
           type: Number,
           required: true,
           min: 1,
+        },
+
+        reserved: {
+          type: Number,
+          default: 0,
+          min: 0,
         },
 
         sold: {
@@ -148,7 +158,7 @@ const eventSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
 export const Event = mongoose.model("Event", eventSchema);
