@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head", { title: "My Tickets | Eventure" }) %>
+    <link rel="stylesheet" href="/css/user/bookings.css">
+</head>
+
+<body class="bookings-page">
+  <div class="bookings-layout">
+    <%- include("../partials/sidebar", { activePage: "bookings" }) %>
+
+      <main class="bookings-content">
+        <header class="bookings-header">
+          <p class="section-label">YOUR EVENTURE JOURNEY</p>
+          <h1>My Tickets</h1>
+          <p class="header-description">
+            View your confirmed bookings and access your digital event tickets.
+          </p>
+        </header>
+
+        <section class="tickets-section">
+          <div class="tickets-section-header">
+            <div>
+              <h2>Your Confirmed Tickets</h2>
+              <p id="ticket-count">Loading your tickets...</p>
+            </div>
+          </div>
+
+          <div id="tickets-container" class="tickets-container">
+            <div class="tickets-message">Loading your tickets...</div>
+          </div>
+        </section>
+
+        <section class="explore-section">
+          <p>Looking for your next experience?</p>
+          <a href="/events" class="explore-button">Explore Events</a>
+        </section>
+      </main>
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/user/bookings.js"></script>
+</body>
+
+</html>

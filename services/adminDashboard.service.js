@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import { Host } from "../models/hostApplication.model.js";
 
+
 export const getAdminDashboardStatsService = async () => {
   const totalUsers = await User.countDocuments({
     role: "user",
@@ -18,7 +19,7 @@ export const getAdminDashboardStatsService = async () => {
     totalUsers,
     verifiedHosts,
     pendingApplications,
-    activeEvents: 0,
+    activeEvents:0,
     totalBookings: 0,
     totalRevenue: 0,
   };

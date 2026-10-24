@@ -7,132 +7,90 @@ const loadProfile = async () => {
   }
 
   try {
-    const response = await fetch(
-      "/api/users/profile",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      }
-    );
+    const response = await fetch("/api/users/profile", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
-    let result = {};
+    const result = await response.json().catch(() => ({}));
 
-    try {
-      result = await response.json();
-    } catch {
-      result = {};
-    }
-
-    if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-
+    if (response.status === 401) {
+      clearAuth();
       window.location.replace("/login");
       return;
     }
 
-    if (!response.ok) {
+    if (response.status === 403) {
+      if (result.blocked) {
+        handleBlockedAccount();
+        return;
+      }
+
       throw new Error(
-        result.message || "Failed to fetch profile"
+        result.message || "You do not have permission to access this profile.",
       );
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to fetch profile.");
     }
 
     const user = result.data;
 
     if (!user) {
-      throw new Error("Profile data not found");
+      throw new Error("Profile data not found.");
     }
 
-    const profileName = document.getElementById("profileName");
-    const profileEmail = document.getElementById("profileEmail");
-    const profileRole = document.getElementById("profileRole");
-    const profileInitial = document.getElementById("profileInitial");
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
 
-    const detailName = document.getElementById("detailName");
-    const detailEmail = document.getElementById("detailEmail");
-    const detailLanguage =
-      document.getElementById("detailLanguage");
+      if (element) {
+        element.textContent = value;
+      }
+    };
 
-    const memberSince =
-      document.getElementById("memberSince");
+    setText("profileName", user.name || "User");
+    setText("profileEmail", user.email || "");
+    setText("profileRole", user.role?.toUpperCase() || "USER");
+    setText("profileInitial", user.name?.charAt(0).toUpperCase() || "U");
+    setText("detailName", user.name || "Not available");
+    setText("detailEmail", user.email || "Not available");
+    setText("detailLanguage", user.language || "English");
+    setText("referralCode", user.referralCode || "Not available");
 
-    const referralCode =
-      document.getElementById("referralCode");
-
-    if (profileName) {
-      profileName.textContent = user.name || "User";
-    }
-
-    if (profileEmail) {
-      profileEmail.textContent = user.email || "";
-    }
-
-    if (profileRole) {
-      profileRole.textContent =
-        user.role?.toUpperCase() || "USER";
-    }
-
-    if (profileInitial) {
-      profileInitial.textContent =
-        user.name?.charAt(0).toUpperCase() || "U";
-    }
-
-    if (detailName) {
-      detailName.textContent = user.name || "Not available";
-    }
-
-    if (detailEmail) {
-      detailEmail.textContent = user.email || "Not available";
-    }
-
-    if (detailLanguage) {
-      detailLanguage.textContent =
-        user.language || "English";
-    }
-
-    if (referralCode) {
-      referralCode.textContent =
-        user.referralCode || "Not available";
-    }
+    const memberSince = document.getElementById("memberSince");
 
     if (memberSince && user.created_at) {
       const date = new Date(user.created_at);
 
-      memberSince.textContent =
-        date.toLocaleDateString("en-US", {
-          month: "long",
-          year: "numeric",
-        });
+      memberSince.textContent = date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
     }
   } catch (error) {
     console.error("Profile loading error:", error);
 
-    if (!getToken()) {
-      window.location.replace("/login");
-      return;
+    if (typeof Swal !== "undefined") {
+      Swal.fire({
+        icon: "error",
+        title: "Unable to load profile",
+        text: error.message,
+      });
     }
-
-    alert(error.message);
   }
 };
 
 const setupReferralCopy = () => {
-  const copyButton =
-    document.getElementById("copyReferralBtn");
+  const copyButton = document.getElementById("copyReferralBtn");
+  const referralCode = document.getElementById("referralCode");
+  const copyMessage = document.getElementById("copyMessage");
 
-  const referralCode =
-    document.getElementById("referralCode");
-
-  const copyMessage =
-    document.getElementById("copyMessage");
-
-  if (!copyButton || !referralCode) {
-    return;
-  }
+  if (!copyButton || !referralCode) return;
 
   copyButton.addEventListener("click", async () => {
     const code = referralCode.textContent.trim();
@@ -161,20 +119,25 @@ const setupReferralCopy = () => {
       console.error("Copy failed:", error);
 
       if (copyMessage) {
-        copyMessage.textContent =
-          "Unable to copy referral code.";
+        copyMessage.textContent = "Unable to copy referral code.";
       }
     }
   });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (redirectToLoginIfNotLoggedIn()) {
+  if (redirectToLoginIfNotLoggedIn()) return;
+
+  const role = getUserRole();
+
+  if (role !== "user" && role !== "host") {
+    window.location.replace(
+      role === "admin" ? "/admin/profile" : "/login",
+    );
     return;
   }
 
   protectAuthenticatedPage();
-
   loadProfile();
   setupReferralCopy();
 });

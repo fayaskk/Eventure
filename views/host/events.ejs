@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <%- include("../partials/head", { title: "Eventure | My Events" }) %>
-
-  <!-- <link rel="stylesheet" href="/css/host/events.css"> -->
+    <link rel="stylesheet" href="/css/host/events.css">
 </head>
 
 <body>
 
-  <!-- <%- include("../partials/sidebar", { activePage: "events" }) %> -->
+  <%- include("../partials/sidebar", { activePage: "events" }) %>
 
-  <main class="host-main">
+    <main class="host-main">
 
-    <header class="host-header">
-      <div>
-        <p class="section-label">HOST PANEL</p>
-        <h1>My Events</h1>
-        <p>Manage the events you have created.</p>
-      </div>
+      <header class="host-header">
 
-      <a href="/host/events/create" class="create-event-btn">
-        + Create Event
-      </a>
-    </header>
+        <div>
+          <p class="section-label">HOST PANEL</p>
 
+          <h1>My Events</h1>
 
-    <section id="events-container">
+          <p>
+            Manage the events you have created.
+          </p>
+        </div>
 
-      <p id="events-loading">
-        Loading events...
-      </p>
+        <a href="/host/events/create" class="create-event-btn">
+          + Create Event
+        </a>
 
-    </section>
+      </header>
 
-  </main>
+      <section class="events-toolbar">
 
+        <div class="search-wrapper">
+          <input type="text" id="eventSearch" placeholder="Search your events...">
+        </div>
 
- 
-  <script src="/js/host/events.js"></script>
+        <div class="filter-wrapper">
+          <select id="statusFilter">
+            <option value="all">All Events</option>
+            <option value="draft">Draft</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+      </section>
+
+      <section id="events-container">
+
+        <div id="events-loading" class="events-message">
+          <div class="loading-spinner"></div>
+          <p>Loading your events...</p>
+        </div>
+
+      </section>
+
+    </main>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/host/events.js"></script>
+
+    <script>
+      if (!redirectToLoginIfNotLoggedIn()) {
+        protectDashboardHistory();
+      }
+    </script>
 
 </body>
+
 </html>

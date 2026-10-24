@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head", { title: "Eventure | Book Tickets" }) %>
+        <link rel="stylesheet" href="/css/common/sidebar.css">
+        <link rel="stylesheet" href="/css/booking.css">
+</head>
+
+<body>
+
+    <%- include("partials/sidebar", { activePage: activePage || "events" }) %>
+
+        <main class="booking-main">
+            <div class="booking-container">
+                <a href="/events" class="back-link">
+                    ← Back to Events
+                </a>
+
+                <div id="booking-content" data-razorpay-key="<%= razorpayKeyId %>">
+                    <div class="loading-state">
+                        Loading booking details...
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="/js/booking.js"></script>
+
+</body>
+
+</html>

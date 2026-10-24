@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "Digital Ticket | Eventure" }) %>
+        <link rel="stylesheet" href="/css/user/ticket.css">
+</head>
+
+<body class="digital-ticket-page">
+    <div class="ticket-page-layout">
+        <%- include("../partials/sidebar", { activePage: "bookings" }) %>
+
+            <main class="digital-ticket-content">
+                <a href="/user/bookings" class="back-link">← Back to My Tickets</a>
+
+                <header class="digital-ticket-header">
+                    <p class="section-label">YOUR EVENTURE PASS</p>
+                    <h1>Digital Ticket</h1>
+                    <p>Keep this ticket ready when you arrive at the event.</p>
+                </header>
+
+                <div id="digital-ticket-container">
+                    <div class="ticket-loading">Loading your digital ticket...</div>
+                </div>
+            </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/user/ticket.js"></script>
+</body>
+
+</html>

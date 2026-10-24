@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 
 import { Event } from "../models/event.model.js";
 import { Booking } from "../models/booking.model.js";
+import { Payment } from "../models/payment.model.js";
 import { getPublicEventByIdService } from "./event.service.js";
 
 export const createBookingService = async (userId, eventId, tickets) => {
-  if (!mongoose.Types.ObjectId.isValid(eventId)) {
-    const error = new Error("Invalid event ID");
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(eventId)
+  ) {
+    const error = new Error("Invalid user or event ID");
     error.statusCode = 400;
     throw error;
   }
@@ -39,16 +43,18 @@ export const createBookingService = async (userId, eventId, tickets) => {
       throw error;
     }
 
-    if (selectedTicketIds.has(ticketId)) {
+    const normalizedTicketId = ticketId.toString();
+
+    if (selectedTicketIds.has(normalizedTicketId)) {
       const error = new Error("Duplicate ticket type is not allowed");
       error.statusCode = 400;
       throw error;
     }
 
-    selectedTicketIds.add(ticketId);
+    selectedTicketIds.add(normalizedTicketId);
 
     const eventTicket = event.tickets.find(
-      (ticket) => ticket._id.toString() === ticketId,
+      (item) => item._id.toString() === normalizedTicketId,
     );
 
     if (!eventTicket) {
@@ -57,8 +63,8 @@ export const createBookingService = async (userId, eventId, tickets) => {
       throw error;
     }
 
-    const reserved = eventTicket.reserved || 0;
-    const sold = eventTicket.sold || 0;
+    const reserved = eventTicket.reserved ?? 0;
+    const sold = eventTicket.sold ?? 0;
 
     const availableQuantity = eventTicket.quantity - reserved - sold;
 
@@ -86,23 +92,23 @@ export const createBookingService = async (userId, eventId, tickets) => {
   const session = await mongoose.startSession();
 
   try {
-    session.startTransaction();
+    let createdBooking;
 
-    for (const ticket of bookingTickets) {
-      const result = await Event.updateOne(
-        {
-          _id: event._id,
-        },
-        [
+    await session.withTransaction(async () => {
+      for (const ticket of bookingTickets) {
+        const result = await Event.updateOne(
           {
-            $set: {
-              tickets: {
-                $map: {
-                  input: "$tickets",
-                  as: "eventTicket",
-                  in: {
-                    $cond: [
-                      {
+            _id: event._id,
+            status: "approved",
+            isVisible: true,
+            $expr: {
+              $gt: [
+                {
+                  $size: {
+                    $filter: {
+                      input: "$tickets",
+                      as: "eventTicket",
+                      cond: {
                         $and: [
                           {
                             $eq: ["$$eventTicket._id", ticket.ticketId],
@@ -115,10 +121,10 @@ export const createBookingService = async (userId, eventId, tickets) => {
                                   {
                                     $add: [
                                       {
-                                        $ifNull: ["$$eventTicket.reserved", 0],
+                                        $ifNull: ["$$eventTicket.sold", 0],
                                       },
                                       {
-                                        $ifNull: ["$$eventTicket.sold", 0],
+                                        $ifNull: ["$$eventTicket.reserved", 0],
                                       },
                                     ],
                                   },
@@ -129,87 +135,140 @@ export const createBookingService = async (userId, eventId, tickets) => {
                           },
                         ],
                       },
-                      {
-                        $mergeObjects: [
-                          "$$eventTicket",
-                          {
-                            reserved: {
-                              $add: [
-                                {
-                                  $ifNull: ["$$eventTicket.reserved", 0],
-                                },
-                                ticket.quantity,
-                              ],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+          [
+            {
+              $set: {
+                tickets: {
+                  $map: {
+                    input: "$tickets",
+                    as: "eventTicket",
+                    in: {
+                      $cond: [
+                        {
+                          $eq: ["$$eventTicket._id", ticket.ticketId],
+                        },
+                        {
+                          $mergeObjects: [
+                            "$$eventTicket",
+                            {
+                              reserved: {
+                                $add: [
+                                  {
+                                    $ifNull: ["$$eventTicket.reserved", 0],
+                                  },
+                                  ticket.quantity,
+                                ],
+                              },
                             },
-                          },
-                        ],
-                      },
-                      "$$eventTicket",
-                    ],
+                          ],
+                        },
+                        "$$eventTicket",
+                      ],
+                    },
                   },
                 },
               },
             },
+          ],
+          {
+            session,
+            timestamps: false,
+            updatePipeline: true,
+          },
+        );
+
+        if (result.modifiedCount !== 1) {
+          const error = new Error(
+            `Not enough ${ticket.ticketName} tickets are available`,
+          );
+          error.statusCode = 409;
+          throw error;
+        }
+      }
+
+      const paymentExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+      const bookingReference = `EVT-${cryptoRandomReference()}`;
+
+      const [booking] = await Booking.create(
+        [
+          {
+            event: event._id,
+            user: userId,
+            tickets: bookingTickets,
+            totalAmount,
+            bookingReference,
+            bookingStatus: "pending",
+            paymentStatus: "pending",
+            paymentExpiresAt,
           },
         ],
-        {
-          session,
-          updatePipeline: true,
-        },
+        { session },
       );
 
-      if (result.modifiedCount !== 1) {
-        const error = new Error(
-          `Only enough ${ticket.ticketName} tickets are available`,
-        );
-        error.statusCode = 409;
-        throw error;
-      }
-    }
+      createdBooking = booking;
+    });
 
-    const paymentExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-
-    const bookingReference = `EVT-${Date.now()}-${Math.floor(
-      Math.random() * 100000,
-    )}`;
-
-    const booking = await Booking.create(
-      [
-        {
-          event: event._id,
-          user: userId,
-          tickets: bookingTickets,
-          totalAmount,
-          bookingReference,
-          bookingStatus: "pending",
-          paymentStatus: "pending",
-          paymentExpiresAt,
-        },
-      ],
-      { session },
-    );
-
-    await session.commitTransaction();
-
-    return booking[0];
+    return createdBooking;
   } catch (error) {
-    await session.abortTransaction();
     throw error;
   } finally {
     await session.endSession();
   }
 };
 
+function cryptoRandomReference() {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+export const getUserBookingsService = async (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const error = new Error("Invalid user ID");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  return Booking.find({ user: userId })
+    .populate({
+      path: "event",
+      select:
+        "eventName banner eventDate startTime endTime location category status",
+      populate: {
+        path: "category",
+        select: "name slug",
+      },
+    })
+    .sort({ created_at: -1 })
+    .lean();
+};
+
 export const expireBookingService = async (bookingId) => {
+  if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+    const error = new Error("Invalid booking ID");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const session = await mongoose.startSession();
 
   try {
+    let expired = false;
+
     await session.withTransaction(async () => {
+      const now = new Date();
+
       const booking = await Booking.findOne({
         _id: bookingId,
         bookingStatus: "pending",
-        paymentStatus: "pending",
-        paymentExpiresAt: { $lte: new Date() },
+        paymentStatus: { $in: ["pending", "failed"] },
+        paymentExpiresAt: { $lte: now },
       }).session(session);
 
       if (!booking) {
@@ -232,12 +291,15 @@ export const expireBookingService = async (bookingId) => {
               "tickets.$.reserved": -ticket.quantity,
             },
           },
-          { session },
+          {
+            session,
+            timestamps: false,
+          },
         );
 
         if (result.modifiedCount !== 1) {
           const error = new Error(
-            `Failed to release ${ticket.quantity} reserved ${ticket.ticketName} tickets`,
+            `Failed to release reserved ${ticket.ticketName} tickets`,
           );
           error.statusCode = 409;
           throw error;
@@ -248,10 +310,62 @@ export const expireBookingService = async (bookingId) => {
       booking.paymentStatus = "expired";
 
       await booking.save({ session });
+
+      await Payment.updateMany(
+        {
+          booking: booking._id,
+          status: { $ne: "successful" },
+        },
+        {
+          $set: {
+            status: "expired",
+          },
+        },
+        { session },
+      );
+
+      expired = true;
     });
 
-    return true;
+    return expired;
   } finally {
     await session.endSession();
   }
+};
+
+export const getUserTicketService = async (userId, bookingId) => {
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(bookingId)
+  ) {
+    const error = new Error("Invalid user or booking ID");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const booking = await Booking.findOne({
+    _id: bookingId,
+    user: userId,
+    bookingStatus: "confirmed",
+    paymentStatus: "successful",
+  })
+    .populate({
+      path: "event",
+      select: "eventName banner eventDate startTime endTime location category",
+      populate: {
+        path: "category",
+        select: "name slug",
+      },
+    })
+    .lean();
+
+  if (!booking) {
+    const error = new Error(
+      "Confirmed ticket not found. Please check your booking status.",
+    );
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return booking;
 };

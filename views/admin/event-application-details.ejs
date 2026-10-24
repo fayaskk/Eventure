@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "Eventure | Event Application Details" }) %>
+
+    <link rel="stylesheet" href="/css/admin/events.css">
+    <link rel="stylesheet" href="/css/admin/event-application-details.css">
+</head>
+
+<body>
+
+    <%- include("../partials/admin-sidebar", { activePage: "event-applications" }) %>
+
+    <main class="main-content">
+
+        <header class="page-header">
+
+            <div>
+                <p class="section-label">EVENT MANAGEMENT</p>
+
+                <h1>Event Application Details</h1>
+
+                <p>
+                    Review the event details, promotional video, tickets,
+                    and host information before making a decision.
+                </p>
+            </div>
+
+            <a href="/admin/event-applications" class="back-btn">
+                ← Back to Applications
+            </a>
+
+        </header>
+
+        <section id="event-details" aria-live="polite">
+
+            <div class="loading-state">
+                Loading event application...
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="/js/admin/admin-auth.js"></script>
+    <script src="/js/admin/event-application-details.js"></script>
+
+</body>
+
+</html>

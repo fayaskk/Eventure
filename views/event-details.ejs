@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head", { title: "Eventure | Event Details" }) %>
+        <link rel="stylesheet" href="/css/common/sidebar.css">
+        <link rel="stylesheet" href="/css/event-details.css">
+</head>
+
+<body>
+
+    <%- include("partials/sidebar", { activePage: activePage || "events" }) %>
+
+        <main class="event-details-main">
+
+            <div class="event-details-container">
+
+                <a href="/events" class="back-link">
+                    ← Back to Events
+                </a>
+
+                <div id="event-details">
+                    <div class="loading-state">
+                        Loading event...
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <script src="/js/event-details.js"></script>
+
+</body>
+
+</html>

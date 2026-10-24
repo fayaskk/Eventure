@@ -1,44 +1,38 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
-import process from "process"
 
 export const authMiddleware = async (req, res, next) => {
   try {
-    const auth = req.headers.authorization;
+    const authorization = req.headers.authorization;
 
-    if (!auth) {
+    if (!authorization) {
       return res.status(401).json({
         success: false,
         message: "Authentication required",
       });
     }
 
-    const [type, token] = auth.split(" ");
+    const [type, token, ...extraParts] = authorization.split(" ");
 
-    if (type !== "Bearer") {
+    if (type !== "Bearer" || !token || extraParts.length > 0) {
       return res.status(401).json({
         success: false,
         message: "Invalid authorization format",
       });
     }
 
-    if (!token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded.userId) {
       return res.status(401).json({
         success: false,
-        message: "Token not found",
+        message: "Invalid authentication token",
       });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    const user = await User.findById(decoded.userId);
 
-    const user = await User.findById(
-      decoded.userId
-    );
-
-    if (!user) {
+    if (!user || user.isDeleted) {
       return res.status(401).json({
         success: false,
         message: "User not found",
@@ -48,8 +42,7 @@ export const authMiddleware = async (req, res, next) => {
     if (user.isBlocked) {
       return res.status(403).json({
         success: false,
-        message:
-          "Your account has been blocked by the administrator.",
+        message: "Your account has been blocked by the administrator.",
         blocked: true,
       });
     }
@@ -59,16 +52,26 @@ export const authMiddleware = async (req, res, next) => {
       role: user.role,
     };
 
-    next();
+    return next();
   } catch (error) {
-    console.error(
-      "Auth middleware error:",
-      error
-    );
+    if (
+      error.name === "TokenExpiredError" ||
+      error.name === "JsonWebTokenError"
+    ) {
+      return res.status(401).json({
+        success: false,
+        message:
+          error.name === "TokenExpiredError"
+            ? "Token expired"
+            : "Invalid token",
+      });
+    }
 
-    return res.status(401).json({
+    console.error("Auth middleware error:", error);
+
+    return res.status(500).json({
       success: false,
-      message: "Invalid or expired token",
+      message: "Authentication service error",
     });
   }
 };
