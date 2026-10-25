@@ -180,7 +180,7 @@ export const verifyRazorpayPaymentService = async (
   try {
     let updatedPayment;
     let updatedBooking;
-
+    let alreadyProcessed = false;
     await session.withTransaction(async () => {
       const currentPayment = await Payment.findById(payment._id).session(
         session,
@@ -211,7 +211,7 @@ export const verifyRazorpayPaymentService = async (
         updatedBooking = await Booking.findById(currentPayment.booking).session(
           session,
         );
-
+        alreadyProcessed = true;
         return;
       }
 
@@ -306,9 +306,7 @@ export const verifyRazorpayPaymentService = async (
     return {
       payment: updatedPayment,
       booking: updatedBooking,
-      alreadyProcessed:
-        updatedPayment?.status === "successful" &&
-        updatedPayment?.razorpayPaymentId === razorpayPaymentId,
+      alreadyProcessed,
     };
   } finally {
     await session.endSession();
