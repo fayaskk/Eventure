@@ -1,5 +1,6 @@
 import "dotenv/config";
-
+import process from "process";
+import { startBookingExpirationJob } from "./jobs/expireBookings.job.js";
 import { connectDB } from "./config/db.js";
 import { app } from "./app.js";
 
@@ -9,6 +10,8 @@ const startServer = async () => {
   try {
     await connectDB();
 
+    startBookingExpirationJob();
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -17,5 +20,4 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
 startServer();

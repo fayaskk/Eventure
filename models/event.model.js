@@ -30,6 +30,10 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    promoVideo: {
+      type: String,
+      default: null,
+    },
 
     location: {
       venue: {
@@ -149,8 +153,54 @@ const eventSchema = new mongoose.Schema(
 
     editRequestStatus: {
       type: String,
-      enum: ["none", "pending", "approved"],
+      enum: ["none", "pending", "rejected", "editing", "review"],
       default: "none",
+    },
+    editRequestRejectionReason: {
+      type: String,
+      trim: true,
+    },
+    editReviewRejectionReason: {
+      type: String,
+      trim: true,
+    },
+    pendingEdit: {
+      eventName: String,
+      description: String,
+      category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+      banner: String,
+      promoVideo: String,
+      location: {
+        venue: String,
+        address: String,
+        city: String,
+        state: String,
+        pincode: String,
+      },
+      eventDate: Date,
+      startTime: String,
+      endTime: String,
+
+      tickets: [
+        {
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: false,
+          },
+          name: String,
+          price: Number,
+          quantity: Number,
+          reserved: Number,
+          sold: Number,
+        },
+      ],
+
+      bookingPolicy: {
+        allowAfterStart: Boolean,
+      },
     },
   },
   {

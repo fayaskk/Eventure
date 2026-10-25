@@ -1,0 +1,100 @@
+<%- include("../partials/head", { title: "Manage Events | Eventure Admin" }) %>
+
+    <link rel="stylesheet" href="/css/admin/events.css">
+    <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+
+    <body>
+        <div class="admin-layout">
+            <%- include("../partials/admin-sidebar", { activePage: "events" }) %>
+
+                <main class="admin-main">
+                    <header class="admin-page-header">
+                        <div>
+                            <p class="section-label">ADMIN PANEL</p>
+                            <h1>Manage Events</h1>
+                            <p>View, monitor, and manage all events on Eventure.</p>
+                        </div>
+                    </header>
+
+                    <section class="event-stats-grid">
+                        <article class="event-stat-card">
+                            <span>Total Events</span>
+                            <strong id="totalEvents">0</strong>
+                        </article>
+
+                        <article class="event-stat-card">
+                            <span>Pending</span>
+                            <strong id="pendingEvents">0</strong>
+                        </article>
+
+                        <article class="event-stat-card">
+                            <span>Approved</span>
+                            <strong id="approvedEvents">0</strong>
+                        </article>
+
+                        <article class="event-stat-card">
+                            <span>Completed</span>
+                            <strong id="completedEvents">0</strong>
+                        </article>
+
+                        <article class="event-stat-card">
+                            <span>Cancelled</span>
+                            <strong id="cancelledEvents">0</strong>
+                        </article>
+
+                        <article class="event-stat-card">
+                            <span>Hidden</span>
+                            <strong id="hiddenEvents">0</strong>
+                        </article>
+                    </section>
+
+                    <section class="events-management-card">
+                        <div class="events-section-header">
+                            <div>
+                                <h2>All Events</h2>
+                                <p>Search events and filter by status.</p>
+                            </div>
+
+                            <button type="button" id="refreshEvents" class="primary-button">
+                                Refresh
+                            </button>
+                        </div>
+
+                        <form id="eventFilters" class="event-filters">
+                            <input type="search" id="eventSearch" placeholder="Search by event name..."
+                                aria-label="Search events">
+
+                            <select id="eventStatus" aria-label="Filter events by status">
+                                <option value="all">All Statuses</option>
+                                <option value="draft">Draft</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="completed">Completed</option>
+                            </select>
+
+                            <button type="submit" class="primary-button">Search</button>
+                            <button type="button" id="clearFilters" class="secondary-button">
+                                Clear
+                            </button>
+                        </form>
+
+                        <p id="eventsResultCount" class="events-result-count"></p>
+
+                        <div id="eventsTableContainer" class="events-table-container">
+                            <div class="events-message">Loading events...</div>
+                        </div>
+
+                        <div id="eventsPagination" class="events-pagination"></div>
+                    </section>
+
+                    <p id="eventsPageMessage" class="events-page-message"></p>
+                </main>
+        </div>
+
+        <script src="/js/admin/admin-auth.js"></script>
+        <script src="/js/admin/events.js"></script>
+    </body>
+
+    </html>

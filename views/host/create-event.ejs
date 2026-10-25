@@ -1,227 +1,430 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <%- include("../partials/head", {
-    title: "Eventure | Create Event"
-  }) %>
+<%- include("../partials/head", { title: "Create Event | Eventure" }) %>
 
   <link rel="stylesheet" href="/css/host/create-event.css">
 
-</head>
+  <%- include("../partials/sidebar", { activePage: "create-event" }) %>
 
-<body>
+    <main class="create-event-main">
+      <div class="create-event-container">
+        <header class="create-event-header">
+          <div>
+            <p class="section-label">HOST EVENT MANAGEMENT</p>
+            <h1>Create New Event</h1>
+            <p class="header-description">
+              Create your event and submit it for approval.
+            </p>
+          </div>
 
-  <!-- <%- include("../partials/sidebar", { activePage: "create-event" }) %> -->
+          <button type="button" id="cancelEventBtn" class="cancel-btn">
+            Cancel
+          </button>
+        </header>
 
-  <main class="host-main">
+        <form id="createEventForm" novalidate>
+          <div class="event-wizard">
+            <div class="wizard-header">
+              <div class="wizard-title-area">
+                <span id="stepLabel" class="step-label">Step 1 of 5</span>
+                <h2 id="stepTitle">Basic Information</h2>
+                <p id="stepDescription">Tell attendees about your event.</p>
+              </div>
 
-    <header class="host-header">
-      <div>
-        <p class="section-label">HOST PANEL</p>
-        <h1>Create Event</h1>
-        <p>Create and submit your event for approval.</p>
+              <div class="progress-info">
+                <span id="progressPercentage">0%</span>
+                <span>completed</span>
+              </div>
+            </div>
+
+            <div class="progress-track">
+              <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+            </div>
+
+            <div class="wizard-steps">
+              <div class="wizard-step active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-name">Basic</span>
+              </div>
+
+              <div class="wizard-line" data-line="1"></div>
+
+              <div class="wizard-step" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-name">Location</span>
+              </div>
+
+              <div class="wizard-line" data-line="2"></div>
+
+              <div class="wizard-step" data-step="3">
+                <span class="step-number">3</span>
+                <span class="step-name">Tickets</span>
+              </div>
+
+              <div class="wizard-line" data-line="3"></div>
+
+              <div class="wizard-step" data-step="4">
+                <span class="step-number">4</span>
+                <span class="step-name">Settings</span>
+              </div>
+
+              <div class="wizard-line" data-line="4"></div>
+
+              <div class="wizard-step" data-step="5">
+                <span class="step-number">5</span>
+                <span class="step-name">Review</span>
+              </div>
+            </div>
+
+            <section class="wizard-panel active" data-panel="1">
+              <div class="panel-intro">
+                <div class="intro-icon">ⓘ</div>
+                <div>
+                  <h3>Basic Information</h3>
+                  <p>
+                    Start with the essential information attendees
+                    will see about your event.
+                  </p>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-group">
+                  <div class="field-header">
+                    <label for="eventName">
+                      Event Name <span class="required">*</span>
+                    </label>
+                    <span id="eventNameCount" class="field-count">0 / 100</span>
+                  </div>
+
+                  <input type="text" id="eventName" name="eventName" maxlength="100"
+                    placeholder="e.g. Global Technology Summit 2026" autocomplete="off" required>
+
+                  <p id="eventNameError" class="field-error" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                  <div class="field-header">
+                    <label for="category">
+                      Category <span class="required">*</span>
+                    </label>
+                  </div>
+
+                  <select id="category" name="category" required>
+                    <option value="">Select an event category</option>
+                  </select>
+
+                  <p id="categoryError" class="field-error" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                  <div class="field-header">
+                    <label for="description">
+                      Event Description <span class="required">*</span>
+                    </label>
+                    <span id="descriptionCount" class="field-count">0 / 2000</span>
+                  </div>
+
+                  <textarea id="description" name="description" maxlength="2000"
+                    placeholder="Describe your event, what attendees can expect, and what makes it special..."
+                    required></textarea>
+
+                  <p id="descriptionError" class="field-error" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                  <div class="field-header">
+                    <label for="banner">
+                      Event Banner <span class="required">*</span>
+                    </label>
+                    <span class="field-hint">Recommended 16:9</span>
+                  </div>
+
+                  <div id="uploadArea" class="upload-area">
+                    <div id="uploadEmpty" class="upload-empty">
+                      <div class="upload-icon">⇧</div>
+
+                      <h4>Upload your event banner</h4>
+
+                      <p>
+                        Drag and drop your image here or browse from your device.
+                      </p>
+
+                      <span>JPG, PNG or WEBP · Maximum 5 MB</span>
+
+                      <button type="button" id="browseBannerBtn" class="browse-btn">
+                        Browse Image
+                      </button>
+                    </div>
+
+                    <div id="uploadPreview" class="upload-preview" hidden>
+                      <div class="preview-image-wrapper">
+                        <img id="bannerPreview" src="" alt="Event banner preview">
+                      </div>
+
+                      <div class="preview-info">
+                        <div>
+                          <strong id="bannerFileName"></strong>
+                          <span id="bannerFileSize"></span>
+                        </div>
+
+                        <button type="button" id="removeBannerBtn" class="remove-banner-btn">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+
+                    <input type="file" id="banner" name="banner" accept="image/jpeg,image/png,image/webp" hidden>
+                  </div>
+
+                  <p id="bannerError" class="field-error" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="promo-video-section">
+                <div class="promo-video-heading">
+                  <div class="promo-video-icon">▶</div>
+                  <div>
+                    <label for="promoVideo">Promotional Video</label>
+                    <span class="optional-badge">Optional</span>
+                  </div>
+                </div>
+
+                <p class="promo-video-description">
+                  Add a short video to help attendees understand your event.
+                  Supported formats: MP4 and WebM.
+                </p>
+
+                <div class="promo-video-upload">
+                  <input type="file" id="promoVideo" name="promoVideo" accept="video/mp4,video/webm" hidden>
+
+                  <button type="button" id="browsePromoVideoBtn" class="promo-browse-btn">
+                    <span>＋</span>
+                    Choose Video
+                  </button>
+
+                  <div class="promo-file-details">
+                    <span class="promo-file-icon">▣</span>
+                    <span id="promoFileName" class="promo-file-name">
+                      No video selected
+                    </span>
+                  </div>
+
+                  <button type="button" id="removePromoVideoBtn" class="promo-remove-btn" hidden>
+                    Remove
+                  </button>
+                </div>
+
+                <p id="promoVideoError" class="field-error" role="alert"></p>
+
+                <div id="promoPreviewWrapper" class="promo-preview-wrapper" hidden>
+                  <div class="promo-preview-heading">
+                    <span>Video Preview</span>
+                    <span class="preview-status">Ready to upload</span>
+                  </div>
+
+                  <video id="promoPreview" class="promo-video-preview" controls playsinline preload="metadata"
+                    hidden></video>
+                </div>
+
+                <div class="promo-video-footer">
+                  <span>MP4 or WebM</span>
+                  <span>Maximum file size: 5 MB</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="wizard-panel" data-panel="2">
+              <div class="panel-intro">
+                <div class="intro-icon">⌖</div>
+                <div>
+                  <h3>Location & Schedule</h3>
+                  <p>Enter the venue and schedule details for your event.</p>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-group">
+                  <label for="venue">
+                    Venue Name <span class="required">*</span>
+                  </label>
+
+                  <input type="text" id="venue" placeholder="e.g. Lulu Convention Centre">
+
+                  <p id="venueError" class="field-error" aria-live="polite"></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="address">
+                    Address <span class="required">*</span>
+                  </label>
+
+                  <input type="text" id="address" placeholder="Enter complete venue address">
+
+                  <p id="addressError" class="field-error" aria-live="polite"></p>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="city">
+                      City <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="city" placeholder="e.g. Kochi">
+
+                    <p id="cityError" class="field-error" aria-live="polite"></p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="state">
+                      State <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="state" placeholder="e.g. Kerala">
+
+                    <p id="stateError" class="field-error" aria-live="polite"></p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="pincode">
+                      Pincode <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="pincode" inputmode="numeric" maxlength="6" placeholder="e.g. 682001">
+
+                    <p id="pincodeError" class="field-error" aria-live="polite"></p>
+                  </div>
+                </div>
+
+                <div class="schedule-divider">
+                  <h3>Event Schedule</h3>
+                </div>
+
+                <div class="form-grid schedule-grid">
+                  <div class="form-group">
+                    <label for="eventDate">
+                      Event Date <span class="required">*</span>
+                    </label>
+
+                    <input type="date" id="eventDate">
+
+                    <p id="eventDateError" class="field-error" aria-live="polite"></p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="startTime">
+                      Start Time <span class="required">*</span>
+                    </label>
+
+                    <input type="time" id="startTime">
+
+                    <p id="startTimeError" class="field-error" aria-live="polite"></p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="endTime">
+                      End Time <span class="required">*</span>
+                    </label>
+
+                    <input type="time" id="endTime">
+
+                    <p id="endTimeError" class="field-error" aria-live="polite"></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="wizard-panel" data-panel="3">
+              <div class="panel-intro">
+                <div class="intro-icon">🎟</div>
+                <div>
+                  <h3>Tickets</h3>
+                  <p>Create ticket types and set their prices and quantities.</p>
+                </div>
+              </div>
+
+              <div class="ticket-section">
+                <div class="ticket-header">
+                  <div>
+                    <h3>Ticket Types</h3>
+                    <p>Add the ticket categories attendees can purchase.</p>
+                  </div>
+
+                  <button type="button" id="addTicketBtn" class="add-ticket-btn">
+                    + Add Ticket
+                  </button>
+                </div>
+
+                <div id="ticketsContainer"></div>
+
+                <div id="noTicketsMessage" class="no-tickets">
+                  <div class="no-ticket-icon">🎟</div>
+                  <h4>No ticket types added</h4>
+                  <p>Add at least one ticket type to continue.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="wizard-panel" data-panel="4">
+              <div class="panel-intro">
+                <div class="intro-icon">⚙</div>
+                <div>
+                  <h3>Booking Settings</h3>
+                  <p>Configure how attendees can book your event.</p>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <div class="setting-content">
+                  <h3>Allow bookings after event starts</h3>
+                  <p>
+                    If enabled, attendees can continue booking tickets after
+                    the event has started, as long as tickets are still available.
+                  </p>
+                </div>
+
+                <label class="switch" for="allowAfterStart">
+                  <input type="checkbox" id="allowAfterStart">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </section>
+
+            <section class="wizard-panel" data-panel="5">
+              <div class="panel-intro">
+                <div class="intro-icon">✓</div>
+                <div>
+                  <h3>Review Your Event</h3>
+                  <p>Check everything before submitting your event for approval.</p>
+                </div>
+              </div>
+
+              <div id="reviewContainer"></div>
+            </section>
+
+            <footer class="wizard-footer">
+              <button type="button" id="previousBtn" class="secondary-btn" disabled>
+                ← Previous
+              </button>
+
+              <div class="footer-actions">
+                <button type="button" id="saveDraftBtn" class="secondary-btn">
+                  Save Draft
+                </button>
+
+                <button type="button" id="nextBtn" class="primary-btn">
+                  Continue →
+                </button>
+              </div>
+            </footer>
+          </div>
+        </form>
       </div>
-    </header>
+    </main>
 
-    <form id="createEventForm">
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/host/create-event.js"></script>
 
-      <section class="form-section">
-
-        <h2>Basic Information</h2>
-
-        <div class="form-group">
-          <label for="eventName">Event Name</label>
-          <input
-            type="text"
-            id="eventName"
-            name="eventName"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            rows="5"
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="category">Category</label>
-
-          <select
-            id="category"
-            name="category"
-            required
-          >
-            <option value="">Select Category</option>
-          </select>
-
-        </div>
-
-        <div class="form-group">
-
-          <label for="banner">Banner</label>
-
-          <input
-            type="text"
-            id="banner"
-            name="banner"
-            placeholder="Banner image URL"
-            required
-          >
-
-        </div>
-
-      </section>
-
-
-      <section class="form-section">
-
-        <h2>Location</h2>
-
-        <div class="form-group">
-          <label for="venue">Venue</label>
-
-          <input
-            type="text"
-            id="venue"
-            name="venue"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="address">Address</label>
-
-          <input
-            type="text"
-            id="address"
-            name="address"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="city">City</label>
-
-          <input
-            type="text"
-            id="city"
-            name="city"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="state">State</label>
-
-          <input
-            type="text"
-            id="state"
-            name="state"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="pincode">Pincode</label>
-
-          <input
-            type="text"
-            id="pincode"
-            name="pincode"
-            required
-          >
-        </div>
-
-      </section>
-
-
-      <section class="form-section">
-
-        <h2>Schedule</h2>
-
-        <div class="form-group">
-          <label for="eventDate">Event Date</label>
-
-          <input
-            type="date"
-            id="eventDate"
-            name="eventDate"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="startTime">Start Time</label>
-
-          <input
-            type="time"
-            id="startTime"
-            name="startTime"
-            required
-          >
-        </div>
-
-
-        <div class="form-group">
-          <label for="endTime">End Time</label>
-
-          <input
-            type="time"
-            id="endTime"
-            name="endTime"
-            required
-          >
-        </div>
-
-      </section>
-
-
-      <section class="form-section">
-
-        <h2>Tickets</h2>
-
-        <div id="ticketsContainer"></div>
-
-        <button
-          type="button"
-          id="addTicketBtn"
-        >
-          + Add Ticket Type
-        </button>
-
-      </section>
-
-
-      <button
-        type="submit"
-        id="createEventBtn"
-      >
-        Create Event
-      </button>
-
-      <p id="formMessage"></p>
-
-    </form>
-
-  </main>
-
-
-  <!-- <script src="/js/common/sidebar.js"></script> -->
-  <script src="/js/host/create-event.js"></script>
-
-</body>
-
-</html>
+    <script>
+      if (!redirectToLoginIfNotLoggedIn()) {
+        protectDashboardHistory();
+      }
+    </script>

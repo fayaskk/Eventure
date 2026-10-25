@@ -9,6 +9,7 @@
   }
 
   function clearToken() {
+    console.trace("🔴 sidebar.js removed the token");
     sessionStorage.removeItem("token");
     localStorage.removeItem("token");
   }

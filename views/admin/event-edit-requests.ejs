@@ -1,0 +1,76 @@
+<%- include("../partials/head", { title: "Eventure | Event Edit Requests" }) %>
+
+  <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+  <link rel="stylesheet" href="/css/admin/event-edit-requests.css">
+
+  <body class="admin-page">
+    <div class="admin-layout">
+      <%- include("../partials/admin-sidebar", { activePage: "event-edit-requests" }) %>
+
+        ```
+        <main class="admin-main main-content">
+          <header class="page-header">
+            <div class="page-header-content">
+              <p class="section-label">Event Management</p>
+              <h1>Event Edit Requests</h1>
+              <p>Review and compare changes requested for approved events.</p>
+            </div>
+
+            <button type="button" id="refresh-requests-btn" class="refresh-btn">
+              <span class="refresh-icon">↻</span>
+              Refresh
+            </button>
+          </header>
+
+          <section class="workspace">
+            <aside class="request-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-eyebrow">Review Queue</p>
+                  <h2>Pending Requests</h2>
+                </div>
+
+                <span class="pending-icon">✎</span>
+              </div>
+
+              <p id="request-count">Loading edit requests...</p>
+
+              <div id="edit-requests-container" class="request-list">
+                <div class="loading-state">
+                  <span class="loading-spinner"></span>
+                  <p>Loading edit requests...</p>
+                </div>
+              </div>
+
+              <div class="request-panel-footer">
+                <span class="footer-status-dot"></span>
+                <span>Requests awaiting your review</span>
+              </div>
+            </aside>
+
+            <section id="request-details" class="details-panel" aria-live="polite">
+              <div class="details-placeholder">
+                <div class="placeholder-icon">☷</div>
+                <h2>Select an edit request</h2>
+                <p>Select a request from the list to compare the existing event with the host's proposed changes.</p>
+
+                <div class="placeholder-features">
+                  <span><i class="feature-dot"></i> Banner comparison</span>
+                  <span><i class="feature-dot"></i> Promotional video</span>
+                  <span><i class="feature-dot"></i> Event details and tickets</span>
+                </div>
+              </div>
+            </section>
+          </section>
+        </main>
+        ```
+
+    </div>
+
+    <script src="/js/admin/admin-auth.js" defer></script>
+
+    <script src="/js/admin/event-edit-requests.js" defer></script>
+
+  </body>
+
+  </html>

@@ -1,24 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-
     <%- include("partials/head", { title: "Eventure | Discover Events" }) %>
-
+        <link rel="stylesheet" href="/css/common/sidebar.css">
         <link rel="stylesheet" href="/css/events.css">
-
 </head>
 
 <body>
 
-    <div id="category-filter"></div>
+    <%- include("partials/sidebar", { activePage: activePage || "events" }) %>
 
-    <div id="events-container"></div>
+        <main class="events-page">
 
-    <script src="/js/events.js"></script>
+            <header class="events-header">
+                <div class="events-header-content">
+                    <div class="events-label">DISCOVER</div>
+                    <h1>Explore Events</h1>
+                    <p>Discover exciting events, experiences and unforgettable moments happening near you.</p>
+                </div>
+            </header>
+
+            <section class="events-filter">
+                <div class="events-filter-card">
+                    <div class="events-search">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input type="search" id="event-search" placeholder="Search events, categories, or locations..."
+                            aria-label="Search events, categories, or locations">
+                    </div>
+
+                    <button type="button" id="search-btn">Search Events</button>
+                </div>
+            </section>
+
+            <section class="events-categories">
+                <div class="category-section-heading">
+                    <div>
+                        <h2>Explore Categories</h2>
+                        <p>Find events that match your interests.</p>
+                    </div>
+                </div>
+
+                <div class="category-slider-wrapper">
+                    <button type="button" class="category-scroll-btn category-scroll-left" id="category-scroll-left"
+                        aria-label="Scroll categories left">&#8249;</button>
+
+                    <div id="categories-container" class="categories-container" aria-label="Event categories">
+                        <div class="categories-loading">Loading categories...</div>
+                    </div>
+
+                    <button type="button" class="category-scroll-btn category-scroll-right" id="category-scroll-right"
+                        aria-label="Scroll categories right">&#8250;</button>
+                </div>
+            </section>
+
+            <section class="events-content">
+
+                <div class="events-heading">
+                    <div>
+                        <h2 id="events-section-title">All Events</h2>
+                        <p id="event-count">Discover upcoming events</p>
+                    </div>
+
+                    <div class="events-sort-controls">
+                        <label for="date-sort">Sort by:</label>
+
+                        <select id="date-sort">
+                            <option value="newest">Recently Added</option>
+                            <option value="oldest">Oldest Added</option>
+                        </select>
+
+                        <select id="price-sort" aria-label="Sort by ticket price">
+                            <option value="">Any Price Order</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="events-container" class="events-container">
+                    <div class="events-loading">Loading events...</div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <script src="/js/events.js"></script>
 
 </body>
 

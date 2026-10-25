@@ -109,7 +109,9 @@ export const getReportsByEventService = async (eventId) => {
 
   const reports = await EventReport.find({
     event: eventId,
-  }).populate("reportedBy", "name email");
+  })
+    .populate("reportedBy", "name email")
+    .populate("event", "eventName eventDate status isVisible");
 
   return reports;
 };
@@ -141,9 +143,6 @@ export const dismissEventReportService = async (reportId) => {
 
   return report;
 };
-
-
-
 
 export const resolveEventReportService = async (reportId) => {
   if (!mongoose.Types.ObjectId.isValid(reportId)) {

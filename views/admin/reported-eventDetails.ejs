@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include("../partials/head", { title: "Eventure | Report Details" }) %>
+  <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+  <link rel="stylesheet" href="/css/admin/reported-eventDetails.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include("../partials/admin-sidebar", { activePage: "reported-events" }) %>
+
+    <main class="admin-main">
+      <header class="reported-details-header">
+        <a href="/admin/reported-events" class="back-link">← Back to Reported Events</a>
+        <p class="section-label">ADMIN PANEL</p>
+        <h1>Event Reports</h1>
+        <p>Review user reports and decide whether the event should remain visible.</p>
+      </header>
+
+      <section id="event-summary" class="event-summary">
+        <div class="report-message">Loading event details...</div>
+      </section>
+
+      <section class="reports-section">
+        <div class="reports-section-header">
+          <div>
+            <h2>Submitted Reports</h2>
+            <p>Review each report before taking action.</p>
+          </div>
+          <span id="reports-count" class="reports-count">0 reports</span>
+        </div>
+
+        <div id="event-reports-container">
+          <div class="report-message">Loading reports...</div>
+        </div>
+      </section>
+
+      <p id="report-page-message" class="page-message" role="status"></p>
+    </main>
+  </div>
+
+  <script src="/js/admin/admin-auth.js"></script>
+  <script src="/js/admin/reported-eventDetails.js"></script>
+</body>
+</html>

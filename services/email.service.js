@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-
+import process from "process"
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
 
@@ -80,8 +80,6 @@ export const sendOTPEmail = async (
       error
     );
 
-    throw new Error(
-      "Failed to send OTP email"
-    );
+    throw new Error( `Failed to send OTP email`);
   }
 };

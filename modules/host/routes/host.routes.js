@@ -33,32 +33,12 @@ router.post("/reset-password", hostResetPassword);
 
 router.get("/profile", authMiddleware, authorizeRole("host"), hostGetProfile);
 
-router.patch(
-  "/profile",
-  authMiddleware,
-  authorizeRole("host"),
-  hostUpdateProfile,
-);
+router.patch("/profile", authMiddleware, authorizeRole("host"), hostUpdateProfile,);
 
-router.patch(
-  "/profile/change-password",
-  authMiddleware,
-  authorizeRole("host"),
-  hostChangePassword,
-);
+router.patch("/profile/change-password", authMiddleware, authorizeRole("host"), hostChangePassword,);
 
-router.post(
-  "/profile/request-email-change",
-  authMiddleware,
-  authorizeRole("host"),
-  hostRequestEmailChange,
-);
+router.post("/profile/request-email-change", authMiddleware, authorizeRole("host"), hostRequestEmailChange,);
 
-router.patch(
-  "/profile/verify-email-change",
-  authMiddleware,
-  authorizeRole("host"),
-  hostVerifyEmailChangeOTP,
-);
+router.patch("/profile/verify-email-change", authMiddleware, authorizeRole("host"), hostVerifyEmailChangeOTP,);
 
 export default router;

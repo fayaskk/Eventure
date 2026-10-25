@@ -3,7 +3,6 @@ import {
   getPublicEventByIdService,
 } from "../../../services/event.service.js";
 
-
 export const getEvents = async (req, res) => {
   try {
     const {
@@ -15,14 +14,14 @@ export const getEvents = async (req, res) => {
     } = req.query;
 
     const normalizedSearch = typeof search === "string" ? search.trim() : "";
-    console.log("category:", category);
+
     const normalizedCategory =
       typeof category === "string" ? category.trim().toLowerCase() : "";
-    console.log("normalizedCategory :", normalizedCategory);
+
     const currentPage = Number(page);
     const currentLimit = Number(limit);
 
-    const allowedSorts = ["newest", "oldest"];
+    const allowedSorts = ["newest", "oldest", "price_low", "price_high"];
 
     if (!Number.isInteger(currentPage) || currentPage < 1) {
       return res.status(400).json({
@@ -45,7 +44,7 @@ export const getEvents = async (req, res) => {
     if (!allowedSorts.includes(sort)) {
       return res.status(400).json({
         success: false,
-        message: "Sort must be  newest or oldest",
+        message: "Invalid sort option",
       });
     }
 
@@ -85,6 +84,7 @@ export const getEventById = async (req, res) => {
     });
   } catch (error) {
     console.error("Get event by Id error:", error);
+
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || "Internal server error",

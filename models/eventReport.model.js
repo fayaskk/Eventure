@@ -17,11 +17,11 @@ const eventReportSchema = new mongoose.Schema(
     reason: {
       type: String,
       enum: [
-        "fake_event",
-        "incorrect_information",
-        "inappropriate_content",
-        "scam",
-        "other",
+    "Misleading information",
+    "Suspicious or fraudulent event",
+    "Incorrect event details",
+    "Inappropriate content",
+    "Other",
       ],
       required: true,
       trim: true,

@@ -1,286 +1,285 @@
 <%- include("../partials/head", { title: "Edit Host Profile | Eventure" }) %>
 
-<link rel="stylesheet" href="/css/host/dashboard.css">
+  <link rel="stylesheet" href="/css/host/dashboard.css">
 
 
-<body>
+  <body>
 
-  <%- include("../partials/sidebar", { activePage: "host-dashboard" }) %>
+    <%- include("../partials/sidebar", { activePage: "host-dashboard" }) %>
 
-  <main class="host-main">
+      <main class="host-main">
 
-    <header class="host-header">
-
-      <div>
-
-        <p class="section-label">
-          HOST PANEL
-        </p>
-
-        <h1>
-          Welcome back, <span id="hostName">Host</span>
-        </h1>
-
-        <p>
-          Manage your events, bookings and earnings from one place.
-        </p>
-
-      </div>
-
-      <a href="/host/events/create" class="create-event-btn">
-        + Create Event
-      </a>
-
-    </header>
-
-
-    <section class="stats-grid">
-
-      <div class="stat-card">
-
-        <div class="stat-icon">📅</div>
-
-        <div>
-
-          <span>Total Events</span>
-
-          <strong id="totalEvents">0</strong>
-
-          <small>Events created</small>
-
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon">🗓️</div>
-
-        <div>
-
-          <span>Upcoming Events</span>
-
-          <strong id="upcomingEvents">0</strong>
-
-          <small>Future events</small>
-
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon">🎟️</div>
-
-        <div>
-
-          <span>Total Bookings</span>
-
-          <strong id="totalBookings">0</strong>
-
-          <small>All time</small>
-
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon">💰</div>
-
-        <div>
-
-          <span>Total Revenue</span>
-
-          <strong id="totalRevenue">₹0</strong>
-
-          <small>Event earnings</small>
-
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon">⏳</div>
-
-        <div>
-
-          <span>Pending Settlement</span>
-
-          <strong id="pendingSettlement">₹0</strong>
-
-          <small>Awaiting settlement</small>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section class="dashboard-columns">
-
-      <div class="dashboard-card">
-
-        <div class="card-header">
+        <header class="host-header">
 
           <div>
 
-            <h2>Upcoming Events</h2>
+            <p class="section-label">
+              HOST PANEL
+            </p>
 
-            <p>Your next scheduled events.</p>
+            <h1>
+              Welcome back, <span id="hostName">Host</span>
+            </h1>
+
+            <p>
+              Manage your events, bookings and earnings from one place.
+            </p>
 
           </div>
 
-          <a href="/host/events" class="view-link">
-            View All →
+          <a href="/host/events/create" class="create-event-btn">
+            + Create Event
           </a>
 
-        </div>
+        </header>
 
 
-        <div id="upcomingEventsList" class="event-list">
+        <section class="stats-grid">
 
-          <div class="empty-state">
+          <div class="stat-card">
 
-            <span>📅</span>
+            <div class="stat-icon">📅</div>
 
-            <p>No upcoming events</p>
+            <div>
 
-            <small>
-              Your upcoming events will appear here.
-            </small>
+              <span>Total Events</span>
 
-          </div>
+              <strong id="totalEvents">0</strong>
 
-        </div>
+              <small>Events created</small>
 
-      </div>
-
-
-      <div class="dashboard-card">
-
-        <div class="card-header">
-
-          <div>
-
-            <h2>Recent Bookings</h2>
-
-            <p>Latest bookings for your events.</p>
+            </div>
 
           </div>
 
-          <a href="/host/bookings" class="view-link">
-            View All →
-          </a>
 
-        </div>
+          <div class="stat-card">
 
+            <div class="stat-icon">🗓️</div>
 
-        <div id="recentBookingsList" class="booking-list">
+            <div>
 
-          <div class="empty-state">
+              <span>Upcoming Events</span>
 
-            <span>🎟️</span>
+              <strong id="upcomingEvents">0</strong>
 
-            <p>No recent bookings</p>
+              <small>Future events</small>
 
-            <small>
-              Recent bookings will appear here.
-            </small>
+            </div>
 
           </div>
 
-        </div>
 
-      </div>
+          <div class="stat-card">
 
-    </section>
+            <div class="stat-icon">🎟️</div>
 
+            <div>
 
-    <section class="dashboard-card">
+              <span>Total Bookings</span>
 
-      <div class="card-header">
+              <strong id="totalBookings">0</strong>
 
-        <div>
+              <small>All time</small>
 
-          <h2>Quick Actions</h2>
+            </div>
 
-          <p>
-            Frequently used host tools.
-          </p>
-
-        </div>
-
-      </div>
+          </div>
 
 
-      <div class="quick-actions">
+          <div class="stat-card">
 
-        <a href="/host/events/create" class="quick-action">
+            <div class="stat-icon">💰</div>
 
-          <span>➕</span>
+            <div>
 
-          <strong>Create Event</strong>
+              <span>Total Revenue</span>
 
-        </a>
+              <strong id="totalRevenue">₹0</strong>
 
+              <small>Event earnings</small>
 
-        <a href="/host/events" class="quick-action">
+            </div>
 
-          <span>📅</span>
-
-          <strong>Manage Events</strong>
-
-        </a>
+          </div>
 
 
-        <a href="/host/bookings" class="quick-action">
+          <div class="stat-card">
 
-          <span>🎟️</span>
+            <div class="stat-icon">⏳</div>
 
-          <strong>View Bookings</strong>
+            <div>
 
-        </a>
+              <span>Pending Settlement</span>
 
+              <strong id="pendingSettlement">₹0</strong>
 
-        <a href="/host/settlements" class="quick-action">
+              <small>Awaiting settlement</small>
 
-          <span>💰</span>
+            </div>
 
-          <strong>View Settlements</strong>
+          </div>
 
-        </a>
-
-      </div>
-
-    </section>
+        </section>
 
 
-    <p id="dashboardMessage" class="dashboard-message"></p>
+        <section class="dashboard-columns">
 
-  </main>
+          <div class="dashboard-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>Upcoming Events</h2>
+
+                <p>Your next scheduled events.</p>
+
+              </div>
+
+              <a href="/host/events" class="view-link">
+                View All →
+              </a>
+
+            </div>
 
 
-  <script src="/js/auth-guard.js"></script>
+            <div id="upcomingEventsList" class="event-list">
 
-  <script src="/js/common/sidebar.js"></script>
+              <div class="empty-state">
 
-  <script src="/js/host/dashboard.js"></script>
+                <span>📅</span>
 
-  <script>
+                <p>No upcoming events</p>
 
-    if (!redirectToLoginIfNotLoggedIn()) {
-      protectDashboardHistory();
-    }
+                <small>
+                  Your upcoming events will appear here.
+                </small>
 
-  </script>
+              </div>
 
-</body>
+            </div>
 
-</html>
+          </div>
+
+
+          <div class="dashboard-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>Recent Bookings</h2>
+
+                <p>Latest bookings for your events.</p>
+
+              </div>
+
+              <a href="/host/bookings" class="view-link">
+                View All →
+              </a>
+
+            </div>
+
+
+            <div id="recentBookingsList" class="booking-list">
+
+              <div class="empty-state">
+
+                <span>🎟️</span>
+
+                <p>No recent bookings</p>
+
+                <small>
+                  Recent bookings will appear here.
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <section class="dashboard-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h2>Quick Actions</h2>
+
+              <p>
+                Frequently used host tools.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="quick-actions">
+
+            <a href="/host/events/create" class="quick-action">
+
+              <span>➕</span>
+
+              <strong>Create Event</strong>
+
+            </a>
+
+
+            <a href="/host/events" class="quick-action">
+
+              <span>📅</span>
+
+              <strong>Manage Events</strong>
+
+            </a>
+
+
+            <a href="/host/bookings" class="quick-action">
+
+              <span>🎟️</span>
+
+              <strong>View Bookings</strong>
+
+            </a>
+
+
+            <a href="/host/settlements" class="quick-action">
+
+              <span>💰</span>
+
+              <strong>View Settlements</strong>
+
+            </a>
+
+          </div>
+
+        </section>
+
+
+        <p id="dashboardMessage" class="dashboard-message"></p>
+
+      </main>
+
+
+      <script src="/js/auth-guard.js"></script>
+
+      <script src="/js/common/sidebar.js"></script>
+
+      <script src="/js/host/dashboard.js"></script>
+
+      <script>
+        if (!redirectToLoginIfNotLoggedIn()) {
+          protectDashboardHistory();
+          verifyAccountStatus();
+        }
+      </script>
+
+  </body>
+
+  </html>

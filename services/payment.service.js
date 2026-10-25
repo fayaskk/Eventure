@@ -1,8 +1,7 @@
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import mongoose from "mongoose";
-import process from "process";
-import { Buffer } from "buffer";
+
 import { Booking } from "../models/booking.model.js";
 import { Payment } from "../models/payment.model.js";
 import { Event } from "../models/event.model.js";
@@ -13,11 +12,11 @@ const razorpay = new Razorpay({
 });
 
 export const createRazorpayOrderService = async (userId, bookingId) => {
-  console.log("USER ID:", userId);
-  console.log("BOOKING ID:", bookingId);
-  console.log("IS VALID:", mongoose.Types.ObjectId.isValid(bookingId));
-  if (!mongoose.Types.ObjectId.isValid(bookingId)) {
-    const error = new Error("Invalid booking ID");
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(bookingId)
+  ) {
+    const error = new Error("Invalid user or booking ID");
     error.statusCode = 400;
     throw error;
   }
@@ -36,20 +35,12 @@ export const createRazorpayOrderService = async (userId, bookingId) => {
     throw error;
   }
 
-  if (booking.bookingStatus !== "pending") {
-    const error = new Error("Booking is not available for payment");
-    error.statusCode = 409;
-    throw error;
-  }
-
-  if (booking.paymentStatus !== "pending") {
-    const error = new Error("Payment is not pending for this booking");
-    error.statusCode = 409;
-    throw error;
-  }
-
-  if (booking.paymentExpiresAt <= new Date()) {
-    const error = new Error("Payment time has expired");
+  if (
+    booking.bookingStatus !== "pending" ||
+    !["pending", "failed"].includes(booking.paymentStatus) ||
+    booking.paymentExpiresAt <= new Date()
+  ) {
+    const error = new Error("Booking is no longer available for payment");
     error.statusCode = 409;
     throw error;
   }
@@ -58,13 +49,13 @@ export const createRazorpayOrderService = async (userId, bookingId) => {
     booking: booking._id,
   });
 
-  if (existingPayment && existingPayment.status === "successful") {
+  if (existingPayment?.status === "successful") {
     const error = new Error("Payment has already been completed");
     error.statusCode = 409;
     throw error;
   }
 
-  if (existingPayment && existingPayment.status === "created") {
+  if (existingPayment?.status === "created") {
     return {
       payment: existingPayment,
       razorpayOrderId: existingPayment.razorpayOrderId,
@@ -120,6 +111,12 @@ export const verifyRazorpayPaymentService = async (
     throw error;
   }
 
+  if (!/^[a-f0-9]{64}$/i.test(razorpaySignature)) {
+    const error = new Error("Invalid payment signature format");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const payment = await Payment.findOne({
     razorpayOrderId,
   });
@@ -144,7 +141,33 @@ export const verifyRazorpayPaymentService = async (
     throw error;
   }
 
+  const generatedSignature = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+    .digest("hex");
+
+  const signatureBuffer = Buffer.from(generatedSignature, "hex");
+
+  const providedSignatureBuffer = Buffer.from(razorpaySignature, "hex");
+
+  if (
+    signatureBuffer.length !== providedSignatureBuffer.length ||
+    !crypto.timingSafeEqual(signatureBuffer, providedSignatureBuffer)
+  ) {
+    const error = new Error("Invalid payment signature");
+    error.statusCode = 400;
+    throw error;
+  }
+
   if (payment.status === "successful") {
+    if (payment.razorpayPaymentId !== razorpayPaymentId) {
+      const error = new Error(
+        "Payment record does not match the supplied payment ID",
+      );
+      error.statusCode = 409;
+      throw error;
+    }
+
     return {
       payment,
       booking,
@@ -152,28 +175,12 @@ export const verifyRazorpayPaymentService = async (
     };
   }
 
-  const generatedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(`${razorpayOrderId}|${razorpayPaymentId}`)
-    .digest("hex");
-
-  const isSignatureValid = crypto.timingSafeEqual(
-    Buffer.from(generatedSignature),
-    Buffer.from(razorpaySignature),
-  );
-
-  if (!isSignatureValid) {
-    const error = new Error("Invalid payment signature");
-    error.statusCode = 400;
-    throw error;
-  }
-
   const session = await mongoose.startSession();
 
   try {
     let updatedPayment;
     let updatedBooking;
-
+    let alreadyProcessed = false;
     await session.withTransaction(async () => {
       const currentPayment = await Payment.findById(payment._id).session(
         session,
@@ -185,16 +192,32 @@ export const verifyRazorpayPaymentService = async (
         throw error;
       }
 
-      if (currentPayment.status === "successful") {
-        updatedPayment = currentPayment;
-        updatedBooking = await Booking.findById(booking._id).session(session);
+      if (currentPayment.razorpayOrderId !== razorpayOrderId) {
+        const error = new Error("Payment order mismatch");
+        error.statusCode = 409;
+        throw error;
+      }
 
+      if (currentPayment.status === "successful") {
+        if (currentPayment.razorpayPaymentId !== razorpayPaymentId) {
+          const error = new Error(
+            "Payment has already been processed with another payment ID",
+          );
+          error.statusCode = 409;
+          throw error;
+        }
+
+        updatedPayment = currentPayment;
+        updatedBooking = await Booking.findById(currentPayment.booking).session(
+          session,
+        );
+        alreadyProcessed = true;
         return;
       }
 
-      const currentBooking = await Booking.findById(booking._id).session(
-        session,
-      );
+      const currentBooking = await Booking.findById(
+        currentPayment.booking,
+      ).session(session);
 
       if (!currentBooking) {
         const error = new Error("Booking not found");
@@ -202,23 +225,41 @@ export const verifyRazorpayPaymentService = async (
         throw error;
       }
 
-      if (currentBooking.bookingStatus !== "pending") {
-        const error = new Error("Booking is no longer available for payment");
+      if (
+        currentBooking.bookingStatus !== "pending" ||
+        currentBooking.paymentStatus !== "pending" ||
+        currentBooking.paymentExpiresAt <= new Date()
+      ) {
+        const error = new Error(
+          "Booking has expired or is no longer available. Any captured payment requires reconciliation.",
+        );
         error.statusCode = 409;
         throw error;
       }
 
-      if (currentBooking.paymentStatus !== "pending") {
-        const error = new Error("Booking payment is no longer pending");
-        error.statusCode = 409;
+      const razorpayPayment = await razorpay.payments.fetch(razorpayPaymentId);
+
+      if (
+        razorpayPayment.order_id !== razorpayOrderId ||
+        razorpayPayment.status !== "captured" ||
+        razorpayPayment.amount !== currentPayment.amount ||
+        razorpayPayment.currency !== currentPayment.currency
+      ) {
+        const error = new Error(
+          "Razorpay payment details could not be verified",
+        );
+        error.statusCode = 400;
         throw error;
       }
 
-      const event = await Event.findById(currentBooking.event).session(session);
+      const event = await Event.findOne({
+        _id: currentBooking.event,
+        status: "approved",
+      }).session(session);
 
       if (!event) {
-        const error = new Error("Event not found");
-        error.statusCode = 404;
+        const error = new Error("Event not found or is no longer approved");
+        error.statusCode = 409;
         throw error;
       }
 
@@ -233,7 +274,7 @@ export const verifyRazorpayPaymentService = async (
           throw error;
         }
 
-        if ((eventTicket.reserved || 0) < bookedTicket.quantity) {
+        if ((eventTicket.reserved ?? 0) < bookedTicket.quantity) {
           const error = new Error(
             `Reserved quantity is insufficient for ${bookedTicket.ticketName}`,
           );
@@ -242,13 +283,14 @@ export const verifyRazorpayPaymentService = async (
         }
 
         eventTicket.reserved -= bookedTicket.quantity;
-        eventTicket.sold = (eventTicket.sold || 0) + bookedTicket.quantity;
+        eventTicket.sold = (eventTicket.sold ?? 0) + bookedTicket.quantity;
       }
 
       await event.save({ session });
 
       currentPayment.razorpayPaymentId = razorpayPaymentId;
       currentPayment.status = "successful";
+      currentPayment.failureReason = undefined;
 
       await currentPayment.save({ session });
 
@@ -264,7 +306,7 @@ export const verifyRazorpayPaymentService = async (
     return {
       payment: updatedPayment,
       booking: updatedBooking,
-      alreadyProcessed: false,
+      alreadyProcessed,
     };
   } finally {
     await session.endSession();
@@ -281,46 +323,71 @@ export const handleRazorpayPaymentFailureService = async (
     throw error;
   }
 
-  const payment = await Payment.findOne({
-    razorpayOrderId,
-  });
+  const session = await mongoose.startSession();
 
-  if (!payment) {
-    const error = new Error("Payment record not found");
-    error.statusCode = 404;
-    throw error;
+  try {
+    let result;
+
+    await session.withTransaction(async () => {
+      const payment = await Payment.findOne({
+        razorpayOrderId,
+      }).session(session);
+
+      if (!payment) {
+        const error = new Error("Payment record not found");
+        error.statusCode = 404;
+        throw error;
+      }
+
+      const booking = await Booking.findById(payment.booking).session(session);
+
+      if (!booking) {
+        const error = new Error("Booking not found");
+        error.statusCode = 404;
+        throw error;
+      }
+
+      if (booking.user.toString() !== userId.toString()) {
+        const error = new Error(
+          "You are not authorized to update this payment",
+        );
+        error.statusCode = 403;
+        throw error;
+      }
+
+      if (payment.status === "successful") {
+        const error = new Error("Payment is already successful");
+        error.statusCode = 409;
+        throw error;
+      }
+
+      if (
+        booking.bookingStatus !== "pending" ||
+        booking.paymentStatus !== "pending" ||
+        booking.paymentExpiresAt <= new Date()
+      ) {
+        const error = new Error(
+          "Booking has expired or is no longer available",
+        );
+        error.statusCode = 409;
+        throw error;
+      }
+
+      payment.razorpayPaymentId = razorpayPaymentId || undefined;
+
+      payment.status = "failed";
+      payment.failureReason = failureReason || "Payment failed";
+
+      await payment.save({ session });
+
+      result = {
+        payment,
+        booking,
+      };
+    });
+
+    return result;
+  } finally {
+    await session.endSession();
   }
-
-  const booking = await Booking.findById(payment.booking);
-
-  if (!booking) {
-    const error = new Error("Booking not found");
-    error.statusCode = 404;
-    throw error;
-  }
-
-  if (booking.user.toString() !== userId.toString()) {
-    const error = new Error("You are not authorized to update this payment");
-    error.statusCode = 403;
-    throw error;
-  }
-
-  if (payment.status === "successful") {
-    const error = new Error("Payment is already successful");
-    error.statusCode = 409;
-    throw error;
-  }
-
-  payment.razorpayPaymentId = razorpayPaymentId;
-
-  payment.status = "failed";
-
-  payment.failureReason = failureReason || "Payment failed";
-
-  await payment.save();
-
-  return {
-    payment,
-    booking,
-  };
 };
