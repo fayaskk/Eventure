@@ -1,0 +1,115 @@
+<%- include("../partials/head", { title: "QR Scanner | Eventure" }) %>
+
+<link rel="stylesheet" href="/css/common/navbar.css">
+<link rel="stylesheet" href="/css/common/host-layout.css">
+<link rel="stylesheet" href="/css/host/ticket-scanner.css">
+
+<body class="host-layout ticket-scanner-page">
+
+  <%- include("../partials/navbar") %>
+
+  <%- include("../partials/sidebar", { activePage: "ticket-scanner" }) %>
+
+  <div class="host-dashboard-layout">
+
+    <main class="scanner-main">
+
+      <header class="scanner-header">
+        <div>
+          <p class="section-label">HOST PANEL</p>
+          <h1>Ticket Scanner</h1>
+          <p>Scan individual attendee tickets and verify event admission.</p>
+        </div>
+
+        <a href="/host/dashboard" class="scanner-back-link">
+          <i class="bi bi-arrow-left"></i>
+          Host Dashboard
+        </a>
+      </header>
+
+      <section class="scanner-layout">
+
+        <article class="scanner-card">
+
+          <div class="scanner-card-heading">
+            <div>
+              <h2>Scan attendee QR code</h2>
+              <p>Position the ticket QR code inside the scanning area.</p>
+            </div>
+
+            <span class="scanner-live-badge">
+              <span></span>
+              Scanner
+            </span>
+          </div>
+
+          <div id="ticket-reader"></div>
+
+          <div class="scanner-controls">
+            <button id="start-scanner-btn" type="button">
+              <i class="bi bi-camera"></i>
+              Start Scanner
+            </button>
+
+            <button
+              id="stop-scanner-btn"
+              type="button"
+              class="scanner-stop-btn"
+              disabled
+            >
+              <i class="bi bi-stop-circle"></i>
+              Stop Scanner
+            </button>
+          </div>
+
+          <p id="scanner-status" class="scanner-status" role="status">
+            Start the scanner and allow camera access.
+          </p>
+
+        </article>
+
+        <aside class="verification-card">
+
+          <div class="verification-icon">
+            <i class="bi bi-ticket-perforated-fill"></i>
+          </div>
+
+          <h2>Admission Verification</h2>
+
+          <p class="verification-description">
+            The scanned ticket will be validated securely by Eventure.
+          </p>
+
+          <div
+            id="verification-result"
+            class="verification-result verification-idle"
+            role="status"
+            aria-live="polite"
+          >
+            <strong>Ready to scan</strong>
+            <p>Scan an attendee's individual ticket to verify admission.</p>
+          </div>
+
+          <div class="verification-note">
+            <strong>Security reminder</strong>
+            <p>
+              Each individual ticket can be checked in only once.
+            </p>
+          </div>
+
+        </aside>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/common/sidebar.js"></script>
+  <script src="/vendor/html5-qrcode/html5-qrcode.min.js"></script>
+  <script src="/js/host/ticket-scanner.js"></script>
+
+</body>
+</html>

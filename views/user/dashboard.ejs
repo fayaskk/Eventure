@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head", { title: "Dashboard | Eventure" }) %>
+  <%- include("../partials/head", { title: "My Eventure | Eventure" }) %>
     <link rel="stylesheet" href="/css/user/dashboard.css">
 </head>
 
@@ -17,47 +17,60 @@
         <header class="dashboard-header">
           <div>
             <p class="welcome-label">YOUR EVENTURE JOURNEY</p>
-            <h1>Welcome back <span id="userName">there</span>! 👋</h1>
+            <h1>Welcome back, <span id="userName">there</span> <span class="welcome-wave">👋</span></h1>
             <p class="welcome-text">
-              Discover exciting events and create unforgettable memories.
+              Your next unforgettable experience is waiting to be discovered.
             </p>
           </div>
+
+          <a href="/events" class="header-explore-btn">
+            Explore events <span aria-hidden="true">↗</span>
+          </a>
         </header>
 
-        <section class="search-section">
+        <section class="dashboard-hero">
+          <div class="dashboard-hero-content">
+            <span class="hero-eyebrow">MAKE YOUR MOMENTS COUNT</span>
+            <h2>Find your next<br> unforgettable experience.</h2>
+            <p>From live music to inspiring experiences, discover something worth looking forward to.</p>
+            <a href="/events" class="hero-btn">
+              Discover events <span aria-hidden="true">→</span>
+            </a>
+          </div>
 
-          <input type="text" placeholder="Search events..." class="event-search" id="eventSearch">
-
-          <select id="categoryFilter">
-            <option value="">All Categories</option>
-          </select>
-
-          <select id="locationFilter">
-            <option value="">Any Location</option>
-          </select>
-
-          <button class="search-btn" id="searchBtn" type="button">
-            Search
-          </button>
-
+          <div class="dashboard-hero-art" aria-hidden="true">
+            <div class="hero-orbit hero-orbit-one"></div>
+            <div class="hero-orbit hero-orbit-two"></div>
+            <div class="hero-ticket">
+              <span class="ticket-icon">✦</span>
+              <span class="ticket-line"></span>
+              <span class="ticket-line ticket-line-short"></span>
+              <span class="ticket-bottom">YOUR NEXT EXPERIENCE</span>
+            </div>
+            <span class="hero-spark hero-spark-one">✦</span>
+            <span class="hero-spark hero-spark-two">✧</span>
+          </div>
         </section>
 
         <section class="dashboard-section">
 
           <div class="section-header">
             <div>
-              <p class="section-label">DISCOVER WHAT'S NEXT</p>
-              <h2>Upcoming Events</h2>
+              <p class="section-label">CURATED FOR YOU</p>
+              <h2>Upcoming events</h2>
+              <p class="section-description">Explore experiences you won't want to miss.</p>
             </div>
 
             <a href="/events" class="view-all">
-              View All Events →
+              Explore all events <span aria-hidden="true">→</span>
             </a>
           </div>
 
           <div id="dashboardEvents" class="event-grid">
             <div class="dashboard-empty-state">
-              <p>Loading events...</p>
+              <div class="empty-state-icon">✦</div>
+              <h3>Finding experiences for you</h3>
+              <p>We're bringing together the latest events. Just a moment.</p>
             </div>
           </div>
 
@@ -65,41 +78,50 @@
 
         <section class="dashboard-section quick-section">
 
-          <p class="section-label">QUICK ACTIONS</p>
-          <h2>Continue Exploring</h2>
+          <div class="section-header">
+            <div>
+              <p class="section-label">YOUR EVENTURE</p>
+              <h2>Everything you need</h2>
+              <p class="section-description">Your tickets, profile, and hosting journey in one place.</p>
+            </div>
+          </div>
 
           <div class="quick-actions">
 
-            <a href="/events" class="quick-card">
-              <span>🔍</span>
-              <div>
-                <h3>Explore Events</h3>
-                <p>Find events happening around you.</p>
+            <a href="/events" class="quick-card quick-card-primary">
+              <div class="quick-card-icon">⌕</div>
+              <div class="quick-card-content">
+                <h3>Explore events</h3>
+                <p>Discover experiences happening around you.</p>
               </div>
+              <span class="quick-card-arrow" aria-hidden="true">↗</span>
             </a>
 
             <a href="/user/bookings" class="quick-card">
-              <span>🎟️</span>
-              <div>
-                <h3>My Tickets</h3>
-                <p>View your bookings and tickets.</p>
+              <div class="quick-card-icon">▤</div>
+              <div class="quick-card-content">
+                <h3>My tickets</h3>
+                <p>Keep your bookings and event tickets close.</p>
               </div>
+              <span class="quick-card-arrow" aria-hidden="true">↗</span>
             </a>
 
             <a href="/profile" class="quick-card">
-              <span>👤</span>
-              <div>
-                <h3>My Profile</h3>
-                <p>View and manage your account.</p>
+              <div class="quick-card-icon">♙</div>
+              <div class="quick-card-content">
+                <h3>My profile</h3>
+                <p>Manage your account and personal details.</p>
               </div>
+              <span class="quick-card-arrow" aria-hidden="true">↗</span>
             </a>
 
             <a href="/apply-host" class="quick-card">
-              <span>🏢</span>
-              <div>
-                <h3>Become a Host</h3>
-                <p>Create and manage your own events.</p>
+              <div class="quick-card-icon">✧</div>
+              <div class="quick-card-content">
+                <h3>Become a host</h3>
+                <p>Bring your own event to the Eventure community.</p>
               </div>
+              <span class="quick-card-arrow" aria-hidden="true">↗</span>
             </a>
 
           </div>

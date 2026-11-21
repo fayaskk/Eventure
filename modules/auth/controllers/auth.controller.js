@@ -70,7 +70,7 @@ export const signup = async (req, res) => {
 
         await sendOTPEmail(normalizedEmail, otp);
 
-        console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
         return res.status(200).json({
           message:
@@ -115,7 +115,7 @@ export const signup = async (req, res) => {
 
     await sendOTPEmail(normalizedEmail, otp);
 
-    console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
     return res.status(200).json({
       success: true,
@@ -511,7 +511,7 @@ export const forgotPassword = async (req, res) => {
 
     await sendOTPEmail(normalizedEmail, otp);
 
-    console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
     return res.status(200).json({
       success: true,
@@ -540,7 +540,8 @@ export const verifyForgotPasswordOTP = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedOTP = otp.trim();
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+ const emailRegex =
+  /^(?=.{6,254}$)(?=.{2,64}@)[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
 
     if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({

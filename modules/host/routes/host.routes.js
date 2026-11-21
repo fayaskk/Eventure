@@ -9,6 +9,8 @@ import {
   hostRequestEmailChange,
   hostVerifyEmailChangeOTP,
 } from "../controllers/hostAuth.controller.js";
+import { checkInTicket } from "../controllers/ticketCheckin.controller.js";
+import { getHostFeedbackSummary ,getHostFeedbackEvents, getHostEventFeedback} from "../controllers/hostFeedback.controller.js";
 
 import {
   hostGetProfile,
@@ -18,6 +20,12 @@ import {
 
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
 import { authorizeRole } from "../../../middleware/role.middleware.js";
+
+import {
+  getHostBookingSummary,
+  getHostBookings,
+  getHostBookingDetails,
+} from "../controllers/hostBooking.controller.js";
 
 const router = express.Router();
 
@@ -31,14 +39,30 @@ router.post("/verify-forgot-password-otp", hostVerifyForgotPasswordOTP);
 
 router.post("/reset-password", hostResetPassword);
 
-router.get("/profile", authMiddleware, authorizeRole("host"), hostGetProfile);
+router.use(authMiddleware,authorizeRole("host"))
 
-router.patch("/profile", authMiddleware, authorizeRole("host"), hostUpdateProfile,);
+router.get("/profile", hostGetProfile);
 
-router.patch("/profile/change-password", authMiddleware, authorizeRole("host"), hostChangePassword,);
+router.patch("/profile", hostUpdateProfile,);
 
-router.post("/profile/request-email-change", authMiddleware, authorizeRole("host"), hostRequestEmailChange,);
+router.patch("/profile/change-password", hostChangePassword,);
 
-router.patch("/profile/verify-email-change", authMiddleware, authorizeRole("host"), hostVerifyEmailChangeOTP,);
+router.post("/profile/request-email-change", hostRequestEmailChange,);
+
+router.patch("/profile/verify-email-change", hostVerifyEmailChangeOTP,);
+
+router.post("/tickets/check-in", checkInTicket,);
+
+router.get("/feedback/summary", getHostFeedbackSummary,);
+
+router.get("/feedback/events", getHostFeedbackEvents);
+
+router.get("/feedback/events/:eventId", getHostEventFeedback);
+
+router.get( "/bookings/summary", getHostBookingSummary);
+
+router.get("/bookings", getHostBookings);
+
+router.get("/bookings/:bookingId", getHostBookingDetails);
 
 export default router;

@@ -69,6 +69,13 @@ router.get("/admin/events", (req, res) => {
   });
 });
 
+router.get("/admin/settlements", (req, res) => {
+  res.render("admin/settlements", {
+    title: "Eventure | Manage Settlements",
+    activePage: "settlements",
+  });
+});
+
 router.get("/admin/reported-events", (req, res) => {
   res.render("admin/reported-events", {
     title: "Eventure | Reported Events",

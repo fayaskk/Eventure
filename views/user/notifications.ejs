@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head", { title: "Notifications | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/common/navbar.css">
+  <link rel="stylesheet" href="/css/common/sidebar.css">
+  <link rel="stylesheet" href="/css/user/notifications.css">
+</head>
+
+<body class="notifications-page">
+
+    <%- include("../partials/sidebar", { activePage: "notifications" }) %>
+
+    <%- include("../partials/navbar", { activePage: "notifications" }) %>
+
+    <div class="notifications-layout">
+
+        <main class="notifications-content">
+
+      <header class="notifications-header">
+
+        <div>
+          <p class="notifications-eyebrow">YOUR ACTIVITY</p>
+
+          <h1>Notifications</h1>
+
+          <p class="notifications-description">
+            Stay updated with your bookings, events and account activity.
+          </p>
+        </div>
+
+        <div class="notifications-header-icon">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notification-header-indicator"></span>
+        </div>
+
+      </header>
+
+      <section class="notification-overview">
+
+        <div class="notification-overview-card">
+
+          <div class="notification-overview-icon">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+
+          <div>
+            <p>UNREAD NOTIFICATIONS</p>
+            <h2 id="unreadNotificationCount">0</h2>
+            <span>Notifications waiting for you</span>
+          </div>
+
+        </div>
+
+        <div class="notification-overview-actions">
+
+          <button
+            type="button"
+            id="markAllReadButton"
+            class="mark-all-read-btn"
+            disabled
+          >
+            <i class="fa-solid fa-check-double"></i>
+            Mark all as read
+          </button>
+
+        </div>
+
+      </section>
+
+      <section class="notifications-section">
+
+        <div class="notifications-section-header">
+
+          <div>
+            <p class="notifications-eyebrow">YOUR UPDATES</p>
+
+            <h2>All Notifications</h2>
+
+            <p>Everything happening around your Eventure account.</p>
+          </div>
+
+          <div class="notification-filter-wrapper">
+
+            <button
+              type="button"
+              class="notification-filter active"
+              data-filter="all"
+            >
+              All
+            </button>
+
+            <button
+              type="button"
+              class="notification-filter"
+              data-filter="unread"
+            >
+              Unread
+            </button>
+
+            <button
+              type="button"
+              class="notification-filter"
+              data-filter="read"
+            >
+              Read
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="notifications-list" id="notificationsList">
+
+          <div class="notification-loading">
+            <span class="notification-spinner"></span>
+            Loading notifications...
+          </div>
+
+        </div>
+
+        <div class="notifications-pagination">
+
+          <p id="notificationsCount">
+            Showing 0 notifications
+          </p>
+
+          <div class="notifications-pagination-controls">
+
+            <button type="button" id="notificationsPrevPage" disabled>
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <span id="notificationsPaginationInfo">Page 1 of 1</span>
+
+            <button type="button" id="notificationsNextPage" disabled>
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="notifications-information">
+
+        <div class="notifications-information-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <h3>Stay informed with Eventure.</h3>
+
+          <p>
+            Important updates about your bookings, payments, refunds
+            and events will appear here. Your notifications are
+            securely associated with your account.
+          </p>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script src="/js/user/notifications.js"></script>
+
+  <script>
+    if (!redirectToLoginIfNotLoggedIn()) {
+      protectDashboardHistory();
+      verifyAccountStatus();
+    }
+  </script>
+
+</body>
+
+</html>

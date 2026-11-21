@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import path from "path";
 import passport from "passport";
 import "./config/passport.js";
@@ -24,10 +25,13 @@ import adminEventReportRoutes from "./modules/eventReport/routes/adminEventRepor
 import bookingRoutes from "./modules/booking/routes/booking.routes.js";
 import paymentRoutes from "./modules/payment/routes/payment.routes.js";
 import paymentPageRoutes from "./modules/payment/routes/payment.page.routes.js";
-
+import hostDiscountRoutes from "./modules/host/routes/hostDiscount.routes.js";
+import notificationRoutes from "./modules/notification/routes/notification.routes.js";
+import hostSettlementRoutes from "./modules/host/routes/hostSettlement.routes.js";
 import { handleRazorpayWebhook } from "./modules/payment/controllers/payment.controller.js";
 
 export const app = express();
+app.use(morgan("dev"));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +39,7 @@ const __dirname = path.dirname(__filename);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.post("/api/payments/webhook", express.raw({ type: "application/json" }), handleRazorpayWebhook);
+app.post("/api/payments/razorpay-webhook", express.raw({ type: "application/json" }), handleRazorpayWebhook);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -66,8 +70,15 @@ app.use("/api/admin/event-reports", adminEventReportRoutes);
 
 app.use("/api/events/bookings", bookingRoutes);
 
+app.use("/api/host", hostDiscountRoutes);
+
 app.use("/api/payments", paymentRoutes);
 app.use("/payment", paymentPageRoutes);
+
+app.use("/api/notifications", notificationRoutes);
+
+app.use("/api/host/settlements", hostSettlementRoutes);
+
 app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,

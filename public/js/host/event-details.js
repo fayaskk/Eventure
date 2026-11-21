@@ -392,7 +392,6 @@ const renderEventActions = (event) => {
 
   return "";
 };
-
 const getEventDetails = async () => {
   try {
     const token = getAuthToken();
@@ -443,43 +442,43 @@ const getEventDetails = async () => {
       ? event.tickets
           .map(
             (ticket) => `
-                <div class="ticket-card">
-                  <div class="ticket-header">
-                    <h3>${escapeHTML(ticket.name)}</h3>
+              <div class="ticket-card">
+                <div class="ticket-header">
+                  <h3>${escapeHTML(ticket.name)}</h3>
+                </div>
+
+                <div class="ticket-info">
+                  <div>
+                    <span>Price</span>
+                    <strong>₹${escapeHTML(ticket.price)}</strong>
                   </div>
 
-                  <div class="ticket-info">
-                    <div>
-                      <span>Price</span>
-                      <strong>₹${escapeHTML(ticket.price)}</strong>
-                    </div>
+                  <div>
+                    <span>Quantity</span>
+                    <strong>${escapeHTML(ticket.quantity)}</strong>
+                  </div>
 
-                    <div>
-                      <span>Quantity</span>
-                      <strong>${escapeHTML(ticket.quantity)}</strong>
-                    </div>
+                  <div>
+                    <span>Sold</span>
+                    <strong>${escapeHTML(ticket.sold || 0)}</strong>
+                  </div>
 
-                    <div>
-                      <span>Sold</span>
-                      <strong>${escapeHTML(ticket.sold || 0)}</strong>
-                    </div>
+                  <div>
+                    <span>Reserved</span>
+                    <strong>${escapeHTML(ticket.reserved || 0)}</strong>
+                  </div>
 
-                    <div>
-                      <span>Reserved</span>
-                      <strong>${escapeHTML(ticket.reserved || 0)}</strong>
-                    </div>
-
-                    <div>
-                      <span>Available</span>
-                      <strong>${
-                        Number(ticket.quantity || 0) -
-                        Number(ticket.sold || 0) -
-                        Number(ticket.reserved || 0)
-                      }</strong>
-                    </div>
+                  <div>
+                    <span>Available</span>
+                    <strong>${
+                      Number(ticket.quantity || 0) -
+                      Number(ticket.sold || 0) -
+                      Number(ticket.reserved || 0)
+                    }</strong>
                   </div>
                 </div>
-              `,
+              </div>
+            `,
           )
           .join("")
       : `<div class="empty-tickets">No tickets available.</div>`;
@@ -489,16 +488,33 @@ const getEventDetails = async () => {
 
     const eventHTML = `
       <div class="event-details-card">
+
         <div class="event-banner-wrapper">
-          <img
-            src="${escapeHTML(event.banner)}"
-            alt="${escapeHTML(event.eventName)}"
-            class="event-banner"
-          >
+
+          ${
+            event.banner
+              ? `
+                <img
+                  src="${escapeHTML(event.banner)}"
+                  alt="${escapeHTML(event.eventName)}"
+                  class="event-banner"
+                  onerror="this.style.display='none'; this.parentElement.classList.add('banner-unavailable');"
+                >
+              `
+              : `
+                <div class="banner-placeholder">
+                  <i class="bi bi-image"></i>
+                  <span>No event banner available</span>
+                </div>
+              `
+          }
+
         </div>
 
         <div class="event-content">
+
           <div class="event-title-row">
+
             <div>
               <span class="category-label">
                 ${escapeHTML(event.category?.name || "Uncategorized")}
@@ -510,10 +526,12 @@ const getEventDetails = async () => {
             <span class="event-status ${getStatusClass(event.status)}">
               ${escapeHTML(formatStatus(event.status))}
             </span>
+
           </div>
 
           <div class="event-section">
             <h2>About the Event</h2>
+
             <p class="event-description">
               ${escapeHTML(event.description)}
             </p>
@@ -525,6 +543,7 @@ const getEventDetails = async () => {
             <h2>Location</h2>
 
             <div class="details-grid">
+
               <div class="detail-item">
                 <span>Venue</span>
                 <strong>${escapeHTML(location.venue)}</strong>
@@ -549,6 +568,7 @@ const getEventDetails = async () => {
                 <span>Pincode</span>
                 <strong>${escapeHTML(location.pincode)}</strong>
               </div>
+
             </div>
           </div>
 
@@ -556,6 +576,7 @@ const getEventDetails = async () => {
             <h2>Schedule</h2>
 
             <div class="details-grid">
+
               <div class="detail-item">
                 <span>Date</span>
                 <strong>${formatDate(event.eventDate)}</strong>
@@ -567,10 +588,12 @@ const getEventDetails = async () => {
                   ${escapeHTML(event.startTime)} - ${escapeHTML(event.endTime)}
                 </strong>
               </div>
+
             </div>
           </div>
 
           <div class="event-section">
+
             <div class="section-heading-row">
               <div>
                 <h2>Tickets</h2>
@@ -581,6 +604,7 @@ const getEventDetails = async () => {
             <div class="tickets-container">
               ${ticketsHTML}
             </div>
+
           </div>
 
           <div class="event-section">
@@ -588,6 +612,7 @@ const getEventDetails = async () => {
 
             <div class="booking-setting">
               <span>Booking after event starts</span>
+
               <strong>
                 ${bookingPolicy.allowAfterStart ? "Allowed" : "Not allowed"}
               </strong>
@@ -598,6 +623,7 @@ const getEventDetails = async () => {
             <h2>Event Actions</h2>
             ${renderEventActions(event)}
           </div>
+
         </div>
       </div>
     `;
@@ -611,6 +637,7 @@ const getEventDetails = async () => {
     document
       .getElementById("request-edit-btn")
       ?.addEventListener("click", requestEventEdit);
+
   } catch (error) {
     console.error("Event Details Page Error:", error);
 
@@ -618,11 +645,13 @@ const getEventDetails = async () => {
       <div class="event-state-card">
         <div class="event-state-icon">!</div>
         <h2>Unable to load event</h2>
+
         <p>
           ${escapeHTML(
             error.message || "Something went wrong while loading the event.",
           )}
         </p>
+
         <a href="/host/events" class="back-events-btn">
           Back to My Events
         </a>
@@ -630,5 +659,4 @@ const getEventDetails = async () => {
     `;
   }
 };
-
 getEventDetails();

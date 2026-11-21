@@ -170,7 +170,7 @@ window.addEventListener("message", (event) => {
       );
     } else {
       window.location.replace(
-        "/dashboard"
+        "/events"
       );
     }
   } catch (error) {
@@ -530,7 +530,7 @@ if (loginForm) {
           );
         } else {
           window.location.replace(
-            "/dashboard"
+            "/events"
           );
         }
       } catch (error) {

@@ -146,6 +146,22 @@ const eventSchema = new mongoose.Schema(
       default: false,
     },
 
+    isHighlighted: {
+      type: Boolean,
+      default: false,
+    },
+
+    featuredPriority: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    featuredUntil: {
+      type: Date,
+      default: null,
+    },
+
     rejectionReason: {
       type: String,
       trim: true,

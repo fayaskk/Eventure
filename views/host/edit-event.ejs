@@ -1,33 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("../partials/head", { title: "Eventure | Edit Event" }) %>
 
-<head>
-  <%- include("../partials/head", { title: "Eventure | Edit Event" }) %>
-    <link rel="stylesheet" href="/css/host/edit-event.css">
-</head>
+<link rel="stylesheet" href="/css/host/edit-event.css">
 
-<body>
+<body class="host-layout">
 
-  <%- include("../partials/sidebar", { activePage: "events" }) %>
+  <%- include("../partials/navbar") %>
+
+  <div class="host-dashboard-layout">
+
+    <%- include("../partials/sidebar", { activePage: "events" }) %>
 
     <main class="host-main">
 
       <header class="host-header">
-
         <div>
           <p class="section-label">HOST PANEL</p>
-
           <h1>Edit Event</h1>
-
-          <p>
-            Update your event details.
-          </p>
+          <p>Update your event details.</p>
         </div>
 
         <a href="/host/events" class="back-btn">
           ← Back to My Events
         </a>
-
       </header>
 
       <form id="editEventForm">
@@ -325,11 +319,13 @@
         </div>
 
       </form>
-
     </main>
 
-    <script src="/js/host/edit-event.js"></script>
+  </div>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/common/sidebar.js"></script>
+  <script src="/js/host/edit-event.js"></script>
 
 </body>
-
 </html>

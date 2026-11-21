@@ -11,6 +11,7 @@ import {
   approveUpdatedEventService,
   rejectUpdatedEventService,
   getPendingEventEditRequestsService,
+  updateEventPromotionService
 } from "../../../services/event.service.js";
 
 export const getPendingEvents = async (req, res) => {
@@ -327,6 +328,39 @@ export const getPendingEventEditRequests = async (req, res) => {
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || "Unable to fetch event edit requests.",
+    });
+  }
+};
+
+export const updateEventPromotion = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    const {
+      isFeatured,
+      isHighlighted,
+      featuredPriority,
+      featuredUntil,
+    } = req.body;
+
+    const event = await updateEventPromotionService(eventId, {
+      isFeatured,
+      isHighlighted,
+      featuredPriority,
+      featuredUntil,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Event promotion updated successfully.",
+      event,
+    });
+  } catch (error) {
+    console.error("Update event promotion error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error.",
     });
   }
 };

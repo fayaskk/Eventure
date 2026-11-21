@@ -1,16 +1,11 @@
 "use strict";
 
-/* =========================================================
-   EVENT FORM STATE
-========================================================= */
-
 const eventForm = {
   eventName: "",
   description: "",
   category: "",
   banner: null,
   promoVideo: null,
-
   location: {
     venue: "",
     address: "",
@@ -18,21 +13,14 @@ const eventForm = {
     state: "",
     pincode: "",
   },
-
   eventDate: "",
   startTime: "",
   endTime: "",
-
   tickets: [],
-
   bookingPolicy: {
     allowAfterStart: false,
   },
 };
-
-/* =========================================================
-   DOM HELPERS
-========================================================= */
 
 const getElement = (id) => document.getElementById(id);
 
@@ -82,15 +70,9 @@ const reviewContainer = getElement("reviewContainer");
 
 const createEventForm = getElement("createEventForm");
 
-/* =========================================================
-   STATE
-========================================================= */
-
 let currentStep = 1;
-
 let bannerPreviewUrl = null;
 let promoVideoPreviewUrl = null;
-
 let isSubmitting = false;
 let isSavingDraft = false;
 
@@ -98,7 +80,7 @@ const MAX_BANNER_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 5 * 1024 * 1024;
 
 const ALLOWED_BANNER_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
+const ALLOWED_BANNER_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 
 const stepInformation = {
@@ -107,35 +89,27 @@ const stepInformation = {
     title: "Basic Information",
     description: "Tell attendees about your event.",
   },
-
   2: {
     label: "Step 2 of 5",
     title: "Location & Schedule",
     description: "Set where and when your event will happen.",
   },
-
   3: {
     label: "Step 3 of 5",
     title: "Tickets",
     description: "Create ticket types and set their quantities.",
   },
-
   4: {
     label: "Step 4 of 5",
     title: "Booking Settings",
     description: "Configure how attendees can book your event.",
   },
-
   5: {
     label: "Step 5 of 5",
     title: "Review",
     description: "Review your event before submitting it.",
   },
 };
-
-/* =========================================================
-   AUTHENTICATION
-========================================================= */
 
 const getAuthToken = () => {
   return (
@@ -166,12 +140,10 @@ const authenticatedFetch = async (url, options = {}) => {
 
   if (!token) {
     await redirectToLogin();
-
     throw new Error("Authentication token not found.");
   }
 
   const headers = new Headers(options.headers || {});
-
   headers.set("Authorization", `Bearer ${token}`);
 
   const response = await fetch(url, {
@@ -181,16 +153,11 @@ const authenticatedFetch = async (url, options = {}) => {
 
   if (response.status === 401 || response.status === 403) {
     await redirectToLogin();
-
     throw new Error("Authentication failed.");
   }
 
   return response;
 };
-
-/* =========================================================
-   MESSAGES
-========================================================= */
 
 const showMessage = async (message, icon = "info") => {
   if (typeof Swal !== "undefined") {
@@ -202,13 +169,8 @@ const showMessage = async (message, icon = "info") => {
   }
 
   window.alert(message);
-
   return null;
 };
-
-/* =========================================================
-   WIZARD NAVIGATION
-========================================================= */
 
 const showStep = (step) => {
   if (step < 1 || step > 5) {
@@ -219,7 +181,6 @@ const showStep = (step) => {
 
   wizardPanels.forEach((panel) => {
     const panelStep = Number(panel.dataset.panel);
-
     panel.classList.toggle("active", panelStep === currentStep);
   });
 
@@ -227,13 +188,11 @@ const showStep = (step) => {
     const stepNumber = Number(wizardStep.dataset.step);
 
     wizardStep.classList.toggle("active", stepNumber === currentStep);
-
     wizardStep.classList.toggle("completed", stepNumber < currentStep);
   });
 
   wizardLines.forEach((line) => {
     const lineNumber = Number(line.dataset.line);
-
     line.classList.toggle("completed", lineNumber < currentStep);
   });
 
@@ -276,12 +235,9 @@ const showStep = (step) => {
   }
 };
 
-/* =========================================================
-   CATEGORY LOADING
-========================================================= */
-
 const loadCategories = async () => {
   if (!categoryInput) {
+    console.error("Category dropdown is null");
     return;
   }
 
@@ -301,33 +257,20 @@ const loadCategories = async () => {
     categoryInput.replaceChildren();
 
     const placeholder = document.createElement("option");
-
     placeholder.value = "";
     placeholder.textContent = "Select an event category";
-
     categoryInput.appendChild(placeholder);
 
     result.data.forEach((category) => {
       const option = document.createElement("option");
-
       option.value = category._id;
       option.textContent = category.name;
-
       categoryInput.appendChild(option);
     });
   } catch (error) {
     console.error("Category loading error:", error);
-
-    await showMessage(
-      error.message || "Unable to load event categories.",
-      "error",
-    );
   }
 };
-
-/* =========================================================
-   FIELD VALIDATION HELPERS
-========================================================= */
 
 const setFieldError = (input, errorElement, message) => {
   if (input) {
@@ -340,13 +283,8 @@ const setFieldError = (input, errorElement, message) => {
   }
 };
 
-/* =========================================================
-   BASIC INFORMATION VALIDATION
-========================================================= */
-
 const validateEventName = () => {
   const error = getElement("eventNameError");
-
   const value = eventNameInput.value.trim();
 
   let message = "";
@@ -366,7 +304,6 @@ const validateEventName = () => {
   }
 
   eventForm.eventName = value;
-
   return true;
 };
 
@@ -380,7 +317,6 @@ const validateCategory = () => {
   }
 
   eventForm.category = categoryInput.value;
-
   return true;
 };
 
@@ -404,13 +340,8 @@ const validateDescription = () => {
   }
 
   eventForm.description = value;
-
   return true;
 };
-
-/* =========================================================
-   FILE HELPERS
-========================================================= */
 
 const formatFileSize = (bytes) => {
   if (bytes < 1024) {
@@ -427,7 +358,6 @@ const formatFileSize = (bytes) => {
 const revokeBannerPreviewUrl = () => {
   if (bannerPreviewUrl) {
     URL.revokeObjectURL(bannerPreviewUrl);
-
     bannerPreviewUrl = null;
   }
 };
@@ -435,18 +365,12 @@ const revokeBannerPreviewUrl = () => {
 const revokePromoVideoPreviewUrl = () => {
   if (promoVideoPreviewUrl) {
     URL.revokeObjectURL(promoVideoPreviewUrl);
-
     promoVideoPreviewUrl = null;
   }
 };
 
-/* =========================================================
-   BANNER VALIDATION AND PREVIEW
-========================================================= */
-
 const validateBanner = ({ required = true } = {}) => {
-  const file = bannerInput.files?.[0];
-
+  const file = bannerInput?.files?.[0] || null;
   const error = getElement("bannerError");
 
   if (!file) {
@@ -461,14 +385,21 @@ const validateBanner = ({ required = true } = {}) => {
     }
 
     eventForm.banner = null;
-
     return !required;
   }
 
+  const extension = file.name.split(".").pop().toLowerCase();
+
+  const isAllowedMimeType = ALLOWED_BANNER_TYPES.includes(file.type);
+  const isAllowedExtension = ALLOWED_BANNER_EXTENSIONS.includes(extension);
+
   let message = "";
 
-  if (!ALLOWED_BANNER_TYPES.includes(file.type)) {
-    message = "Only JPG, PNG and WEBP images are allowed.";
+  if (!isAllowedMimeType || !isAllowedExtension) {
+    message =
+      "Invalid banner format. Please upload a JPG, JPEG, PNG, or WEBP image.";
+  } else if (file.size === 0) {
+    message = "The selected banner file is empty. Please choose another image.";
   } else if (file.size > MAX_BANNER_SIZE) {
     message = "Banner image must not exceed 5 MB.";
   }
@@ -482,11 +413,11 @@ const validateBanner = ({ required = true } = {}) => {
   }
 
   if (message) {
+    eventForm.banner = null;
     return false;
   }
 
   eventForm.banner = file;
-
   return true;
 };
 
@@ -517,23 +448,36 @@ const displayBanner = (file) => {
   }
 };
 
-const handleBannerChange = () => {
-  const file = bannerInput.files?.[0];
+const handleBannerChange = async () => {
+  const file = bannerInput?.files?.[0];
 
   if (!file) {
     return;
   }
 
   if (!validateBanner({ required: true })) {
-    removeBanner();
+    const error = getElement("bannerError");
 
+    const message = error?.textContent || "Please select a valid banner image.";
+
+    removeBanner({ preserveError: true });
+
+    if (error) {
+      error.textContent = message;
+    }
+
+    if (uploadArea) {
+      uploadArea.classList.add("invalid");
+    }
+
+    await showMessage(message, "error");
     return;
   }
 
   displayBanner(file);
 };
 
-const removeBanner = () => {
+const removeBanner = ({ preserveError = false } = {}) => {
   revokeBannerPreviewUrl();
 
   if (bannerInput) {
@@ -563,33 +507,25 @@ const removeBanner = () => {
   }
 
   if (uploadArea) {
-    uploadArea.classList.remove("invalid");
+    uploadArea.classList.toggle("invalid", preserveError);
   }
 
-  const error = getElement("bannerError");
+  if (!preserveError) {
+    const error = getElement("bannerError");
 
-  if (error) {
-    error.textContent = "";
+    if (error) {
+      error.textContent = "";
+    }
   }
 };
-
-/* =========================================================
-   PROMOTIONAL VIDEO VALIDATION
-========================================================= */
 
 const validatePromoVideo = () => {
   if (!promoVideoInput) {
     eventForm.promoVideo = null;
-
     return true;
   }
 
   const file = promoVideoInput.files?.[0];
-
-  /*
-   * Promotional video is optional.
-   * No selected file is valid.
-   */
 
   if (!file) {
     eventForm.promoVideo = null;
@@ -618,13 +554,8 @@ const validatePromoVideo = () => {
   }
 
   eventForm.promoVideo = file;
-
   return true;
 };
-
-/* =========================================================
-   PROMOTIONAL VIDEO PREVIEW
-========================================================= */
 
 const displayPromoVideo = (file) => {
   revokePromoVideoPreviewUrl();
@@ -633,10 +564,8 @@ const displayPromoVideo = (file) => {
 
   if (promoPreview) {
     promoPreview.pause();
-
     promoPreview.src = promoVideoPreviewUrl;
     promoPreview.hidden = false;
-
     promoPreview.load();
   }
 
@@ -671,13 +600,7 @@ const handlePromoVideoChange = () => {
   }
 
   if (!validatePromoVideo()) {
-    /*
-     * Invalid file selected:
-     * clear the file and preview.
-     */
-
     removePromoVideo();
-
     return;
   }
 
@@ -687,11 +610,8 @@ const handlePromoVideoChange = () => {
 const removePromoVideo = () => {
   if (promoPreview) {
     promoPreview.pause();
-
     promoPreview.removeAttribute("src");
-
     promoPreview.load();
-
     promoPreview.hidden = true;
   }
 
@@ -720,10 +640,6 @@ const removePromoVideo = () => {
   eventForm.promoVideo = null;
 };
 
-/* =========================================================
-   STEP 1 VALIDATION
-========================================================= */
-
 const validateStepOne = () => {
   const eventNameValid = validateEventName();
 
@@ -746,10 +662,6 @@ const validateStepOne = () => {
   );
 };
 
-/* =========================================================
-   CHARACTER COUNTERS
-========================================================= */
-
 const updateEventNameCount = () => {
   const counter = getElement("eventNameCount");
 
@@ -766,60 +678,156 @@ const updateDescriptionCount = () => {
   }
 };
 
-/* =========================================================
-   LOCATION AND SCHEDULE VALIDATION
-========================================================= */
+const pincodeValidationCache = new Map();
 
-const validateLocation = () => {
+const verifyIndianPincode = async (pincode) => {
+  if (pincodeValidationCache.has(pincode)) {
+    return pincodeValidationCache.get(pincode);
+  }
+
+  const response = await fetch(
+    `https://api.postalpincode.in/pincode/${encodeURIComponent(pincode)}`,
+    { signal: AbortSignal.timeout(8000) },
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to verify the pincode right now.");
+  }
+
+  const result = await response.json();
+
+  const isValid =
+    Array.isArray(result) &&
+    result[0]?.Status === "Success" &&
+    Array.isArray(result[0]?.PostOffice) &&
+    result[0].PostOffice.length > 0;
+
+  pincodeValidationCache.set(pincode, isValid);
+
+  return isValid;
+};
+
+const getIndiaDateTimeParts = () => {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value]),
+  );
+
+  return {
+    date: `${values.year}-${values.month}-${values.day}`,
+    time: `${values.hour}:${values.minute}`,
+  };
+};
+
+const validateLocation = async () => {
   let valid = true;
+  let firstError = "";
 
-  const fields = [
-    ["venue", "Venue is required."],
-    ["address", "Address is required."],
-    ["city", "City is required."],
-    ["state", "State is required."],
-    ["pincode", "Pincode is required."],
-  ];
+  const addError = (input, errorId, message) => {
+    setFieldError(input, getElement(errorId), message);
 
-  const locationValues = {};
-
-  fields.forEach(([id, message]) => {
-    const input = getElement(id);
-    const error = getElement(`${id}Error`);
-
-    if (!input) {
+    if (message) {
       valid = false;
 
-      return;
+      if (!firstError) {
+        firstError = message;
+      }
     }
+  };
 
-    const value = input.value.trim();
-
-    locationValues[id] = value;
-
-    const fieldMessage = value ? "" : message;
-
-    setFieldError(input, error, fieldMessage);
-
-    if (fieldMessage) {
-      valid = false;
-    }
-  });
-
+  const venueInput = getElement("venue");
+  const addressInput = getElement("address");
+  const cityInput = getElement("city");
+  const stateInput = getElement("state");
   const pincodeInput = getElement("pincode");
 
-  if (pincodeInput && pincodeInput.value.trim()) {
-    const pincode = pincodeInput.value.trim();
+  const venue = venueInput?.value.trim() || "";
+  const address = addressInput?.value.trim() || "";
+  const city = cityInput?.value.trim() || "";
+  const state = stateInput?.value.trim() || "";
+  const pincode = pincodeInput?.value.trim() || "";
 
-    if (!/^\d{6}$/.test(pincode)) {
-      setFieldError(
-        pincodeInput,
-        getElement("pincodeError"),
-        "Pincode must contain exactly 6 digits.",
-      );
+  const venueValid =
+    venue.length >= 2 &&
+    venue.length <= 100 &&
+    /[A-Za-z]/.test(venue) &&
+    /^[A-Za-z0-9\s.,'&()/-]+$/.test(venue);
 
-      valid = false;
-    }
+  const addressValid =
+    address.length >= 5 &&
+    address.length <= 200 &&
+    /[A-Za-z]/.test(address) &&
+    /^[A-Za-z0-9\s.,#/'()-]+$/.test(address);
+
+  const cityValid =
+    city.length >= 2 &&
+    city.length <= 60 &&
+    /^[A-Za-z][A-Za-z\s.'-]*$/.test(city);
+
+  const stateValid =
+    state.length >= 2 &&
+    state.length <= 60 &&
+    /^[A-Za-z][A-Za-z\s.'-]*$/.test(state);
+
+  addError(
+    venueInput,
+    "venueError",
+    !venue
+      ? "Venue name is required."
+      : !venueValid
+        ? "Venue name must be 2–100 characters and contain valid letters."
+        : "",
+  );
+
+  addError(
+    addressInput,
+    "addressError",
+    !address
+      ? "Address is required."
+      : !addressValid
+        ? "Address must be 5–200 characters and contain a valid street or location."
+        : "",
+  );
+
+  addError(
+    cityInput,
+    "cityError",
+    !city
+      ? "City is required."
+      : !cityValid
+        ? "Enter a valid city name containing 2–60 letters."
+        : "",
+  );
+
+  addError(
+    stateInput,
+    "stateError",
+    !state
+      ? "State is required."
+      : !stateValid
+        ? "Enter a valid state name containing 2–60 letters."
+        : "",
+  );
+
+  if (!pincode) {
+    addError(pincodeInput, "pincodeError", "Pincode is required.");
+  } else if (!/^[1-9]\d{5}$/.test(pincode)) {
+    addError(
+      pincodeInput,
+      "pincodeError",
+      "Enter a valid 6-digit Indian pincode.",
+    );
+  } else {
+    setFieldError(pincodeInput, getElement("pincodeError"), "");
   }
 
   const eventDateInput = getElement("eventDate");
@@ -830,71 +838,101 @@ const validateLocation = () => {
   const startTime = startTimeInput?.value || "";
   const endTime = endTimeInput?.value || "";
 
-  const today = getTodayDate();
+  const indiaDateTime = getIndiaDateTimeParts();
+
+  const today = indiaDateTime.date;
+  const currentTime = indiaDateTime.time;
 
   if (!eventDate) {
-    setFieldError(
-      eventDateInput,
-      getElement("eventDateError"),
-      "Event date is required.",
-    );
-
-    valid = false;
+    addError(eventDateInput, "eventDateError", "Event date is required.");
   } else if (eventDate < today) {
-    setFieldError(
+    addError(
       eventDateInput,
-      getElement("eventDateError"),
+      "eventDateError",
       "Event date cannot be in the past.",
     );
-
-    valid = false;
   } else {
     setFieldError(eventDateInput, getElement("eventDateError"), "");
   }
 
   if (!startTime) {
-    setFieldError(
+    addError(startTimeInput, "startTimeError", "Start time is required.");
+  } else if (eventDate && eventDate === today && startTime <= currentTime) {
+    addError(
       startTimeInput,
-      getElement("startTimeError"),
-      "Start time is required.",
+      "startTimeError",
+      "Start time must be later than the current time.",
     );
-
-    valid = false;
   } else {
     setFieldError(startTimeInput, getElement("startTimeError"), "");
   }
 
   if (!endTime) {
-    setFieldError(
+    addError(endTimeInput, "endTimeError", "End time is required.");
+  } else if (startTime && endTime <= startTime) {
+    addError(
       endTimeInput,
-      getElement("endTimeError"),
-      "End time is required.",
+      "endTimeError",
+      "End time must be later than start time.",
     );
-
-    valid = false;
   } else {
     setFieldError(endTimeInput, getElement("endTimeError"), "");
   }
 
-  if (startTime && endTime && startTime >= endTime) {
-    setFieldError(
-      endTimeInput,
-      getElement("endTimeError"),
-      "End time must be after start time.",
-    );
-
-    valid = false;
-  }
-
   if (!valid) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Check your details",
+      text: firstError,
+      confirmButtonText: "Okay",
+    });
+
     return false;
   }
 
-  eventForm.location.venue = locationValues.venue;
-  eventForm.location.address = locationValues.address;
-  eventForm.location.city = locationValues.city;
-  eventForm.location.state = locationValues.state;
-  eventForm.location.pincode = locationValues.pincode;
+  try {
+    const isPincodeValid = await verifyIndianPincode(pincode);
+
+    if (!isPincodeValid) {
+      const message =
+        "This pincode was not found. Please enter a valid Indian pincode.";
+
+      setFieldError(pincodeInput, getElement("pincodeError"), message);
+
+      await Swal.fire({
+        icon: "error",
+        title: "Invalid Pincode",
+        text: message,
+        confirmButtonText: "Okay",
+      });
+
+      return false;
+    }
+  } catch (error) {
+    console.error("Pincode verification error:", error);
+
+    const message =
+      "Unable to verify this pincode right now. Please try again.";
+
+    setFieldError(pincodeInput, getElement("pincodeError"), message);
+
+    await Swal.fire({
+      icon: "error",
+      title: "Pincode Verification Failed",
+      text: message,
+      confirmButtonText: "Okay",
+    });
+
+    return false;
+  }
+
+  eventForm.location = {
+    venue,
+    address,
+    city,
+    state,
+    pincode,
+  };
 
   eventForm.eventDate = eventDate;
   eventForm.startTime = startTime;
@@ -902,10 +940,6 @@ const validateLocation = () => {
 
   return true;
 };
-
-/* =========================================================
-   TICKETS
-========================================================= */
 
 const updateTicket = (ticketId, field, value) => {
   const ticket = eventForm.tickets.find((item) => item.id === ticketId);
@@ -943,17 +977,10 @@ const addTicket = () => {
 };
 
 const removeTicket = (ticketId) => {
-  eventForm.tickets = eventForm.tickets.filter(
-    (ticket) => ticket.id !== ticketId,
-  );
+  eventForm.tickets = eventForm.tickets.filter((item) => item.id !== ticketId);
 
   renderTickets();
 };
-
-/*
- * Build ticket cards using DOM APIs instead of inserting
- * user-controlled ticket names into innerHTML.
- */
 
 const renderTickets = () => {
   if (!ticketsContainer) {
@@ -1109,11 +1136,6 @@ const validateTickets = ({ allowIncomplete = false } = {}) => {
     const price = ticket.price;
     const quantity = ticket.quantity;
 
-    /*
-     * Drafts can contain incomplete ticket fields.
-     * Fully supplied ticket fields must still be valid.
-     */
-
     const ticketIsIncomplete =
       !name || !Number.isFinite(price) || !Number.isFinite(quantity);
 
@@ -1156,10 +1178,6 @@ const validateTickets = ({ allowIncomplete = false } = {}) => {
   return true;
 };
 
-/* =========================================================
-   BOOKING POLICY
-========================================================= */
-
 const collectBookingPolicy = () => {
   const input = getElement("allowAfterStart");
 
@@ -1167,10 +1185,6 @@ const collectBookingPolicy = () => {
 
   return true;
 };
-
-/* =========================================================
-   REVIEW HELPERS
-========================================================= */
 
 const getCategoryName = () => {
   if (!categoryInput) {
@@ -1193,10 +1207,6 @@ const escapeHtml = (value) => {
     return replacements[character];
   });
 };
-
-/* =========================================================
-   REVIEW
-========================================================= */
 
 const renderReview = () => {
   if (!reviewContainer) {
@@ -1239,138 +1249,118 @@ const renderReview = () => {
       : `
         <div class="review-section">
           <h3>Event Banner</h3>
-          <p>No banner selected.</p>
+          <p>No banner uploaded.</p>
         </div>
       `;
 
-  const promoVideoHtml =
+  const videoHtml =
     eventForm.promoVideo && promoVideoPreviewUrl
       ? `
         <div class="review-section">
           <h3>Promotional Video</h3>
 
-          <video
-            src="${promoVideoPreviewUrl}"
-            controls
-            playsinline
-            preload="metadata"
-            style="width:100%;max-width:500px;border-radius:12px;"
-          ></video>
-
           <p>${escapeHtml(eventForm.promoVideo.name)}</p>
         </div>
       `
-      : `
-        <div class="review-section">
-          <h3>Promotional Video</h3>
-          <p>No promotional video added.</p>
-        </div>
-      `;
+      : "";
 
   reviewContainer.innerHTML = `
     <div class="review-section">
       <h3>Basic Information</h3>
 
-      <div class="review-grid">
-        <div class="review-item">
-          <span>Event Name</span>
-          <strong>${escapeHtml(eventForm.eventName)}</strong>
-        </div>
+      <div class="review-item">
+        <span>Event Name</span>
+        <strong>${escapeHtml(eventForm.eventName)}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>Category</span>
-          <strong>${escapeHtml(getCategoryName())}</strong>
-        </div>
+      <div class="review-item">
+        <span>Category</span>
+        <strong>${escapeHtml(getCategoryName())}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>Description</span>
-          <strong>${escapeHtml(eventForm.description)}</strong>
-        </div>
+      <div class="review-item">
+        <span>Description</span>
+        <p>${escapeHtml(eventForm.description)}</p>
       </div>
     </div>
 
     ${bannerHtml}
-    ${promoVideoHtml}
+
+    ${videoHtml}
 
     <div class="review-section">
-      <h3>Location & Schedule</h3>
+      <h3>Location</h3>
 
-      <div class="review-grid">
-        <div class="review-item">
-          <span>Venue</span>
-          <strong>${escapeHtml(eventForm.location.venue)}</strong>
-        </div>
+      <div class="review-item">
+        <span>Venue</span>
+        <strong>${escapeHtml(eventForm.location.venue)}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>City</span>
-          <strong>${escapeHtml(eventForm.location.city)}</strong>
-        </div>
+      <div class="review-item">
+        <span>Address</span>
+        <strong>${escapeHtml(eventForm.location.address)}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>Address</span>
-          <strong>${escapeHtml(eventForm.location.address)}</strong>
-        </div>
+      <div class="review-item">
+        <span>City</span>
+        <strong>${escapeHtml(eventForm.location.city)}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>State</span>
-          <strong>${escapeHtml(eventForm.location.state)}</strong>
-        </div>
+      <div class="review-item">
+        <span>State</span>
+        <strong>${escapeHtml(eventForm.location.state)}</strong>
+      </div>
 
-        <div class="review-item">
-          <span>Pincode</span>
-          <strong>${escapeHtml(eventForm.location.pincode)}</strong>
-        </div>
+      <div class="review-item">
+        <span>Pincode</span>
+        <strong>${escapeHtml(eventForm.location.pincode)}</strong>
+      </div>
+    </div>
 
-        <div class="review-item">
-          <span>Date</span>
-          <strong>${escapeHtml(eventForm.eventDate)}</strong>
-        </div>
+    <div class="review-section">
+      <h3>Schedule</h3>
 
-        <div class="review-item">
-          <span>Time</span>
+      <div class="review-item">
+        <span>Event Date</span>
+        <strong>${escapeHtml(eventForm.eventDate)}</strong>
+      </div>
 
-          <strong>
-            ${escapeHtml(eventForm.startTime)}
-            -
-            ${escapeHtml(eventForm.endTime)}
-          </strong>
-        </div>
+      <div class="review-item">
+        <span>Start Time</span>
+        <strong>${escapeHtml(eventForm.startTime)}</strong>
+      </div>
+
+      <div class="review-item">
+        <span>End Time</span>
+        <strong>${escapeHtml(eventForm.endTime)}</strong>
       </div>
     </div>
 
     <div class="review-section">
       <h3>Tickets</h3>
 
-      <div class="review-grid">
-        ${ticketRows || "<p>No ticket types added.</p>"}
-      </div>
+      ${ticketRows || '<p class="empty-review">No tickets have been added.</p>'}
     </div>
 
     <div class="review-section">
       <h3>Booking Settings</h3>
 
       <div class="review-item">
-        <span>Booking after event starts</span>
+        <span>Allow booking after event starts</span>
 
         <strong>
-          ${eventForm.bookingPolicy.allowAfterStart ? "Allowed" : "Not allowed"}
+          ${eventForm.bookingPolicy.allowAfterStart ? "Yes" : "No"}
         </strong>
       </div>
     </div>
   `;
 };
 
-/* =========================================================
-   FORM DATA
-========================================================= */
-
 const createFormData = (status = "pending") => {
   const formData = new FormData();
 
   formData.append("eventName", eventForm.eventName);
-
   formData.append("description", eventForm.description);
-
   formData.append("category", eventForm.category);
 
   if (eventForm.banner) {
@@ -1382,11 +1372,8 @@ const createFormData = (status = "pending") => {
   }
 
   formData.append("location", JSON.stringify(eventForm.location));
-
   formData.append("eventDate", eventForm.eventDate);
-
   formData.append("startTime", eventForm.startTime);
-
   formData.append("endTime", eventForm.endTime);
 
   const tickets = eventForm.tickets.map(({ name, price, quantity }) => ({
@@ -1396,38 +1383,27 @@ const createFormData = (status = "pending") => {
   }));
 
   formData.append("tickets", JSON.stringify(tickets));
-
   formData.append("bookingPolicy", JSON.stringify(eventForm.bookingPolicy));
-
   formData.append("status", status);
 
   return formData;
 };
 
-/* =========================================================
-   SUBMISSION VALIDATION
-========================================================= */
-
-const validateAllSteps = () => {
+const validateAllSteps = async () => {
   if (!validateStepOne()) {
     showStep(1);
-
     showMessage("Please complete the basic information.", "warning");
-
     return false;
   }
 
-  if (!validateLocation()) {
+  if (!(await validateLocation())) {
     showStep(2);
-
     showMessage("Please complete the location and schedule.", "warning");
-
     return false;
   }
 
   if (!validateTickets()) {
     showStep(3);
-
     return false;
   }
 
@@ -1436,16 +1412,12 @@ const validateAllSteps = () => {
   return true;
 };
 
-/* =========================================================
-   SUBMIT EVENT
-========================================================= */
-
 const submitEvent = async () => {
   if (isSubmitting || isSavingDraft) {
     return;
   }
 
-  if (!validateAllSteps()) {
+  if (!(await validateAllSteps())) {
     return;
   }
 
@@ -1492,18 +1464,12 @@ const submitEvent = async () => {
     isSubmitting = false;
 
     nextBtn.disabled = false;
-
     previousBtn.disabled = currentStep === 1;
-
     saveDraftBtn.disabled = false;
 
     nextBtn.textContent = currentStep === 5 ? "Submit Event" : "Continue →";
   }
 };
-
-/* =========================================================
-   NEXT STEP
-========================================================= */
 
 const handleNext = async () => {
   if (isSubmitting || isSavingDraft) {
@@ -1519,9 +1485,8 @@ const handleNext = async () => {
     return;
   }
 
-  if (currentStep === 2 && !validateLocation()) {
+  if (currentStep === 2 && !(await validateLocation())) {
     await showMessage("Please complete the location and schedule.", "warning");
-
     return;
   }
 
@@ -1535,7 +1500,6 @@ const handleNext = async () => {
 
   if (currentStep === 5) {
     await submitEvent();
-
     return;
   }
 
@@ -1548,19 +1512,10 @@ const handlePrevious = () => {
   }
 };
 
-/* =========================================================
-   SAVE DRAFT
-========================================================= */
-
 const handleSaveDraft = async () => {
   if (isSavingDraft || isSubmitting) {
     return;
   }
-
-  /*
-   * Validate supplied files, but don't require the banner
-   * or other event fields to be completed.
-   */
 
   if (
     bannerInput.files?.length &&
@@ -1569,24 +1524,15 @@ const handleSaveDraft = async () => {
     })
   ) {
     showStep(1);
-
     await showMessage("Please select a valid banner image.", "warning");
-
     return;
   }
 
   if (!validatePromoVideo()) {
     showStep(1);
-
     await showMessage("Please select a valid promotional video.", "warning");
-
     return;
   }
-
-  /*
-   * A partially completed ticket must be completed before
-   * saving, or all its fields should be left empty.
-   */
 
   for (const ticket of eventForm.tickets) {
     const name = ticket.name.trim();
@@ -1596,7 +1542,6 @@ const handleSaveDraft = async () => {
     const hasQuantity = Number.isFinite(ticket.quantity);
 
     const hasAnyValue = hasName || hasPrice || hasQuantity;
-
     const hasAllValues = hasName && hasPrice && hasQuantity;
 
     if (hasAnyValue && !hasAllValues) {
@@ -1653,11 +1598,6 @@ const handleSaveDraft = async () => {
 
     saveDraftBtn.textContent = "Saving...";
 
-    /*
-     * Save whatever information has been entered.
-     * Required-field validation is intentionally skipped.
-     */
-
     if (eventNameInput) {
       eventForm.eventName = eventNameInput.value.trim();
     }
@@ -1674,14 +1614,11 @@ const handleSaveDraft = async () => {
 
     locationFields.forEach((field) => {
       const input = getElement(field);
-
       eventForm.location[field] = input ? input.value.trim() : "";
     });
 
     eventForm.eventDate = getElement("eventDate")?.value || "";
-
     eventForm.startTime = getElement("startTime")?.value || "";
-
     eventForm.endTime = getElement("endTime")?.value || "";
 
     collectBookingPolicy();
@@ -1719,16 +1656,11 @@ const handleSaveDraft = async () => {
 
     saveDraftBtn.disabled = false;
     nextBtn.disabled = false;
-
     previousBtn.disabled = currentStep === 1;
 
     saveDraftBtn.textContent = "Save Draft";
   }
 };
-
-/* =========================================================
-   CANCEL
-========================================================= */
 
 const handleCancel = async () => {
   if (isSubmitting || isSavingDraft) {
@@ -1750,10 +1682,6 @@ const handleCancel = async () => {
 
   window.location.href = "/host/events";
 };
-
-/* =========================================================
-   BANNER DRAG AND DROP
-========================================================= */
 
 const handleDragOver = (event) => {
   event.preventDefault();
@@ -1785,31 +1713,10 @@ const handleDrop = (event) => {
   const dataTransfer = new DataTransfer();
 
   dataTransfer.items.add(file);
-
   bannerInput.files = dataTransfer.files;
 
   handleBannerChange();
 };
-
-/* =========================================================
-   DATE HELPERS
-========================================================= */
-
-const getTodayDate = () => {
-  const date = new Date();
-
-  const year = date.getFullYear();
-
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-};
-
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
 
 if (eventNameInput) {
   eventNameInput.addEventListener("input", updateEventNameCount);
@@ -1830,7 +1737,7 @@ if (browseBannerBtn && bannerInput) {
 }
 
 if (removeBannerBtn) {
-  removeBannerBtn.addEventListener("click", removeBanner);
+  removeBannerBtn.addEventListener("click", () => removeBanner());
 }
 
 if (promoVideoInput) {
@@ -1849,9 +1756,7 @@ if (removePromoVideoBtn) {
 
 if (uploadArea) {
   uploadArea.addEventListener("dragover", handleDragOver);
-
   uploadArea.addEventListener("dragleave", handleDragLeave);
-
   uploadArea.addEventListener("drop", handleDrop);
 }
 
@@ -1874,10 +1779,20 @@ if (saveDraftBtn) {
 if (cancelEventBtn) {
   cancelEventBtn.addEventListener("click", handleCancel);
 }
+const getTodayDate = () => {
+  const dateParts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
+  const year = dateParts.find((part) => part.type === "year").value;
+  const month = dateParts.find((part) => part.type === "month").value;
+  const day = dateParts.find((part) => part.type === "day").value;
+
+  return `${year}-${month}-${day}`;
+};
 
 const initializeCreateEventPage = () => {
   const eventDateInput = getElement("eventDate");
@@ -1897,10 +1812,6 @@ const initializeCreateEventPage = () => {
 };
 
 initializeCreateEventPage();
-
-/*
- * Clean up local preview URLs when leaving the page.
- */
 
 window.addEventListener("pagehide", () => {
   revokeBannerPreviewUrl();

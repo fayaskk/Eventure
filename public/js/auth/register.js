@@ -1,3 +1,35 @@
+function showMessage(message, type = "error") {
+  const icons = {
+    success: "success",
+    error: "error",
+    warning: "warning",
+    info: "info"
+  };
+
+  if (typeof Swal !== "undefined") {
+    return Swal.fire({
+      icon: icons[type] || "info",
+      title:
+        type === "success"
+          ? "Success!"
+          : type === "error"
+          ? "Oops!"
+          : "Notice",
+      text: message,
+      confirmButtonText: "Okay",
+      confirmButtonColor: "#6C4CF1",
+      background: "#ffffff",
+      color: "#222222",
+      customClass: {
+        popup: "eventure-swal-popup",
+        confirmButton: "eventure-swal-button"
+      }
+    });
+  }
+
+  alert(message);
+}
+
 const googleAuthButton =
   document.getElementById("googleAuthBtn");
 
@@ -296,44 +328,43 @@ if (registerForm) {
     return true;
   }
 
-  function validateEmail() {
-    const value =
-      emailInput.value.trim();
+function validateEmail() {
+  const value = emailInput.value.trim().toLowerCase();
 
-    if (!value) {
-      setError(
-        emailInput,
-        "Email is required."
-      );
+  if (!value) {
+    setError(
+      emailInput,
+      "Email is required."
+    );
 
-      return false;
-    }
-
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(value)) {
-      setError(
-        emailInput,
-        "Please enter a valid email address."
-      );
-
-      return false;
-    }
-
-    if (value.length > 254) {
-      setError(
-        emailInput,
-        "Email address is too long."
-      );
-
-      return false;
-    }
-
-    setSuccess(emailInput);
-
-    return true;
+    return false;
   }
+
+  if (value.length > 254) {
+    setError(
+      emailInput,
+      "Email address is too long."
+    );
+
+    return false;
+  }
+
+  const emailRegex =
+    /^(?=.{6,254}$)(?=.{2,64}@)[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
+
+  if (!emailRegex.test(value)) {
+    setError(
+      emailInput,
+      "Please enter a valid email address."
+    );
+
+    return false;
+  }
+
+  setSuccess(emailInput);
+
+  return true;
+}
 
   function validatePassword() {
     const value =
@@ -573,29 +604,30 @@ if (registerForm) {
         );
       }
 
-      if (!validateEmail()) {
-        const value =
-          emailInput.value.trim();
+if (!validateEmail()) {
+  const value = emailInput.value.trim();
 
-        if (!value) {
-          return showFirstError(
-            emailInput,
-            "Email is required."
-          );
-        }
+  let message = "Please enter a valid email address.";
 
-        if (value.length > 254) {
-          return showFirstError(
-            emailInput,
-            "Email address is too long."
-          );
-        }
+  if (!value) {
+    message = "Email address is required.";
+  } else if (value.length > 254) {
+    message = "Email address cannot exceed 254 characters.";
+  } else if (value.split("@")[0]?.length < 2) {
+    message = "Email username must contain at least 2 characters.";
+  }
 
-        return showFirstError(
-          emailInput,
-          "Please enter a valid email address."
-        );
-      }
+  await Swal.fire({
+    icon: "warning",
+    title: "Invalid Email Address",
+    text: message,
+    confirmButtonText: "Try Again",
+    confirmButtonColor: "#6254e7"
+  });
+
+  emailInput.focus();
+  return;
+}
 
       if (!validatePassword()) {
         const value =

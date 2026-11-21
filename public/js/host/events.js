@@ -1,6 +1,7 @@
 const eventsContainer = document.getElementById("events-container");
 const eventSearch = document.getElementById("eventSearch");
 const statusFilter = document.getElementById("statusFilter");
+const clearSearchButton = document.getElementById("clearEventSearch");
 
 let hostEvents = [];
 
@@ -40,12 +41,31 @@ const authenticatedFetch = async (url, options = {}) => {
   });
 };
 
-const formatDate = (date) => {
-  if (!date) {
-    return "Date not available";
+const escapeHtml = (value) => {
+  if (value === null || value === undefined) {
+    return "";
   }
 
-  return new Date(date).toLocaleDateString("en-IN", {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+};
+
+const formatDate = (date) => {
+  if (!date) {
+    return "Date unavailable";
+  }
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "Date unavailable";
+  }
+
+  return parsedDate.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -85,81 +105,220 @@ const getStatusClass = (status) => {
   }
 };
 
-const escapeHtml = (value) => {
-  if (value === null || value === undefined) {
-    return "";
-  }
+const updateEventStatistics = () => {
+  const total = hostEvents.length;
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  const approved = hostEvents.filter(
+    (event) => event.status === "approved",
+  ).length;
+
+  const pending = hostEvents.filter(
+    (event) => event.status === "pending",
+  ).length;
+
+  const completed = hostEvents.filter(
+    (event) => event.status === "completed",
+  ).length;
+
+  document.getElementById("totalEventsCount").textContent = total;
+  document.getElementById("approvedEventsCount").textContent = approved;
+  document.getElementById("pendingEventsCount").textContent = pending;
+  document.getElementById("completedEventsCount").textContent = completed;
 };
 
 const getEventActions = (event) => {
+  const eventId = encodeURIComponent(event._id);
+
   const viewButton = `
     <a
-      href="/host/events/${event._id}"
+      href="/host/events/${eventId}"
       class="event-action-btn view-btn"
     >
+      <i class="bi bi-eye"></i>
       View
     </a>
   `;
 
-  if (event.status === "draft") {
+  const discountButton =
+    event.status === "approved"
+      ? `
+        <a
+          href="/host/events/${eventId}/discounts"
+          class="event-action-btn discount-btn"
+        >
+          <i class="bi bi-tag"></i>
+          Manage Discounts
+        </a>
+      `
+      : "";
+
+  if (event.status === "draft" || event.status === "rejected") {
     return `
       ${viewButton}
 
       <a
-        href="/host/events/${event._id}/edit"
+        href="/host/events/${eventId}/edit"
         class="event-action-btn edit-btn"
       >
+        <i class="bi bi-pencil"></i>
         Edit
       </a>
 
       <button
         type="button"
         class="event-action-btn submit-btn"
-        data-event-id="${event._id}"
+        data-event-id="${escapeHtml(event._id)}"
       >
-        Submit
+        <i class="bi bi-send"></i>
+        ${event.status === "rejected" ? "Resubmit" : "Submit"}
       </button>
     `;
   }
 
-  if (event.status === "rejected") {
-    return `
-      ${viewButton}
+  return `
+    ${viewButton}
+    ${discountButton}
+  `;
+};
 
-      <a
-        href="/host/events/${event._id}/edit"
-        class="event-action-btn edit-btn"
-      >
-        Edit
-      </a>
+const createEventCard = (event, index) => {
+  const categoryName = event.category?.name || "Uncategorized";
 
-      <button
-        type="button"
-        class="event-action-btn submit-btn"
-        data-event-id="${event._id}"
-      >
-        Resubmit
-      </button>
-    `;
-  }
+  const city = event.location?.city || "Location unavailable";
 
-  return viewButton;
+  const banner = event.banner || "";
+
+  const statusClass = getStatusClass(event.status);
+
+  const safeBanner = escapeHtml(banner);
+
+  return `
+    <article
+      class="event-card"
+      style="--card-index: ${index}"
+    >
+
+      <div class="event-banner-wrapper">
+
+        ${
+          banner
+            ? `
+              <img
+                src="${safeBanner}"
+                alt=""
+                class="event-banner-backdrop"
+                aria-hidden="true"
+              >
+
+              <img
+                src="${safeBanner}"
+                alt="${escapeHtml(event.eventName)}"
+                class="event-banner"
+                loading="lazy"
+                onerror="this.style.display='none'; this.parentElement.classList.add('event-image-unavailable');"
+              >
+            `
+            : `
+              <div class="event-banner-placeholder">
+                <i class="bi bi-image"></i>
+                <span>No event banner available</span>
+              </div>
+            `
+        }
+
+      </div>
+
+      <div class="event-card-content">
+
+        <div class="event-card-top">
+
+          <span class="event-category">
+            ${escapeHtml(categoryName)}
+          </span>
+
+          <span class="event-status ${statusClass}">
+            ${escapeHtml(capitalizeStatus(event.status))}
+          </span>
+
+        </div>
+
+        <h3 class="event-title">
+          ${escapeHtml(event.eventName)}
+        </h3>
+
+        <div class="event-info">
+
+          <div class="event-info-item">
+
+            <span class="info-label">
+              Location
+            </span>
+
+            <span class="info-value">
+              ${escapeHtml(city)}
+            </span>
+
+          </div>
+
+          <div class="event-info-item">
+
+            <span class="info-label">
+              Date
+            </span>
+
+            <span class="info-value">
+              ${formatDate(event.eventDate)}
+            </span>
+
+          </div>
+
+          <div class="event-info-item">
+
+            <span class="info-label">
+              Time
+            </span>
+
+            <span class="info-value">
+              ${escapeHtml(event.startTime || "--:--")}
+              -
+              ${escapeHtml(event.endTime || "--:--")}
+            </span>
+
+          </div>
+
+        </div>
+
+        ${
+          event.status === "rejected" && event.rejectionReason
+            ? `
+              <div class="rejection-message">
+                <strong>Rejection reason:</strong>
+                ${escapeHtml(event.rejectionReason)}
+              </div>
+            `
+            : ""
+        }
+
+        <div class="event-actions">
+          ${getEventActions(event)}
+        </div>
+
+      </div>
+
+    </article>
+  `;
 };
 
 const renderEvents = () => {
   const searchValue = eventSearch.value.trim().toLowerCase();
+
   const selectedStatus = statusFilter.value;
 
   const filteredEvents = hostEvents.filter((event) => {
     const eventName = event.eventName?.toLowerCase() || "";
+
     const city = event.location?.city?.toLowerCase() || "";
+
     const category = event.category?.name?.toLowerCase() || "";
 
     const matchesSearch =
@@ -168,18 +327,29 @@ const renderEvents = () => {
       category.includes(searchValue);
 
     const matchesStatus =
-      selectedStatus === "all" ||
-      event.status === selectedStatus;
+      selectedStatus === "all" || event.status === selectedStatus;
 
     return matchesSearch && matchesStatus;
   });
+
+  const resultCount = document.getElementById("eventsResultCount");
+
+  if (resultCount) {
+    resultCount.textContent = `${filteredEvents.length} ${
+      filteredEvents.length === 1 ? "Event" : "Events"
+    }`;
+  }
+
+  if (clearSearchButton) {
+    clearSearchButton.hidden = !searchValue;
+  }
 
   if (filteredEvents.length === 0) {
     eventsContainer.innerHTML = `
       <div class="empty-events">
 
         <div class="empty-events-icon">
-          📅
+          <i class="bi bi-calendar-x"></i>
         </div>
 
         <h3>No events found</h3>
@@ -194,106 +364,13 @@ const renderEvents = () => {
     return;
   }
 
-  eventsContainer.innerHTML = filteredEvents
-    .map((event) => {
-      const categoryName =
-        event.category?.name || "Uncategorized";
-
-      const city =
-        event.location?.city || "Location unavailable";
-
-      const statusClass =
-        getStatusClass(event.status);
-
-      return `
-        <article class="event-card">
-
-          <div class="event-banner-wrapper">
-
-            <img
-              src="${escapeHtml(event.banner)}"
-              alt="${escapeHtml(event.eventName)}"
-              class="event-banner"
-            >
-
-          </div>
-
-          <div class="event-card-content">
-
-            <div class="event-card-top">
-
-              <span class="event-category">
-                ${escapeHtml(categoryName)}
-              </span>
-
-              <span class="event-status ${statusClass}">
-                ${capitalizeStatus(event.status)}
-              </span>
-
-            </div>
-
-            <h3 class="event-title">
-              ${escapeHtml(event.eventName)}
-            </h3>
-
-            <div class="event-info">
-
-              <div class="event-info-item">
-                <span class="info-label">
-                  Location
-                </span>
-
-                <span class="info-value">
-                  ${escapeHtml(city)}
-                </span>
-              </div>
-
-              <div class="event-info-item">
-                <span class="info-label">
-                  Date
-                </span>
-
-                <span class="info-value">
-                  ${formatDate(event.eventDate)}
-                </span>
-              </div>
-
-              <div class="event-info-item">
-                <span class="info-label">
-                  Time
-                </span>
-
-                <span class="info-value">
-                  ${escapeHtml(event.startTime || "--:--")}
-                  -
-                  ${escapeHtml(event.endTime || "--:--")}
-                </span>
-              </div>
-
-            </div>
-
-            ${
-              event.status === "rejected" &&
-              event.rejectionReason
-                ? `
-                  <div class="rejection-message">
-                    <strong>Rejection reason:</strong>
-                    ${escapeHtml(event.rejectionReason)}
-                  </div>
-                `
-                : ""
-            }
-
-            <div class="event-actions">
-              ${getEventActions(event)}
-            </div>
-
-          </div>
-
-        </article>
-      `;
-    })
-    .join("");
+  eventsContainer.innerHTML = `
+    <div class="events-grid">
+      ${filteredEvents
+        .map((event, index) => createEventCard(event, index))
+        .join("")}
+    </div>
+  `;
 
   attachSubmitListeners();
 };
@@ -314,7 +391,7 @@ const submitEvent = async (eventId) => {
 
   try {
     const response = await authenticatedFetch(
-      `/api/host/events/${eventId}/submit`,
+      `/api/host/events/${encodeURIComponent(eventId)}/submit`,
       {
         method: "POST",
       },
@@ -334,17 +411,13 @@ const submitEvent = async (eventId) => {
     }
 
     if (!response.ok) {
-      throw new Error(
-        result.message || "Unable to submit event.",
-      );
+      throw new Error(result.message || "Unable to submit event.");
     }
 
     await Swal.fire({
       icon: "success",
       title: "Event submitted",
-      text:
-        result.message ||
-        "Your event has been submitted for approval.",
+      text: result.message || "Your event has been submitted for approval.",
       confirmButtonText: "OK",
     });
 
@@ -352,27 +425,20 @@ const submitEvent = async (eventId) => {
   } catch (error) {
     console.error("Submit event error:", error);
 
-    if (
-      error.message !==
-      "Authentication token not found."
-    ) {
-      showMessage(
-        error.message || "Unable to submit event.",
-        "error",
-      );
+    if (error.message !== "Authentication token not found.") {
+      await Swal.fire({
+        icon: "error",
+        title: "Submission failed",
+        text: error.message || "Unable to submit event.",
+      });
     }
   }
 };
 
 const attachSubmitListeners = () => {
-  const submitButtons =
-    document.querySelectorAll(".submit-btn");
-
-  submitButtons.forEach((button) => {
+  document.querySelectorAll(".submit-btn").forEach((button) => {
     button.addEventListener("click", () => {
-      const eventId = button.dataset.eventId;
-
-      submitEvent(eventId);
+      submitEvent(button.dataset.eventId);
     });
   });
 };
@@ -389,12 +455,9 @@ const getHostEvents = async () => {
       </div>
     `;
 
-    const response = await authenticatedFetch(
-      "/api/host/events",
-      {
-        method: "GET",
-      },
-    );
+    const response = await authenticatedFetch("/api/host/events", {
+      method: "GET",
+    });
 
     const result = await response.json();
 
@@ -409,30 +472,19 @@ const getHostEvents = async () => {
       return;
     }
 
-    if (!response.ok) {
-      throw new Error(
-        result.message || "Failed to fetch events.",
-      );
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to fetch events.");
     }
 
-    if (!result.success) {
-      throw new Error(
-        result.message || "Events are not available.",
-      );
-    }
+    hostEvents = Array.isArray(result.data) ? result.data : [];
 
-    hostEvents = Array.isArray(result.data)
-      ? result.data
-      : [];
+    updateEventStatistics();
 
     renderEvents();
   } catch (error) {
     console.error("Events page error:", error);
 
-    if (
-      error.message ===
-      "Authentication token not found."
-    ) {
+    if (error.message === "Authentication token not found.") {
       return;
     }
 
@@ -442,10 +494,7 @@ const getHostEvents = async () => {
         <h3>Unable to load events</h3>
 
         <p>
-          ${
-            escapeHtml(error.message) ||
-            "Something went wrong while loading your events."
-          }
+          ${escapeHtml(error.message)}
         </p>
 
         <button
@@ -469,4 +518,14 @@ eventSearch.addEventListener("input", renderEvents);
 
 statusFilter.addEventListener("change", renderEvents);
 
-getHostEvents();
+clearSearchButton?.addEventListener("click", () => {
+  eventSearch.value = "";
+
+  renderEvents();
+
+  eventSearch.focus();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  getHostEvents();
+});

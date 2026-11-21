@@ -1,10 +1,15 @@
 .host-main {
-  min-height: 100vh;
+  min-height: calc(100vh - 76px);
   margin-left: 260px;
   width: calc(100% - 260px);
+  max-width: none;
   padding: 40px 36px 60px;
   background: #f7f7fc;
+  color: #17172e;
+  box-sizing: border-box;
 }
+
+
 
 .host-header {
   max-width: 1180px;
@@ -12,6 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 24px;
 }
 
 .section-label {
@@ -35,6 +41,8 @@
 
 .back-btn {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 11px 18px;
   border: 1px solid #dedee9;
   border-radius: 9px;
@@ -42,9 +50,18 @@
   color: #29293e;
   text-decoration: none;
   font-weight: 600;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #f5f3ff;
+  border-color: #c9c2ff;
+  color: #5b4ee8;
 }
 
 #editEventForm {
+  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
 }
@@ -64,6 +81,7 @@
 }
 
 .form-group {
+  min-width: 0;
   margin-bottom: 18px;
 }
 
@@ -91,6 +109,7 @@
   color: #25253a;
   font: inherit;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-group textarea {
@@ -142,9 +161,9 @@
 
 .current-banner img,
 .new-banner-preview img {
+  display: block;
   width: 100%;
   max-height: 360px;
-  display: block;
   object-fit: contain;
   border-radius: 10px;
   background: #f4f4f8;
@@ -182,6 +201,7 @@
   color: #5b4ee8;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .secondary-btn:hover {
@@ -200,6 +220,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
   margin-bottom: 18px;
 }
 
@@ -239,6 +260,7 @@
 }
 
 .form-actions {
+  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
   display: flex;
@@ -255,6 +277,7 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  transition: 0.2s ease;
 }
 
 .cancel-btn {
@@ -264,6 +287,10 @@
   border: 1px solid #dedee9;
   background: #fff;
   color: #444458;
+}
+
+.cancel-btn:hover {
+  background: #f5f5fa;
 }
 
 .update-btn {
@@ -280,10 +307,11 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
 .current-promo-video,
 .new-promo-video-preview {
-  margin-top: 18px;
   max-width: 800px;
+  margin-top: 18px;
 }
 
 .video-label {
@@ -319,10 +347,16 @@
   width: 100%;
 }
 
+@media (max-width: 1100px) {
+  .ticket-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 900px) {
-  .host-main {
-    margin-left: 0;
+  body.host-layout .host-dashboard-layout .host-main {
     width: 100%;
+    margin: 0;
     padding: 30px 20px 50px;
   }
 
@@ -332,9 +366,25 @@
 }
 
 @media (max-width: 650px) {
+  body.host-layout .host-dashboard-layout .host-main {
+    padding: 22px 14px 35px;
+  }
+
   .host-header {
     flex-direction: column;
     gap: 20px;
+  }
+
+  .host-header h1 {
+    font-size: 28px;
+  }
+
+  .back-btn {
+    align-self: flex-start;
+  }
+
+  .form-section {
+    padding: 20px 16px;
   }
 
   .form-grid {
@@ -350,6 +400,10 @@
     flex-direction: column;
   }
 
+  .ticket-card {
+    padding: 16px;
+  }
+
   .form-actions {
     justify-content: stretch;
   }
@@ -357,5 +411,121 @@
   .cancel-btn,
   .update-btn {
     flex: 1;
+    text-align: center;
   }
+
+  .current-promo-video,
+  .new-promo-video-preview {
+    max-width: 100%;
+  }
+}
+html[data-theme="dark"] .host-main {
+  background: #0d1222;
+  color: #e5e7eb;
+}
+
+html[data-theme="dark"] .host-header h1 {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .host-header p:not(.section-label) {
+  color: #a5b4cc;
+}
+
+html[data-theme="dark"] .form-section {
+  background: #171f33;
+  border-color: #29344d;
+}
+
+html[data-theme="dark"] .form-section h2 {
+  color: #f1f5f9;
+}
+
+html[data-theme="dark"] .form-group label {
+  color: #dbe3f0;
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group textarea,
+html[data-theme="dark"] .form-group select {
+  background: #202b42;
+  border-color: #35435e;
+  color: #f1f5f9;
+}
+
+html[data-theme="dark"] .form-group input::placeholder,
+html[data-theme="dark"] .form-group textarea::placeholder {
+  color: #8290aa;
+}
+
+html[data-theme="dark"] .back-btn,
+html[data-theme="dark"] .cancel-btn {
+  background: #202b42;
+  border-color: #35435e;
+  color: #e5e7eb;
+}
+
+html[data-theme="dark"] .back-btn:hover,
+html[data-theme="dark"] .cancel-btn:hover {
+  background: #293650;
+}
+
+html[data-theme="dark"] .secondary-btn {
+  background: #202b42;
+  border-color: #6558e8;
+  color: #b8adff;
+}
+
+html[data-theme="dark"] .secondary-btn:hover {
+  background: #303958;
+}
+
+html[data-theme="dark"] .section-heading p,
+html[data-theme="dark"] .input-hint,
+html[data-theme="dark"] .banner-label,
+html[data-theme="dark"] .video-label {
+  color: #9ba9c0;
+}
+
+html[data-theme="dark"] .ticket-card {
+  background: #202b42;
+  border-color: #35435e;
+}
+
+html[data-theme="dark"] .ticket-card-header h3 {
+  color: #f1f5f9;
+}
+
+html[data-theme="dark"] .checkbox-row {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .current-banner img,
+html[data-theme="dark"] .new-banner-preview img {
+  background: #202b42;
+}
+
+html[data-theme="dark"] .new-promo-video-preview {
+  background: #202b42;
+  border-color: #35435e;
+}
+
+html[data-theme="dark"] .field-error {
+  color: #fb8585;
+}
+
+html[data-theme="dark"] .form-group input.invalid,
+html[data-theme="dark"] .form-group textarea.invalid,
+html[data-theme="dark"] .form-group select.invalid {
+  border-color: #f87171;
+}
+
+html[data-theme="dark"] .update-btn {
+  background: #6958ed;
+  border-color: #6958ed;
+  color: #fff;
+}
+
+html[data-theme="dark"] .update-btn:hover {
+  background: #5948d6;
 }

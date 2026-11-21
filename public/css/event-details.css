@@ -2,9 +2,21 @@
     min-height: 100vh;
     background: #f7f7fc;
     padding: 40px 24px 70px;
-    margin-left: 270px;
-    width: calc(100% - 270px);
+    margin-left: 0;
+    width: 100%;
     box-sizing: border-box;
+}
+
+/* Host layout */
+body.host-layout .event-details-layout {
+    margin-left: var(--sidebar-width, 280px);
+    width: calc(100% - var(--sidebar-width, 280px));
+}
+
+/* Normal user layout */
+body:not(.host-layout) .event-details-layout {
+    margin-left: 0;
+    width: 100%;
 }
 
 .event-details-container {
@@ -407,7 +419,7 @@
 }
 
 @media (max-width: 900px) {
-    .event-details-main {
+     body.host-layout .event-details-layout {
         margin-left: 0;
         width: 100%;
     }
@@ -482,5 +494,267 @@
 
     .report-event-btn {
         width: 100%;
+    }
+}
+/* =================================
+   EVENT DETAILS DARK THEME
+================================= */
+
+html[data-theme="dark"] body.event-details-page {
+    background: #0b1120;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .event-details-main {
+    background: #0b1120;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .event-page {
+    background: #111827;
+    border-color: #263247;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .event-hero {
+    background: #1e293b;
+}
+
+html[data-theme="dark"] .event-header {
+    border-bottom-color: #263247;
+}
+
+html[data-theme="dark"] .event-header h1,
+html[data-theme="dark"] .event-section h2,
+html[data-theme="dark"] .ticket-info h3,
+html[data-theme="dark"] .error-state h2,
+html[data-theme="dark"] .report-event-title {
+    color: #f3f4f6;
+}
+
+html[data-theme="dark"] .event-description,
+html[data-theme="dark"] .booking-section p,
+html[data-theme="dark"] .ticket-availability,
+html[data-theme="dark"] .report-event-description,
+html[data-theme="dark"] .promo-video-description {
+    color: #aab4c5;
+}
+
+html[data-theme="dark"] .event-section {
+    border-bottom-color: #263247;
+}
+
+html[data-theme="dark"] .info-card,
+html[data-theme="dark"] .ticket-card,
+html[data-theme="dark"] .report-event-section {
+    background: #172235;
+    border-color: #2b3a50;
+}
+
+html[data-theme="dark"] .info-card strong {
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .info-card span,
+html[data-theme="dark"] .section-heading p {
+    color: #9ca3af;
+}
+
+html[data-theme="dark"] .ticket-card:hover {
+    border-color: #6258d9;
+    box-shadow: 0 5px 16px rgba(81, 70, 216, 0.12);
+}
+
+html[data-theme="dark"] .error-state {
+    background: #172235;
+    border-color: #2b3a50;
+}
+
+html[data-theme="dark"] .report-event-btn {
+    background: #211c2b;
+    border-color: #653642;
+    color: #ff8e9b;
+}
+
+html[data-theme="dark"] .report-event-btn:hover {
+    background: #35202a;
+    border-color: #d92d43;
+    color: #ffb3bc;
+}
+
+html[data-theme="dark"] .promo-video-wrapper {
+    border-color: #2b3a50;
+}
+
+html[data-theme="dark"] .event-details-main .loading-state,
+html[data-theme="dark"] .event-details-main .empty-tickets {
+    color: #aab4c5;
+}
+/* Host page background behind the navbar and sidebar */
+body.event-details-page {
+    background: #0d1124;
+}
+
+/* Keep the host navbar aligned with the content area */
+body.host-layout .event-details-layout {
+    margin-left: var(--sidebar-width, 280px);
+    width: calc(100% - var(--sidebar-width, 280px));
+}
+
+body:not(.host-layout) .event-details-layout {
+    margin-left: 0;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    body.host-layout .event-details-layout {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+
+.event-details-layout {
+    width: 100%;
+    min-height: 100vh;
+    margin-left: 0;
+    box-sizing: border-box;
+}
+
+/* Default layout for normal users */
+.event-details-main {
+    margin-left: 0;
+    width: 100%;
+    min-height: calc(100vh - var(--navbar-height, 76px));
+    box-sizing: border-box;
+}
+
+/* Host layout */
+body.host-layout .event-details-main {
+    margin-left: var(--sidebar-width, 280px);
+    width: calc(100% - var(--sidebar-width, 280px));
+}
+
+/* Keep navbar full width */
+.event-details-layout .eventure-navbar {
+    width: 100%;
+    margin-left: 0;
+}
+
+/* Mobile layout */
+@media (max-width: 900px) {
+    body.host-layout .event-details-main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+/* HOST EVENT DETAILS LAYOUT FIX */
+
+body.host-layout .event-details-layout {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    left: 0 !important;
+    box-sizing: border-box;
+}
+
+/* Navbar spans the complete screen */
+body.host-layout .event-details-layout .eventure-navbar {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+/* Only the main content moves around the sidebar */
+body.host-layout .event-details-main {
+    margin-left: 280px !important;
+    width: calc(100% - 280px) !important;
+    box-sizing: border-box;
+}
+
+/* Normal user layout */
+body:not(.host-layout) .event-details-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    body.host-layout .event-details-main {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+/* Remove horizontal overflow on mobile */
+html,
+body.event-details-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body.event-details-page .event-details-layout {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+body.event-details-page .event-details-main {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body.host-layout .event-details-main {
+    width: calc(100% - 280px);
+}
+
+@media (max-width: 900px) {
+    body.host-layout .event-details-main {
+        width: 100%;
+    }
+}
+/* Sticky navbar - Event Details page */
+
+body.event-details-page .event-details-layout .eventure-navbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1200 !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+/* HOST: FIXED NAVBAR */
+
+body.host-layout .event-details-layout {
+    padding-top: var(--navbar-height, 76px);
+    box-sizing: border-box;
+}
+
+body.host-layout .event-details-layout .eventure-navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    z-index: 1200 !important;
+}
+
+/* Keep sidebar directly below navbar on desktop */
+@media (min-width: 901px) {
+    body.host-layout .sidebar {
+        top: var(--navbar-height, 76px) !important;
+        height: calc(100vh - var(--navbar-height, 76px)) !important;
+    }
+}
+
+/* Mobile sidebar remains a full-screen drawer */
+@media (max-width: 900px) {
+    body.host-layout .event-details-layout {
+        padding-top: var(--navbar-height, 76px);
+    }
+
+    body.host-layout .sidebar {
+        top: 0 !important;
+        height: 100dvh !important;
     }
 }

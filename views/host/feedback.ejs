@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "Eventure | Feedback & Reviews" }) %>
+    <link rel="stylesheet" href="/css/host/feedback.css">
+</head>
+
+<body>
+
+    <%- include("../partials/navbar") %>
+
+    <%- include("../partials/sidebar", { activePage: "feedback" }) %>
+
+    <main class="host-main feedback-main">
+
+        <header class="host-header feedback-header">
+            <div>
+                <p class="section-label">HOST PANEL</p>
+                <h1>Feedback & Reviews</h1>
+                <p>Discover what attendees think about your events.</p>
+            </div>
+        </header>
+
+        <section class="feedback-summary" id="feedback-summary">
+
+            <article class="summary-card">
+                <div class="summary-icon">
+                    <i class="bi bi-chat-square-text"></i>
+                </div>
+                <div>
+                    <p>Total Reviews</p>
+                    <h2 id="total-reviews">0</h2>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div>
+                    <p>Average Rating</p>
+                    <h2 id="average-rating">0.0 <span>/ 5</span></h2>
+                    <div class="summary-stars" id="average-rating-stars">☆☆☆☆☆</div>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div>
+                    <p>Events With Reviews</p>
+                    <h2 id="events-with-feedback">0</h2>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="rating-breakdown-section">
+
+            <div class="feedback-section-heading">
+                <h2>Rating Breakdown</h2>
+                <p>Understand how attendees rate your events.</p>
+            </div>
+
+            <div id="rating-breakdown" class="rating-breakdown">
+
+                <div class="rating-row">
+                    <span>5 <i class="bi bi-star-fill"></i></span>
+                    <div class="rating-progress">
+                        <div class="rating-progress-fill" data-rating="5"></div>
+                    </div>
+                    <span class="rating-count" data-rating-count="5">0</span>
+                </div>
+
+                <div class="rating-row">
+                    <span>4 <i class="bi bi-star-fill"></i></span>
+                    <div class="rating-progress">
+                        <div class="rating-progress-fill" data-rating="4"></div>
+                    </div>
+                    <span class="rating-count" data-rating-count="4">0</span>
+                </div>
+
+                <div class="rating-row">
+                    <span>3 <i class="bi bi-star-fill"></i></span>
+                    <div class="rating-progress">
+                        <div class="rating-progress-fill" data-rating="3"></div>
+                    </div>
+                    <span class="rating-count" data-rating-count="3">0</span>
+                </div>
+
+                <div class="rating-row">
+                    <span>2 <i class="bi bi-star-fill"></i></span>
+                    <div class="rating-progress">
+                        <div class="rating-progress-fill" data-rating="2"></div>
+                    </div>
+                    <span class="rating-count" data-rating-count="2">0</span>
+                </div>
+
+                <div class="rating-row">
+                    <span>1 <i class="bi bi-star-fill"></i></span>
+                    <div class="rating-progress">
+                        <div class="rating-progress-fill" data-rating="1"></div>
+                    </div>
+                    <span class="rating-count" data-rating-count="1">0</span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="event-feedback-section">
+
+            <div class="feedback-section-heading">
+                <h2>Event Reviews</h2>
+                <p>Select an event to read feedback from its attendees.</p>
+            </div>
+
+            <div class="feedback-toolbar">
+                <label for="feedback-event-select">Choose Event</label>
+                <select id="feedback-event-select">
+                    <option value="">Loading your events...</option>
+                </select>
+            </div>
+
+            <div id="selected-event-summary" class="selected-event-summary" hidden></div>
+
+            <div id="event-feedback-container">
+
+                <div class="feedback-message">
+                    <div class="loading-spinner"></div>
+                    <p>Loading feedback...</p>
+                </div>
+
+            </div>
+
+            <nav id="feedback-pagination" class="feedback-pagination" aria-label="Feedback pages" hidden>
+                <button type="button" id="feedback-prev" disabled>Previous</button>
+                <span id="feedback-page-info">Page 1 of 1</span>
+                <button type="button" id="feedback-next" disabled>Next</button>
+            </nav>
+
+        </section>
+
+    </main>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/common/navbar.js"></script>
+    <script src="/js/common/host-sidebar.js"></script>
+    <script src="/js/host/feedback.js"></script>
+
+    <script>
+        if (!redirectToLoginIfNotLoggedIn()) {
+            protectDashboardHistory();
+        }
+    </script>
+
+</body>
+</html>

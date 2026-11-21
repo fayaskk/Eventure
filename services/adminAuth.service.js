@@ -124,10 +124,7 @@ export const adminForgotPasswordService =
       await generateAndStoreOTP(
         normalizedEmail,
       );
-
-    console.log(
-      `OTP for ${normalizedEmail}: ${otp}`,
-    );
+return otp;
   };
 
 export const adminVerifyForgotPasswordOTPService =

@@ -15,8 +15,9 @@
 }
 
 .create-event-main {
+  width: calc(100% - var(--sidebar-width, 280px));
   min-height: 100vh;
-  margin-left: var(--sidebar-width, 270px);
+  margin-left: var(--sidebar-width, 280px);
   padding: 30px 36px 48px;
   box-sizing: border-box;
   background: var(--event-background);
@@ -561,44 +562,38 @@
   background: #ffe9ec;
 }
 
-.promo-video-section {
-  margin-top: 23px;
-  padding: 18px;
-  border: 1px solid #e9e6fa;
-  border-radius: 12px;
-  background: #fbfaff;
+.promo-video-section .promo-video-upload {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100%;
+  gap: 12px;
 }
 
-.promo-video-heading {
-  display: flex;
-  align-items: center;
-  gap: 11px;
+.promo-video-section .promo-browse-btn {
+  align-self: center !important;
+  margin: 0 auto;
 }
 
-.promo-video-icon {
-  display: flex;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: #ece8ff;
-  color: var(--event-primary);
-  font-size: 15px;
+.promo-video-section .promo-file-details {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  flex: none !important;
 }
 
-.promo-video-heading > div:last-child {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+.promo-video-section .promo-file-name {
+  text-align: center !important;
 }
 
-.promo-video-heading label {
-  color: #30354b;
-  font-size: 13px;
-  font-weight: 800;
+.promo-video-section .promo-remove-btn {
+  align-self: center !important;
+  margin: 0 auto;
 }
 
 .optional-badge {
@@ -1183,8 +1178,10 @@
 
 @media (max-width: 900px) {
   .create-event-main {
+    width: 100%;
     margin-left: 0;
     padding: 76px 22px 35px;
+  }
   }
 
   .create-event-container {
@@ -1215,7 +1212,7 @@
   .wizard-footer {
     padding: 16px 22px;
   }
-}
+
 
 @media (max-width: 600px) {
   .create-event-main {
@@ -1545,4 +1542,351 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+.promo-video-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  text-align: center;
+}
+
+.promo-file-details {
+  justify-content: center;
+  width: 100%;
+  flex: 0 1 auto;
+  text-align: center;
+}
+
+.promo-file-name {
+  text-align: center;
+}
+
+.promo-preview-wrapper {
+  width: 100%;
+  max-width: 650px;
+  margin: 18px auto 0;
+}
+
+.promo-video-preview {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.promo-video-footer {
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .promo-video-upload {
+    align-items: center;
+  }
+
+  .promo-file-details {
+    flex-basis: auto;
+    order: initial;
+  }
+
+  .promo-remove-btn {
+    margin-left: 0;
+    order: initial;
+  }
+}
+
+html[data-theme="dark"] .create-event-main {
+  --event-text: #edf0fa;
+  --event-text-secondary: #a5aec3;
+  --event-text-muted: #8791a8;
+  --event-border: #34394b;
+  --event-background: #151824;
+  --event-white: #202536;
+  --event-primary-light: #302b50;
+  background: var(--event-background);
+  color: var(--event-text);
+}
+
+html[data-theme="dark"] .create-event-header h1,
+html[data-theme="dark"] .wizard-title-area h2,
+html[data-theme="dark"] .panel-intro h3,
+html[data-theme="dark"] .form-group label,
+html[data-theme="dark"] .promo-video-heading label,
+html[data-theme="dark"] .upload-empty h4,
+html[data-theme="dark"] .preview-info strong,
+html[data-theme="dark"] .ticket-header h3,
+html[data-theme="dark"] .ticket-card-header h4,
+html[data-theme="dark"] .ticket-field label,
+html[data-theme="dark"] .setting-content h3,
+html[data-theme="dark"] .review-section h3,
+html[data-theme="dark"] .review-item > strong,
+html[data-theme="dark"] .schedule-divider h3 {
+  color: #edf0fa;
+}
+
+html[data-theme="dark"] .event-wizard,
+html[data-theme="dark"] .ticket-section,
+html[data-theme="dark"] .review-section {
+  background: #202536;
+  border-color: #34394b;
+}
+
+html[data-theme="dark"] .wizard-panel,
+html[data-theme="dark"] .wizard-footer {
+  border-color: #34394b;
+}
+
+html[data-theme="dark"] .wizard-footer {
+  background: #1b2030;
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group select,
+html[data-theme="dark"] .form-group textarea,
+html[data-theme="dark"] .ticket-field input {
+  background: #171c2a;
+  color: #edf0fa;
+  border-color: #3b4257;
+}
+
+html[data-theme="dark"] .form-group input::placeholder,
+html[data-theme="dark"] .form-group textarea::placeholder,
+html[data-theme="dark"] .ticket-field input::placeholder {
+  color: #818ba2;
+}
+
+html[data-theme="dark"] .upload-area {
+  background: #1a2030;
+  border-color: #41465d;
+}
+
+html[data-theme="dark"] .upload-area.drag-over {
+  background: #292442;
+}
+
+html[data-theme="dark"] .upload-empty h4,
+html[data-theme="dark"] .preview-info strong {
+  color: #edf0fa;
+}
+
+html[data-theme="dark"] .promo-video-section {
+  background: #1b2030;
+  border-color: #39334f;
+}
+
+html[data-theme="dark"] .promo-file-icon,
+html[data-theme="dark"] .promo-preview-wrapper {
+  background: #202536;
+  border-color: #3b4257;
+}
+
+html[data-theme="dark"] .promo-file-name,
+html[data-theme="dark"] .promo-video-footer,
+html[data-theme="dark"] .preview-info span {
+  color: #a5aec3;
+}
+
+html[data-theme="dark"] .ticket-card,
+html[data-theme="dark"] .review-item {
+  background: #191f2e;
+  border-color: #34394b;
+}
+
+html[data-theme="dark"] .no-tickets {
+  background: #191f2e;
+  border-color: #41465d;
+}
+
+html[data-theme="dark"] .no-tickets h4 {
+  color: #edf0fa;
+}
+
+html[data-theme="dark"] .settings-card {
+  background: linear-gradient(135deg, #24243a, #202536);
+  border-color: #39334f;
+}
+
+html[data-theme="dark"] .cancel-btn,
+html[data-theme="dark"] .secondary-btn {
+  background: #252b3d;
+  color: #dce1ef;
+  border-color: #41485c;
+}
+
+html[data-theme="dark"] .cancel-btn:hover,
+html[data-theme="dark"] .secondary-btn:hover:not(:disabled) {
+  background: #302b50;
+  color: #b8adff;
+}
+
+html[data-theme="dark"] .step-number {
+  background: #252b3d;
+  color: #a5aec3;
+  border-color: #41485c;
+}
+
+html[data-theme="dark"] .wizard-step {
+  color: #929bb1;
+}
+
+html[data-theme="dark"] .wizard-line {
+  background: #41485c;
+}
+
+html[data-theme="dark"] .progress-track {
+  background: #34394b;
+}
+
+html[data-theme="dark"] .schedule-divider {
+  border-color: #34394b;
+}
+
+html[data-theme="dark"] .review-item {
+  border-color: #34394b;
+}
+
+html[data-theme="dark"] .preview-image-wrapper,
+html[data-theme="dark"] .review-banner {
+  background: #171c2a;
+}
+
+html[data-theme="dark"] .form-group input.invalid,
+html[data-theme="dark"] .form-group select.invalid,
+html[data-theme="dark"] .form-group textarea.invalid {
+  background: #34212b;
+  border-color: #d84b5b;
+}
+.create-event-main h1,
+.create-event-main h2,
+.create-event-main h3,
+.create-event-main h4 {
+  font-weight: 650;
+}
+
+.create-event-main label,
+.create-event-main strong,
+.create-event-main .wizard-step,
+.create-event-main .step-label,
+.create-event-main .ticket-field label {
+  font-weight: 600;
+}
+
+.create-event-main button {
+  font-weight: 600;
+}
+
+.create-event-main .section-label {
+  font-weight: 700;
+}
+:root {
+  --sidebar-width: 280px;
+}
+
+body.host-layout .sidebar {
+  width: var(--sidebar-width) !important;
+}
+
+body.host-layout .host-dashboard-layout {
+  width: calc(100% - var(--sidebar-width));
+  margin-left: var(--sidebar-width);
+}
+
+@media (max-width: 900px) {
+  body.host-layout .sidebar {
+    width: var(--sidebar-mobile-width) !important;
+  }
+
+  body.host-layout .host-dashboard-layout {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+.create-event-main {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.create-event-container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.event-wizard {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+@media (min-width: 1400px) {
+  .event-wizard {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 900px) {
+  .create-event-main {
+    padding: 25px 20px 40px;
+  }
+
+  .event-wizard {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .create-event-main {
+    padding: 20px 13px 30px;
+  }
+}
+.promo-video-heading {
+  display: flex !important;
+  align-items: center;
+  justify-content: center !important;
+  width: 100%;
+  gap: 11px;
+  text-align: center;
+}
+
+.promo-video-heading > div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.promo-video-heading label {
+  margin: 0;
+}
+
+.promo-video-section .promo-video-description {
+  text-align: center;
+}
+
+.promo-video-section .promo-video-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.promo-video-section .promo-file-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  flex: none;
+}
+
+.promo-video-section .promo-video-footer {
+  justify-content: center;
+  text-align: center;
 }

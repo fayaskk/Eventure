@@ -1,0 +1,205 @@
+<%- include("../partials/head", { title: "Manage Settlements | Eventure" }) %>
+<link rel="stylesheet" href="/css/common/admin-sidebar.css">
+<link rel="stylesheet" href="/css/admin/settlements.css">
+
+<%- include("../partials/admin-sidebar", { activePage: "settlements" }) %>
+
+<main class="admin-settlements-main">
+
+    <div class="settlements-container">
+
+        <div class="settlements-header">
+            <div>
+                <span class="section-eyebrow">FINANCIAL MANAGEMENT</span>
+                <h1>Host Settlements</h1>
+                <p>Review, approve and manage host payout requests.</p>
+            </div>
+
+            <button class="refresh-button" id="refreshSettlements">
+                <i class="bi bi-arrow-clockwise"></i>
+                Refresh
+            </button>
+        </div>
+
+        <section class="settlement-stats">
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <div>
+                    <span>Total Settlements</span>
+                    <h2 id="totalSettlements">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div>
+                    <span>Pending Requests</span>
+                    <h2 id="pendingSettlements">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div>
+                    <span>Approved</span>
+                    <h2 id="approvedSettlements">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-currency-rupee"></i>
+                </div>
+                <div>
+                    <span>Total Paid</span>
+                    <h2 id="totalPaid">₹0</h2>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="settlements-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h2>Settlement Requests</h2>
+                    <p>Manage all host payout requests.</p>
+                </div>
+
+                <div class="settlement-filters">
+
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input
+                            type="text"
+                            id="settlementSearch"
+                            placeholder="Search host or event..."
+                        >
+                    </div>
+
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="paid">Paid</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div id="settlementLoading" class="settlement-loading">
+                <div class="spinner"></div>
+                <p>Loading settlements...</p>
+            </div>
+
+            <div id="settlementError" class="settlement-message error" hidden>
+                Unable to load settlements.
+            </div>
+
+            <div class="table-responsive" id="settlementTableWrapper" hidden>
+
+                <table class="settlements-table">
+
+                    <thead>
+                        <tr>
+                            <th>HOST</th>
+                            <th>EVENT</th>
+                            <th>AMOUNT</th>
+                            <th>REQUEST DATE</th>
+                            <th>STATUS</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="settlementsTableBody"></tbody>
+
+                </table>
+
+                <div id="emptySettlements" class="empty-settlements" hidden>
+                    <i class="bi bi-inbox"></i>
+                    <h3>No settlements found</h3>
+                    <p>There are no settlement requests matching your search.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<div class="settlement-modal" id="settlementModal">
+
+    <div class="settlement-modal-backdrop" data-close-modal></div>
+
+    <div class="settlement-modal-content">
+
+        <div class="modal-header">
+            <div>
+                <span class="section-eyebrow">SETTLEMENT DETAILS</span>
+                <h2>Settlement Information</h2>
+            </div>
+
+            <button class="modal-close" data-close-modal>
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div id="settlementDetailsContent"></div>
+
+    </div>
+
+</div>
+
+
+<div class="action-modal" id="actionModal">
+
+    <div class="action-modal-backdrop" data-close-action></div>
+
+    <div class="action-modal-content">
+
+        <div class="modal-header">
+            <div>
+                <span class="section-eyebrow">SETTLEMENT ACTION</span>
+                <h2 id="actionModalTitle">Confirm Action</h2>
+            </div>
+
+            <button class="modal-close" data-close-action>
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form id="settlementActionForm">
+
+            <div id="actionFormFields"></div>
+
+            <div class="action-modal-buttons">
+                <button type="button" class="cancel-button" data-close-action>
+                    Cancel
+                </button>
+
+                <button type="submit" class="confirm-button" id="confirmActionButton">
+                    Confirm
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="settlement-toast" id="settlementToast"></div>
+<script src="/js/admin/admin-sidebar.js"></script>
+<script src="/js/admin/settlements.js"></script>

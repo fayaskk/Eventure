@@ -1,0 +1,97 @@
+:root {
+  --host-sidebar-width: 280px;
+  --host-navbar-height: 76px;
+  --sidebar-width: var(--host-sidebar-width);
+}
+
+body.host-layout {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body.host-layout .host-dashboard-layout {
+  width: calc(100% - var(--host-sidebar-width));
+  min-height: calc(100vh - var(--host-navbar-height));
+  margin-left: var(--host-sidebar-width);
+  background: var(
+    --dashboard-bg,
+    var(--events-bg, var(--event-background, #f7f7fc))
+  );
+  transition: background 0.25s ease;
+  box-sizing: border-box;
+}
+
+body.host-layout .host-dashboard-layout .host-main,
+body.host-layout .host-dashboard-layout .create-event-main,
+body.host-layout .host-dashboard-layout .bookings-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body.host-layout .host-dashboard-layout .host-main {
+  min-height: calc(100vh - var(--host-navbar-height));
+}
+
+body.host-layout .host-dashboard-layout .create-event-main {
+  min-height: calc(100vh - var(--host-navbar-height));
+}
+
+body.host-layout .sidebar {
+  top: var(--host-navbar-height);
+  width: var(--host-sidebar-width);
+  height: calc(100vh - var(--host-navbar-height));
+  height: calc(100dvh - var(--host-navbar-height));
+  z-index: 1100;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --host-navbar-height: var(--navbar-height, 76px);
+  }
+
+  body.host-layout .host-dashboard-layout {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  body.host-layout .host-dashboard-layout .host-main {
+    width: 100%;
+    padding: 25px 20px;
+  }
+
+  body.host-layout .host-dashboard-layout .create-event-main {
+    width: 100%;
+    margin: 0;
+    padding: 28px 22px 35px;
+  }
+
+  body.host-layout .host-dashboard-layout .bookings-main {
+    width: 100%;
+    margin: 0;
+    padding: 30px 20px 45px;
+  }
+
+  body.host-layout .sidebar {
+    top: 0;
+    width: min(310px, 88vw);
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1300;
+  }
+}
+@media (max-width: 600px) {
+  body.host-layout .host-dashboard-layout .host-main {
+    padding: 20px 13px 30px;
+  }
+
+  body.host-layout .host-dashboard-layout .create-event-main {
+    padding: 22px 12px 28px;
+  }
+
+  body.host-layout .host-dashboard-layout .bookings-main {
+    padding: 24px 13px 35px;
+  }
+}

@@ -52,13 +52,43 @@ const bookingSchema = new mongoose.Schema(
         },
       },
     ],
+    ticketSubtotal: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
 
     totalAmount: {
       type: Number,
       required: true,
       min: 0,
     },
-
+    discount: {
+      discountId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Discount",
+      },
+      code: String,
+      title: String,
+      discountType: {
+        type: String,
+        enum: ["percentage", "fixed"],
+      },
+      discountValue: Number,
+      maxDiscount: {
+        type: Number,
+        default: null,
+      },
+      discountAmount: {
+        type: Number,
+        min: 0,
+      },
+    },
+    discountReservationStatus: {
+      type: String,
+      enum: ["reserved", "consumed", "released"],
+      default: null,
+    },
     bookingReference: {
       type: String,
       required: true,

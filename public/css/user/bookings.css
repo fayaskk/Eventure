@@ -16,11 +16,21 @@
 }
 
 .bookings-content {
-  width: calc(100% - var(--sidebar-width));
-  min-height: 100vh;
-  margin-left: var(--sidebar-width);
+  width: 100%;
+  min-height: calc(100vh - 76px);
+  margin-left: 0;
   padding: 45px clamp(24px, 6vw, 90px);
   overflow-x: hidden;
+  box-sizing: border-box;
+  transition: width 0.3s ease, margin-left 0.3s ease;
+}
+
+/* Desktop host layout */
+@media (min-width: 901px) {
+  body.host-layout .bookings-content {
+    width: calc(100% - var(--sidebar-width, 280px));
+    margin-left: var(--sidebar-width, 280px);
+  }
 }
 
 .bookings-header,
@@ -321,4 +331,118 @@
   .tickets-section-header h2 {
     font-size: 23px;
   }
+}
+/* =========================================
+   HOST SIDEBAR RESPONSIVE LAYOUT
+========================================= */
+
+@media (max-width: 900px) {
+  .bookings-content,
+  body.host-layout .bookings-content {
+    width: 100%;
+    margin-left: 0;
+    padding: 35px 24px 45px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bookings-content,
+  body.host-layout .bookings-content {
+    width: 100%;
+    padding: 28px 16px 40px;
+  }
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+html[data-theme="dark"] .bookings-page {
+  background: #0b1120;
+  color: #f3f4f6;
+}
+
+html[data-theme="dark"] .bookings-header h1,
+html[data-theme="dark"] .tickets-section-header h2,
+html[data-theme="dark"] .ticket-event-details h3,
+html[data-theme="dark"] .ticket-amount {
+  color: #f3f4f6;
+}
+
+html[data-theme="dark"] .header-description,
+html[data-theme="dark"] .tickets-section-header p,
+html[data-theme="dark"] .ticket-event-details p,
+html[data-theme="dark"] .payment-label,
+html[data-theme="dark"] .explore-section p {
+  color: #a7abc1;
+}
+
+html[data-theme="dark"] .ticket-card,
+html[data-theme="dark"] .tickets-message,
+html[data-theme="dark"] .explore-section {
+  background: #151c2e;
+  border-color: rgba(255, 255, 255, 0.09);
+  color: #f3f4f6;
+}
+
+html[data-theme="dark"] .ticket-card-footer {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .ticket-reference strong {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .ticket-event-details .ticket-reference {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .view-ticket-button {
+  background: #1e293b;
+  border-color: #4940a8;
+  color: #a99eff;
+}
+
+html[data-theme="dark"] .view-ticket-button:hover {
+  background: #29234f;
+}
+
+html[data-theme="dark"] .tickets-message p {
+  color: #a7abc1;
+}
+
+
+
+.bookings-page {
+  overflow-x: hidden;
+}
+
+.bookings-content,
+.tickets-container,
+.ticket-card {
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+    .bookings-content {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .bookings-header,
+    .tickets-section,
+    .explore-section {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .bookings-content {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
 }

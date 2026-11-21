@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "My Wallet | Eventure" }) %>
+    <link rel="stylesheet" href="/css/common/navbar.css">
+    <link rel="stylesheet" href="/css/user/wallet.css">
+</head>
+
+<body class="wallet-page">
+
+    <%- include("../partials/sidebar", { activePage: "wallet" }) %>
+
+    <%- include("../partials/navbar", { activePage: "wallet" }) %>
+
+    <div class="wallet-layout">
+
+        <main class="wallet-content">
+
+            <header class="wallet-header">
+                <div>
+                    <p class="wallet-eyebrow">MY FINANCES</p>
+                    <h1>My Wallet</h1>
+                    <p>Manage your Eventure balance and keep track of your transactions.</p>
+                </div>
+
+                <a href="/user/transactions" class="history-shortcut">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Transaction History
+                </a>
+            </header>
+
+            <section class="wallet-overview">
+
+                <div class="balance-card">
+                    <div class="balance-card-top">
+                        <div>
+                            <p class="balance-label">AVAILABLE BALANCE</p>
+                            <h2 id="walletBalance">₹0.00</h2>
+                        </div>
+
+                        <div class="wallet-card-icon">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+
+                    <div class="balance-card-bottom">
+                        <div>
+                            <span class="balance-status-dot"></span>
+                            <span>Active Wallet</span>
+                        </div>
+
+                        <span class="wallet-currency">INR · Indian Rupee</span>
+                    </div>
+                </div>
+
+                <div class="wallet-info-card">
+                    <div class="wallet-info-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <div>
+                        <h3>Your money, tracked clearly.</h3>
+                        <p>
+                            Every wallet credit and debit is recorded in your transaction
+                            history so you can easily track your spending.
+                        </p>
+                    </div>
+
+                    <div class="wallet-info-footer">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Secure transaction records
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="wallet-stats">
+
+                <article class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon credit-icon">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </span>
+                        <span class="stat-label">TOTAL CREDITS</span>
+                    </div>
+
+                    <h3 id="totalCredits">₹0.00</h3>
+                    <p>Money added to your wallet</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon debit-icon">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </span>
+                        <span class="stat-label">TOTAL DEBITS</span>
+                    </div>
+
+                    <h3 id="totalDebits">₹0.00</h3>
+                    <p>Money spent from your wallet</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-icon transaction-icon">
+                            <i class="fa-solid fa-receipt"></i>
+                        </span>
+                        <span class="stat-label">TRANSACTIONS</span>
+                    </div>
+
+                    <h3 id="totalTransactions">0</h3>
+                    <p>Total recorded transactions</p>
+                </article>
+
+            </section>
+
+            <section class="transactions-section" id="transactions">
+
+                <div class="transactions-header">
+                    <div>
+                        <p class="wallet-eyebrow">YOUR ACTIVITY</p>
+                        <h2>Transaction History</h2>
+                        <p>View and track your recent wallet activity.</p>
+                    </div>
+
+                    <div class="transaction-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="credit">Credits</button>
+                        <button class="filter-btn" data-filter="debit">Debits</button>
+                    </div>
+                </div>
+
+                <div class="transaction-table-wrapper">
+
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>TRANSACTION</th>
+                                <th>REFERENCE</th>
+                                <th>DATE</th>
+                                <th>TYPE</th>
+                                <th>AMOUNT</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="transactionTableBody">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="transaction-loading">
+                                        <span class="loading-spinner"></span>
+                                        Loading transactions...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mobile-transactions" id="mobileTransactions"></div>
+
+                </div>
+
+                <div class="transaction-footer">
+                    <p id="transactionCount">Showing 0 transactions</p>
+
+                    <div class="pagination-controls">
+                        <button id="prevPage" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <span id="paginationInfo">Page 1 of 1</span>
+
+                        <button id="nextPage" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="wallet-footer-note">
+                <div class="footer-note-icon">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                <div>
+                    <h3>Good to know</h3>
+                    <p>
+                        Your wallet balance is displayed in Indian Rupees. All amounts
+                        are recorded in paise internally to maintain accurate financial
+                        calculations.
+                    </p>
+                </div>
+            </section>
+
+               </main>
+    </div>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/user/wallet.js"></script>
+
+    <script>
+        if (!redirectToLoginIfNotLoggedIn()) {
+            protectDashboardHistory();
+            verifyAccountStatus();
+        }
+    </script>
+
+</body>
+</html>

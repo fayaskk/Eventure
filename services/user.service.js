@@ -124,9 +124,8 @@ export const requestUserEmailChangeService = async (newEmail) => {
     throw error;
   }
 
-  const otp = await generateAndStoreOTP(normalizedEmail);
 
-  console.log(`Request Email Change OTP for ${normalizedEmail} : ${otp}`);
+
 };
 
 export const verifyUserEmailChangeService = async (userId, newEmail, otp) => {

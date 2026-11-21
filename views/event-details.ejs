@@ -1,35 +1,48 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
-<head>
-    <%- include("partials/head", { title: "Eventure | Event Details" }) %>
-        <link rel="stylesheet" href="/css/common/sidebar.css">
-        <link rel="stylesheet" href="/css/event-details.css">
+<head>   <%- include("partials/head", { title: "Eventure | Event Details" }) %>
+
+&#x20; <link rel="stylesheet" href="/css/common/navbar.css">
+&#x20; <link rel="stylesheet" href="/css/common/sidebar.css">
+&#x20; <link rel="stylesheet" href="/css/event-details.css">
 </head>
 
-<body>
+<body class="event-details-page">
 
-    <%- include("partials/sidebar", { activePage: activePage || "events" }) %>
+<%- include("partials/sidebar", { activePage: "events" }) %>
 
-        <main class="event-details-main">
+&#x20; <div class="event-details-layout">
 
-            <div class="event-details-container">
 
-                <a href="/events" class="back-link">
-                    ← Back to Events
-                </a>
+<%- include("partials/navbar", { activePage: activePage || "events" }) %>
 
-                <div id="event-details">
-                    <div class="loading-state">
-                        Loading event...
-                    </div>
-                </div>
+<main class="event-details-main">
 
-            </div>
+  <div class="event-details-container">
 
-        </main>
+    <a href="/events" class="back-link">
+      <i class="bi bi-arrow-left"></i>
+      Back to Events
+    </a>
 
-        <script src="/js/event-details.js"></script>
+    <div id="event-details">
+
+      <div class="loading-state">
+        Loading event...
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+&#x20; </div>
+
+&#x20; <script src="/js/event-details.js"></script>
 
 </body>
 

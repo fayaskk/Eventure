@@ -37,8 +37,20 @@ const paymentSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["created", "pending", "successful", "failed", "expired", "refunded"],
+      enum: [
+        "created",
+        "pending",
+        "successful",
+        "failed",
+        "expired",
+        "refund_pending",
+        "partially_refunded",
+        "refunded",
+        "refund_review",
+        "refund_failed",
+      ],
       default: "created",
+      index: true,
     },
 
     failureReason: {
@@ -46,13 +58,60 @@ const paymentSchema = new mongoose.Schema(
       trim: true,
     },
 
+    totalRefundedPaise: {
+      type: Number,
+      min: 0,
+      default: 0,
+      validate: {
+        validator: Number.isInteger,
+        message: "Total refunded amount must be a whole number in paise.",
+      },
+    },
+
     refundAmount: {
       type: Number,
       min: 0,
     },
 
+    razorpayRefundId: {
+      type: String,
+      trim: true,
+    },
+
     refundedAt: {
       type: Date,
+      default: null,
+    },
+
+    platformCommissionPercent: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 10,
+    },
+
+    platformFee: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+
+    hostEarnings: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+
+    settlementStatus: {
+      type: String,
+      enum: ["available", "requested", "settled", "on_hold"],
+      default: "available",
+    },
+
+    settlement: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Settlement",
+      default: null,
     },
   },
   {

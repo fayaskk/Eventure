@@ -54,6 +54,13 @@ router.get("/host/dashboard", (req, res) => {
   return res.render("host/dashboard");
 });
 
+router.get("/host/settlements", (req, res) => {
+  return res.render("host/settlements", {
+    title: "Eventure | My Settlements",
+    activePage: "settlements",
+  });
+});
+
 router.get("/host/profile", (req, res) => {
   return res.render("host/profile");
 });
@@ -64,6 +71,13 @@ router.get("/host/profile/edit", (req, res) => {
 
 router.get("/host/events/create", (req, res) => {
   return res.render("host/create-event");
+});
+
+router.get("/host/bookings", (req, res) => {
+  return res.render("host/bookings", {
+    title: "Eventure | Booking Management",
+    activePage: "bookings",
+  });
 });
 
 router.get("/host/events", (req, res) => {
@@ -78,9 +92,30 @@ router.get("/host/events/:eventId/edit", (req, res) => {
   });
 });
 
+router.get("/host/events/:eventId/discounts", (req, res) => {
+  return res.render("host/discounts", {
+    title: "Eventure | Manage Discounts",
+    eventId: req.params.eventId,
+    activePage: "events",
+  });
+});
+
 router.get("/host/events/:eventId", (req, res) => {
   return res.render("host/event-details", {
     title: "Eventure | Event Details",
+  });
+});
+
+router.get("/host/ticket-scanner", (req, res) => {
+  return res.render("host/ticket-scanner", {
+    title: "Eventure | Ticket Scanner",
+  });
+});
+
+router.get("/host/feedback", (req, res) => {
+  res.render("host/feedback", {
+    title: "Feedback & Reviews | Eventure",
+    activePage: "feedback",
   });
 });
 

@@ -4,8 +4,17 @@ import { Event } from "../models/event.model.js";
 import { Booking } from "../models/booking.model.js";
 import { Payment } from "../models/payment.model.js";
 import { getPublicEventByIdService } from "./event.service.js";
+import { Ticket } from "../models/ticket.model.js";
+import { Discount } from "../models/discount.model.js";
+import { getEventDateTime } from "../utils/eventDateTime.js";
+import { validateAndCalculateDiscountService } from "./discount.service.js";
 
-export const createBookingService = async (userId, eventId, tickets) => {
+export const createBookingService = async (
+  userId,
+  eventId,
+  tickets,
+  couponCode = null,
+) => {
   if (
     !mongoose.Types.ObjectId.isValid(userId) ||
     !mongoose.Types.ObjectId.isValid(eventId)
@@ -24,7 +33,7 @@ export const createBookingService = async (userId, eventId, tickets) => {
   const event = await getPublicEventByIdService(eventId);
 
   const bookingTickets = [];
-  let totalAmount = 0;
+  let ticketSubtotal = 0;
 
   const selectedTicketIds = new Set();
 
@@ -86,7 +95,7 @@ export const createBookingService = async (userId, eventId, tickets) => {
       subtotal,
     });
 
-    totalAmount += subtotal;
+    ticketSubtotal += subtotal;
   }
 
   const session = await mongoose.startSession();
@@ -95,6 +104,90 @@ export const createBookingService = async (userId, eventId, tickets) => {
     let createdBooking;
 
     await session.withTransaction(async () => {
+      let discountData = null;
+      let totalAmount = ticketSubtotal;
+
+      if (couponCode) {
+        const discountResult = await validateAndCalculateDiscountService(
+          userId,
+          eventId,
+          couponCode,
+          ticketSubtotal,
+          session,
+        );
+
+        discountData = discountResult.discount;
+        totalAmount = discountResult.totalAmount;
+
+        const existingUsageCount = await Booking.countDocuments({
+          user: userId,
+          "discount.discountId": discountData.discountId,
+          discountReservationStatus: {
+            $in: ["reserved", "consumed"],
+          },
+        }).session(session);
+
+        const discountDocument = await Discount.findById(
+          discountData.discountId,
+        ).session(session);
+
+        if (!discountDocument) {
+          const error = new Error("Coupon no longer exists");
+          error.statusCode = 404;
+          throw error;
+        }
+
+        if (existingUsageCount >= discountDocument.perUserLimit) {
+          const error = new Error(
+            "You have reached the usage limit for this coupon",
+          );
+          error.statusCode = 409;
+          throw error;
+        }
+
+        const now = new Date();
+
+        const reservedDiscount = await Discount.findOneAndUpdate(
+          {
+            _id: discountData.discountId,
+            status: "active",
+            startDate: { $lte: now },
+            endDate: { $gt: now },
+            $or: [
+              { usageLimit: null },
+              {
+                $expr: {
+                  $lt: [
+                    {
+                      $add: [
+                        { $ifNull: ["$usedCount", 0] },
+                        { $ifNull: ["$reservedCount", 0] },
+                      ],
+                    },
+                    "$usageLimit",
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            $inc: { reservedCount: 1 },
+          },
+          {
+            new: true,
+            session,
+          },
+        );
+
+        if (!reservedDiscount) {
+          const error = new Error(
+            "This coupon has reached its usage limit or is no longer active",
+          );
+          error.statusCode = 409;
+          throw error;
+        }
+      }
+
       for (const ticket of bookingTickets) {
         const result = await Event.updateOne(
           {
@@ -203,7 +296,13 @@ export const createBookingService = async (userId, eventId, tickets) => {
             event: event._id,
             user: userId,
             tickets: bookingTickets,
+
+            ticketSubtotal,
             totalAmount,
+
+            discount: discountData || undefined,
+            discountReservationStatus: discountData ? "reserved" : null,
+
             bookingReference,
             bookingStatus: "pending",
             paymentStatus: "pending",
@@ -217,8 +316,6 @@ export const createBookingService = async (userId, eventId, tickets) => {
     });
 
     return createdBooking;
-  } catch (error) {
-    throw error;
   } finally {
     await session.endSession();
   }
@@ -306,6 +403,32 @@ export const expireBookingService = async (bookingId) => {
         }
       }
 
+      if (
+        booking.discount &&
+        booking.discountReservationStatus === "reserved"
+      ) {
+        const discountUpdate = await Discount.updateOne(
+          {
+            _id: booking.discount.discountId,
+            reservedCount: { $gt: 0 },
+          },
+          {
+            $inc: {
+              reservedCount: -1,
+            },
+          },
+          { session },
+        );
+
+        if (discountUpdate.modifiedCount !== 1) {
+          const error = new Error("Failed to release coupon reservation");
+          error.statusCode = 409;
+          throw error;
+        }
+
+        booking.discountReservationStatus = "released";
+      }
+
       booking.bookingStatus = "cancelled";
       booking.paymentStatus = "expired";
 
@@ -367,5 +490,218 @@ export const getUserTicketService = async (userId, bookingId) => {
     throw error;
   }
 
-  return booking;
+  const tickets = await Ticket.find({
+    booking: booking._id,
+    owner: userId,
+  })
+    .sort({ createdAt: 1 })
+    .lean();
+
+  return {
+    booking,
+    tickets,
+  };
+};
+
+export const requestTicketCancellationService = async (
+  userId,
+  ticketId,
+) => {
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(ticketId)
+  ) {
+    const error = new Error("Invalid user or ticket ID.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+    owner: userId,
+  });
+
+  if (!ticket) {
+    const error = new Error("Ticket not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (ticket.status !== "valid") {
+    const error = new Error("This ticket is no longer valid.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (ticket.attendanceStatus === "checked_in") {
+    const error = new Error(
+      "A checked-in ticket cannot be cancelled.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (ticket.cancellationStatus !== "none") {
+    const error = new Error(
+      "Cancellation has already been requested.",
+    );
+    error.statusCode = 409;
+    throw error;
+  }
+
+  const event = await Event.findById(ticket.event)
+    .select("_id eventName eventDate startTime status")
+    .lean();
+
+  if (!event) {
+    const error = new Error("Event not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (event.status !== "approved") {
+    const error = new Error(
+      "This event is not eligible for cancellation.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const eventStartDateTime = getEventDateTime(event);
+
+  if (!eventStartDateTime) {
+    const error = new Error(
+      "Unable to determine the event start time.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const now = new Date();
+
+  const cancellationCutoff = new Date(
+    eventStartDateTime.getTime() - 24 * 60 * 60 * 1000,
+  );
+
+  if (now > cancellationCutoff) {
+    const error = new Error(
+      "Tickets can only be cancelled at least 24 hours before the event.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const remainingTime =
+    eventStartDateTime.getTime() - now.getTime();
+
+  const threeDaysInMilliseconds =
+    3 * 24 * 60 * 60 * 1000;
+
+  const cancellationPolicy =
+    remainingTime > threeDaysInMilliseconds
+      ? {
+          window: "more_than_3_days",
+          feePercent: 0,
+        }
+      : {
+          window: "1_to_3_days",
+          feePercent: 20,
+        };
+
+  const cancellationExpiresAt = new Date(
+    now.getTime() + 30 * 60 * 1000,
+  );
+
+  const updatedTicket = await Ticket.findOneAndUpdate(
+    {
+      _id: ticket._id,
+      owner: userId,
+      status: "valid",
+      attendanceStatus: "not_checked_in",
+      cancellationStatus: "none",
+      refundStatus: "none",
+    },
+    {
+      $set: {
+        cancellationStatus: "pending",
+        cancellationRequestedAt: now,
+        cancellationExpiresAt,
+        "cancellationPolicy.window": cancellationPolicy.window,
+        "cancellationPolicy.feePercent":
+          cancellationPolicy.feePercent,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  ).select(
+    "_id ticketName status cancellationStatus cancellationRequestedAt cancellationExpiresAt cancellationPolicy",
+  );
+
+  if (!updatedTicket) {
+    const error = new Error(
+      "Ticket is no longer eligible for cancellation.",
+    );
+    error.statusCode = 409;
+    throw error;
+  }
+
+  return {
+    ticket: updatedTicket,
+    gracePeriodMinutes: 30,
+    cancellationExpiresAt,
+  };
+};
+
+export const withdrawTicketCancellationService = async (userId, ticketId) => {
+  if (
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !mongoose.Types.ObjectId.isValid(ticketId)
+  ) {
+    const error = new Error("Invalid user or ticket ID.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const now = new Date();
+
+  const ticket = await Ticket.findOneAndUpdate(
+    {
+      _id: ticketId,
+      owner: userId,
+      status: "valid",
+      attendanceStatus: "not_checked_in",
+      cancellationStatus: "pending",
+      cancellationExpiresAt: { $gt: now },
+    },
+    {
+      $set: {
+        cancellationStatus: "none",
+        cancellationRequestedAt: null,
+        cancellationExpiresAt: null,
+        "cancellationPolicy.window": null,
+        "cancellationPolicy.feePercent": null,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  ).select(
+    "_id ticketName status cancellationStatus cancellationRequestedAt cancellationExpiresAt cancellationPolicy",
+  );
+
+  if (!ticket) {
+    const error = new Error(
+      "Cancellation cannot be withdrawn. The grace period may have expired or the ticket is no longer eligible.",
+    );
+    error.statusCode = 409;
+    throw error;
+  }
+
+  return {
+    ticket,
+    message: "Cancellation request withdrawn successfully.",
+  };
 };

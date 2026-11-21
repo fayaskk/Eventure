@@ -4,6 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 import process from "process";
 import { Category } from "../models/category.model.js";
 import { Event } from "../models/event.model.js";
+import { Booking } from "../models/booking.model.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -356,23 +357,7 @@ export const updateHostEventService = async (hostId, eventId, eventData) => {
   const existingTicketMap = new Map(
     existingTickets.map((ticket) => [ticket._id.toString(), ticket]),
   );
-console.log("EVENT ID:", event._id.toString());
 
-console.log(
-  "EXISTING TICKETS:",
-  event.tickets.map((ticket) => ({
-    id: ticket._id.toString(),
-    name: ticket.name,
-  })),
-);
-
-console.log(
-  "INCOMING TICKETS:",
-  tickets.map((ticket) => ({
-    id: ticket._id?.toString(),
-    name: ticket.name,
-  })),
-);
   const submittedTicketIds = new Set();
   const updatedTickets = [];
 
@@ -508,10 +493,6 @@ console.log(
   }
 
   if (isApprovedEdit) {
-    console.log(
-  "TICKETS BEFORE SAVING PENDING EDIT:",
-  JSON.stringify(updatedTickets, null, 2),
-);
     event.pendingEdit = updateValues;
     event.editRequestStatus = "review";
     event.editReviewRejectionReason = undefined;
@@ -536,10 +517,7 @@ export const approveUpdatedEventService = async (eventId) => {
     throw error;
   }
 
-  if (
-    event.status !== "approved" ||
-    event.editRequestStatus !== "review"
-  ) {
+  if (event.status !== "approved" || event.editRequestStatus !== "review") {
     const error = new Error(
       "Only approved events with pending edits can be approved",
     );
@@ -610,10 +588,7 @@ export const approveUpdatedEventService = async (eventId) => {
   const originalTickets = event.tickets;
 
   const originalTicketMap = new Map(
-    originalTickets.map((ticket) => [
-      ticket._id.toString(),
-      ticket,
-    ]),
+    originalTickets.map((ticket) => [ticket._id.toString(), ticket]),
   );
 
   const pendingTicketIds = new Set();
@@ -637,7 +612,6 @@ export const approveUpdatedEventService = async (eventId) => {
 
     let originalTicket = null;
 
-    // Preserve the original ID only when it belongs to this event.
     if (_id) {
       if (!mongoose.Types.ObjectId.isValid(_id)) {
         const error = new Error("Invalid ticket ID");
@@ -658,8 +632,6 @@ export const approveUpdatedEventService = async (eventId) => {
       if (originalTicket) {
         pendingTicketIds.add(ticketId);
       } else {
-        // This ID is not part of the original event.
-        // Treat the ticket as new and let Mongoose generate its ID.
         originalTicket = null;
       }
     }
@@ -740,8 +712,6 @@ export const approveUpdatedEventService = async (eventId) => {
 
   return await event.save();
 };
-
-
 
 export const rejectUpdatedEventService = async (eventId, rejectionReason) => {
   if (!mongoose.Types.ObjectId.isValid(eventId)) {
@@ -1315,4 +1285,188 @@ export const getPendingEventEditRequestsService = async () => {
     .populate("host", "name email")
     .populate("category", "name slug")
     .sort({ updated_at: -1 });
+};
+
+export const updateEventPromotionService = async (eventId, promotionData) => {
+  if (!mongoose.Types.ObjectId.isValid(eventId)) {
+    const error = new Error("Invalid event ID.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const event = await Event.findById(eventId);
+
+  if (!event) {
+    const error = new Error("Event not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (event.status !== "approved") {
+    const error = new Error(
+      "Only approved events can be featured or highlighted.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (!event.isVisible) {
+    const error = new Error(
+      "Hidden events cannot be featured or highlighted. Make the event visible first.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const { isFeatured, isHighlighted, featuredPriority, featuredUntil } =
+    promotionData;
+
+  if (isFeatured !== undefined && typeof isFeatured !== "boolean") {
+    const error = new Error("isFeatured must be a boolean.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (isHighlighted !== undefined && typeof isHighlighted !== "boolean") {
+    const error = new Error("isHighlighted must be a boolean.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (
+    featuredPriority !== undefined &&
+    (!Number.isInteger(Number(featuredPriority)) ||
+      Number(featuredPriority) < 0)
+  ) {
+    const error = new Error(
+      "Featured priority must be a non-negative integer.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (featuredUntil !== undefined && featuredUntil !== null) {
+    const expiryDate = new Date(featuredUntil);
+
+    if (Number.isNaN(expiryDate.getTime())) {
+      const error = new Error("Invalid featured expiry date.");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (expiryDate <= new Date()) {
+      const error = new Error("Featured expiry date must be in the future.");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    event.featuredUntil = expiryDate;
+  }
+
+  if (isFeatured !== undefined) {
+    event.isFeatured = isFeatured;
+  }
+
+  if (isHighlighted !== undefined) {
+    event.isHighlighted = isHighlighted;
+  }
+
+  if (featuredPriority !== undefined) {
+    event.featuredPriority = Number(featuredPriority);
+  }
+
+  if (event.isFeatured !== true && event.isHighlighted !== true) {
+    event.featuredPriority = 0;
+    event.featuredUntil = null;
+  }
+
+  await event.save();
+
+  return event;
+};
+
+const activePromotionFilter = {
+  status: "approved",
+  isVisible: true,
+  $or: [{ featuredUntil: null }, { featuredUntil: { $gt: new Date() } }],
+};
+
+export const getFeaturedEventsService = async (limit = 6) => {
+  const events = await Event.find({
+    ...activePromotionFilter,
+    isFeatured: true,
+  })
+    .populate("category", "name slug")
+    .sort({
+      featuredPriority: -1,
+      created_at: -1,
+    })
+    .limit(limit);
+
+  return events;
+};
+
+export const getHighlightedEventsService = async (limit = 6) => {
+  const events = await Event.find({
+    ...activePromotionFilter,
+    isHighlighted: true,
+  })
+    .populate("category", "name slug")
+    .sort({
+      featuredPriority: -1,
+      created_at: -1,
+    })
+    .limit(limit);
+
+  return events;
+};
+
+export const getMostBookedEventsService = async (limit = 6) => {
+  const mostBooked = await Booking.aggregate([
+    {
+      $match: {
+        bookingStatus: "confirmed",
+        paymentStatus: "successful",
+      },
+    },
+    {
+      $unwind: "$tickets",
+    },
+    {
+      $group: {
+        _id: "$event",
+        highestSelling: { $sum: "$tickets.quantity" },
+      },
+    },
+    {
+      $sort: {
+        highestSelling: -1,
+      },
+    },
+    { $limit: limit },
+  ]);
+
+  if (!mostBooked.length) return [];
+
+  const eventIds = mostBooked.map((item) => item._id);
+
+  const events = await Event.find({
+    _id: eventIds,
+    status: "approved",
+    isVisible: true,
+  }).populate("category", "name slug");
+
+  const eventsMap = new Map(
+    events.map((event) => [event._id.toString(), event]),
+  );
+
+  const result = mostBooked
+    .map((item) => {
+      const event = eventsMap.get(item._id.toString());
+      if (!event) return;
+      return { ...event.toObject(), highestSelling: item.highestSelling };
+    })
+    .filter(Boolean);
+
+  return result;
 };

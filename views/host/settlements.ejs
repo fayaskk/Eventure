@@ -1,0 +1,153 @@
+<%- include("../partials/head", { title: "My Settlements | Eventure" }) %>
+
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="/css/host/sidebar.css">
+<link rel="stylesheet" href="/css/host/settlements.css">
+
+<body class="host-settlements-page">
+
+  <%- include("../partials/sidebar", { activePage: "settlements" }) %>
+
+  <%- include("../partials/navbar") %>
+
+  <main class="settlements-main">
+
+    <div class="settlements-container">
+
+      <section class="settlements-header">
+        <div>
+          <span class="settlements-eyebrow">FINANCIAL OVERVIEW</span>
+          <h1>My Settlements</h1>
+          <p>Track your event earnings, available balance and payouts.</p>
+        </div>
+
+        <button class="refresh-btn" id="refreshSettlements">
+          <i class="bi bi-arrow-clockwise"></i>
+          Refresh
+        </button>
+      </section>
+
+      <section class="settlement-stats">
+
+        <div class="settlement-stat-card total-earnings">
+          <div class="stat-top">
+            <span>Total Earnings</span>
+            <i class="bi bi-wallet2"></i>
+          </div>
+          <h2 id="totalEarnings">₹0</h2>
+          <small>Lifetime host earnings</small>
+        </div>
+
+        <div class="settlement-stat-card available-balance">
+          <div class="stat-top">
+            <span>Available Balance</span>
+            <i class="bi bi-cash-stack"></i>
+          </div>
+          <h2 id="availableBalance">₹0</h2>
+          <small>Ready for settlement</small>
+        </div>
+
+        <div class="settlement-stat-card pending-balance">
+          <div class="stat-top">
+            <span>Pending Settlement</span>
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+          <h2 id="pendingSettlement">₹0</h2>
+          <small>Awaiting admin processing</small>
+        </div>
+
+        <div class="settlement-stat-card paid-balance">
+          <div class="stat-top">
+            <span>Total Paid</span>
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <h2 id="totalPaid">₹0</h2>
+          <small>Successfully transferred</small>
+        </div>
+
+      </section>
+
+      <section class="settlement-secondary-stats">
+
+        <div>
+          <span>Upcoming Earnings</span>
+          <strong id="upcomingEarnings">₹0</strong>
+        </div>
+
+        <div>
+          <span>On Hold</span>
+          <strong id="onHold">₹0</strong>
+        </div>
+
+      </section>
+
+      <section class="settlement-section">
+
+        <div class="section-heading">
+          <div>
+            <h2>Event-wise Earnings</h2>
+            <p>Request settlements for your completed events.</p>
+          </div>
+        </div>
+
+        <div class="settlement-event-list" id="settlementEvents">
+
+          <div class="settlement-loading">
+            <div class="spinner-border"></div>
+            <p>Loading your events...</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="settlement-section history-section">
+
+        <div class="section-heading">
+          <div>
+            <h2>Settlement History</h2>
+            <p>Track your previous settlement requests.</p>
+          </div>
+        </div>
+
+        <div class="settlement-table-wrapper">
+
+          <table class="settlement-table">
+
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Requested Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Reference</th>
+              </tr>
+            </thead>
+
+            <tbody id="settlementHistory">
+
+              <tr>
+                <td colspan="5" class="table-loading">
+                  Loading settlement history...
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <div class="settlement-toast" id="settlementToast"></div>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/common/sidebar.js"></script>
+  <script src="/js/host/settlements.js"></script>
+
+</body>

@@ -27,7 +27,49 @@ let token = getAuthToken();
 let eventData = null;
 let selectedTickets = {};
 let isProcessingPayment = false;
+let appliedCoupon = null;
+let isApplyingCoupon = false;
+let hasAvailableCoupons = false;
+const getBookingStorageKey = () => `eventure_booking_${eventId}`;
 
+const saveSelectedTickets = () => {
+  try {
+    localStorage.setItem(
+      getBookingStorageKey(),
+      JSON.stringify(selectedTickets),
+    );
+  } catch (error) {
+    console.error("Unable to save ticket selection:", error);
+  }
+};
+
+const restoreSelectedTickets = (tickets) => {
+  let savedTickets = {};
+
+  try {
+    savedTickets = JSON.parse(
+      localStorage.getItem(getBookingStorageKey()) || "{}",
+    );
+  } catch (error) {
+    console.error("Unable to restore ticket selection:", error);
+  }
+
+  const restoredTickets = {};
+
+  tickets.forEach((ticket) => {
+    const ticketId = String(ticket._id);
+    const available = getAvailableQuantity(ticket);
+    const savedQuantity = Number(savedTickets[ticketId]) || 0;
+
+    restoredTickets[ticketId] = Math.min(
+      Math.max(0, Math.floor(savedQuantity)),
+      available,
+    );
+  });
+
+  selectedTickets = restoredTickets;
+  saveSelectedTickets();
+};
 if (!token) {
   window.location.replace(
     `/login?redirect=${encodeURIComponent(`/booking/${eventId}`)}`,
@@ -67,6 +109,18 @@ const authenticatedFetch = async (url, options = {}) => {
   return { response, result };
 };
 
+const showMessage = (message, icon = "info") => {
+  if (typeof Swal !== "undefined") {
+    Swal.fire({
+      icon,
+      text: message,
+      confirmButtonColor: "#5846d8",
+    });
+  } else {
+    alert(message);
+  }
+};
+
 const getAvailableQuantity = (ticket) => {
   const quantity = Number(ticket.quantity) || 0;
   const reserved = Number(ticket.reserved) || 0;
@@ -75,10 +129,36 @@ const getAvailableQuantity = (ticket) => {
   return Math.max(0, quantity - reserved - sold);
 };
 
+const getTicketSubtotal = () => {
+  if (!eventData) return 0;
+
+  return eventData.tickets.reduce((total, ticket) => {
+    const quantity = selectedTickets[String(ticket._id)] || 0;
+
+    return total + Number(ticket.price) * quantity;
+  }, 0);
+};
+
+const checkCouponAvailability = async () => {
+  try {
+    const { response, result } = await authenticatedFetch(
+      `/api/events/bookings/${encodeURIComponent(eventId)}/coupon-availability`,
+    );
+
+    if (!response.ok || !result.success) {
+      return false;
+    }
+
+    return Boolean(result.data?.hasCoupons);
+  } catch (error) {
+    console.error("Coupon availability check failed:", error);
+    return false;
+  }
+};
+
 const loadEvent = async () => {
   try {
     const response = await fetch(`/api/events/${encodeURIComponent(eventId)}`);
-
     const result = await response.json();
 
     if (!response.ok || !result.success) {
@@ -90,6 +170,8 @@ const loadEvent = async () => {
     if (!eventData) {
       throw new Error("Event details are unavailable.");
     }
+
+    hasAvailableCoupons = await checkCouponAvailability();
 
     renderBookingPage();
   } catch (error) {
@@ -115,10 +197,9 @@ const renderBookingPage = () => {
         month: "long",
         year: "numeric",
       });
-
   const tickets = Array.isArray(eventData.tickets) ? eventData.tickets : [];
 
-  selectedTickets = {};
+  restoreSelectedTickets(tickets);
 
   bookingContent.innerHTML = `
     <div class="booking-header">
@@ -153,14 +234,12 @@ const renderBookingPage = () => {
                     const available = getAvailableQuantity(ticket);
                     const ticketId = String(ticket._id);
 
-                    selectedTickets[ticketId] = 0;
-
                     return `
                       <div class="ticket-item">
                         <div class="ticket-details">
                           <h3>${escapeHtml(ticket.name)}</h3>
                           <strong>${formatCurrency(ticket.price)}</strong>
-                          <span id="availability-${escapeHtml(ticketId)}">
+                          <span>
                             ${
                               available > 0
                                 ? `${available} available`
@@ -179,10 +258,10 @@ const renderBookingPage = () => {
                             aria-label="Decrease ${escapeHtml(ticket.name)} quantity"
                           >−</button>
 
-                          <span
-                            class="quantity-value"
-                            id="quantity-${escapeHtml(ticketId)}"
-                          >0</span>
+                        <span
+  class="quantity-value"
+  id="quantity-${escapeHtml(ticketId)}"
+>${selectedTickets[ticketId] || 0}</span>
 
                           <button
                             type="button"
@@ -209,6 +288,34 @@ const renderBookingPage = () => {
           <p class="summary-empty">No tickets selected.</p>
         </div>
 
+        ${
+          hasAvailableCoupons
+            ? `
+              <div class="coupon-section">
+                <label for="coupon-code">Have a coupon?</label>
+
+                <div class="coupon-input-group">
+                  <input
+                    type="text"
+                    id="coupon-code"
+                    placeholder="Enter coupon code"
+                    maxlength="30"
+                    autocomplete="off"
+                  >
+
+                  <button type="button" id="apply-coupon-btn">
+                    Apply
+                  </button>
+                </div>
+
+                <p id="coupon-feedback" aria-live="polite"></p>
+              </div>
+
+              <div id="discount-summary"></div>
+            `
+            : ""
+        }
+
         <div class="summary-total">
           <span>Total</span>
           <strong id="total-amount">${formatCurrency(0)}</strong>
@@ -233,12 +340,12 @@ const updateSummary = () => {
   const summaryItems = document.getElementById("summary-items");
   const totalAmount = document.getElementById("total-amount");
   const continueButton = document.getElementById("continue-payment-btn");
+  const discountSummary = document.getElementById("discount-summary");
 
   if (!summaryItems || !totalAmount || !continueButton || !eventData) {
     return;
   }
 
-  let total = 0;
   const selectedItems = [];
 
   eventData.tickets.forEach((ticket) => {
@@ -247,7 +354,6 @@ const updateSummary = () => {
 
     if (quantity > 0) {
       const subtotal = Number(ticket.price) * quantity;
-      total += subtotal;
 
       selectedItems.push({
         ticketName: ticket.name,
@@ -257,6 +363,8 @@ const updateSummary = () => {
       });
     }
   });
+
+  const ticketSubtotal = getTicketSubtotal();
 
   if (selectedItems.length === 0) {
     summaryItems.innerHTML = `
@@ -273,6 +381,7 @@ const updateSummary = () => {
                 ${formatCurrency(item.price)} × ${item.quantity}
               </span>
             </div>
+
             <strong>${formatCurrency(item.subtotal)}</strong>
           </div>
         `,
@@ -280,15 +389,70 @@ const updateSummary = () => {
       .join("");
   }
 
-  totalAmount.textContent = formatCurrency(total);
+  const discountAmount = appliedCoupon
+    ? Number(appliedCoupon.discountAmount) || 0
+    : 0;
+
+  const payableAmount = Math.max(0, ticketSubtotal - discountAmount);
+
+  if (discountSummary) {
+    discountSummary.innerHTML = appliedCoupon
+      ? `
+        <div class="discount-summary-row">
+          <div class="discount-details">
+            <strong>${escapeHtml(appliedCoupon.code)}</strong>
+            <span>Coupon discount</span>
+          </div>
+
+          <strong class="discount-value">
+            -${formatCurrency(discountAmount)}
+          </strong>
+
+          <button
+            type="button"
+            id="remove-coupon-btn"
+            aria-label="Remove coupon"
+          >
+            Remove
+          </button>
+        </div>
+      `
+      : "";
+  }
+
+  totalAmount.textContent = formatCurrency(payableAmount);
 
   continueButton.disabled = selectedItems.length === 0 || isProcessingPayment;
+
+  const couponInput = document.getElementById("coupon-code");
+  const applyButton = document.getElementById("apply-coupon-btn");
+
+  if (couponInput) {
+    couponInput.disabled = Boolean(appliedCoupon) || isProcessingPayment;
+  }
+
+  if (applyButton) {
+    applyButton.disabled =
+      Boolean(appliedCoupon) ||
+      isApplyingCoupon ||
+      isProcessingPayment ||
+      ticketSubtotal <= 0;
+  }
+
+  document.querySelectorAll(".quantity-btn").forEach((button) => {
+    const ticketId = button.dataset.ticketId;
+    const currentQuantity = selectedTickets[ticketId] || 0;
+    const available = Number(button.dataset.available) || 0;
+
+    button.disabled =
+      isProcessingPayment ||
+      (button.dataset.action === "increase" && currentQuantity >= available) ||
+      (button.dataset.action === "decrease" && currentQuantity <= 0);
+  });
 };
 
 const changeQuantity = (ticketId, action, available) => {
-  if (isProcessingPayment) {
-    return;
-  }
+  if (isProcessingPayment) return;
 
   const currentQuantity = selectedTickets[ticketId] || 0;
 
@@ -302,9 +466,7 @@ const changeQuantity = (ticketId, action, available) => {
   }
 
   if (action === "decrease") {
-    if (currentQuantity <= 0) {
-      return;
-    }
+    if (currentQuantity <= 0) return;
 
     selectedTickets[ticketId] = currentQuantity - 1;
   }
@@ -315,7 +477,12 @@ const changeQuantity = (ticketId, action, available) => {
     quantityElement.textContent = selectedTickets[ticketId];
   }
 
-  updateSummary();
+if (appliedCoupon) {
+  removeCoupon(false);
+}
+
+saveSelectedTickets();
+updateSummary();
 };
 
 const setProcessingState = (processing, text = "Continue to Payment") => {
@@ -327,18 +494,128 @@ const setProcessingState = (processing, text = "Continue to Payment") => {
     continueButton.textContent = processing ? text : "Continue to Payment";
   }
 
-  document.querySelectorAll(".quantity-btn").forEach((button) => {
-    const ticketId = button.dataset.ticketId;
-    const currentQuantity = selectedTickets[ticketId] || 0;
-    const available = Number(button.dataset.available) || 0;
+  updateSummary();
+};
 
-    button.disabled =
-      processing ||
-      (button.dataset.action === "increase" && currentQuantity >= available) ||
-      (button.dataset.action === "decrease" && currentQuantity <= 0);
-  });
+const applyCoupon = async () => {
+  if (isApplyingCoupon || isProcessingPayment || appliedCoupon) {
+    return;
+  }
+
+  const couponInput = document.getElementById("coupon-code");
+  const applyButton = document.getElementById("apply-coupon-btn");
+
+  if (!couponInput || !applyButton) return;
+
+  const couponCode = couponInput.value.trim().toUpperCase();
+
+  if (!couponCode) {
+    Swal.fire({
+      icon: "warning",
+      title: "Coupon Required",
+      text: "Please enter a coupon code.",
+      confirmButtonColor: "#5846d8",
+    });
+    return;
+  }
+
+  const ticketSubtotal = getTicketSubtotal();
+
+  if (ticketSubtotal <= 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "Select Tickets",
+      text: "Please select tickets before applying a coupon.",
+      confirmButtonColor: "#5846d8",
+    });
+    return;
+  }
+
+  try {
+    isApplyingCoupon = true;
+    applyButton.disabled = true;
+    applyButton.textContent = "Applying...";
+
+    const { response, result } = await authenticatedFetch(
+      "/api/events/bookings/validate-coupon",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventId,
+          couponCode,
+          ticketSubtotal,
+        }),
+      },
+    );
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Unable to apply coupon.");
+    }
+
+    if (!result.data?.discount) {
+      throw new Error("Invalid coupon response from server.");
+    }
+
+    appliedCoupon = result.data.discount;
+
+    couponInput.disabled = true;
+
+    updateSummary();
+
+    Swal.fire({
+      icon: "success",
+      title: "Coupon Applied!",
+      text: `You saved ${formatCurrency(appliedCoupon.discountAmount)} on this booking.`,
+      confirmButtonColor: "#5846d8",
+      timer: 2500,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    appliedCoupon = null;
+
+    updateSummary();
+
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Coupon",
+      text: error.message || "Unable to apply this coupon.",
+      confirmButtonColor: "#5846d8",
+    });
+  } finally {
+    isApplyingCoupon = false;
+
+    if (applyButton) {
+      applyButton.disabled = Boolean(appliedCoupon) || isProcessingPayment;
+      applyButton.textContent = "Apply";
+    }
+  }
+};
+
+const removeCoupon = (showAlert = true) => {
+  appliedCoupon = null;
+
+  const couponInput = document.getElementById("coupon-code");
+
+  if (couponInput) {
+    couponInput.disabled = false;
+    couponInput.value = "";
+  }
 
   updateSummary();
+
+  if (showAlert) {
+    Swal.fire({
+      icon: "success",
+      title: "Coupon Removed",
+      text: "Your coupon has been removed successfully.",
+      confirmButtonColor: "#5846d8",
+      timer: 1800,
+      showConfirmButton: false,
+    });
+  }
 };
 
 const recordPaymentFailure = async (
@@ -424,8 +701,9 @@ const openRazorpayCheckout = (booking, orderData) =>
             title: "Payment Successful",
             text: "Your booking has been confirmed.",
             confirmButtonText: "View My Tickets",
+            confirmButtonColor: "#5846d8",
           });
-
+localStorage.removeItem(getBookingStorageKey());
           window.location.replace("/user/bookings");
           resolve(result);
         } catch (error) {
@@ -436,6 +714,7 @@ const openRazorpayCheckout = (booking, orderData) =>
             title: "Verification Pending",
             text: "We could not confirm the payment yet. Please check My Tickets before attempting another payment.",
             confirmButtonText: "View My Tickets",
+            confirmButtonColor: "#5846d8",
           });
 
           window.location.replace("/user/bookings");
@@ -451,6 +730,7 @@ const openRazorpayCheckout = (booking, orderData) =>
             title: "Payment Not Completed",
             text: "Your booking has not been confirmed. You can retry payment if your reservation is still valid.",
             confirmButtonText: "OK",
+            confirmButtonColor: "#5846d8",
           });
 
           resolve({ dismissed: true });
@@ -478,6 +758,7 @@ const openRazorpayCheckout = (booking, orderData) =>
           error.description ||
           "Your payment could not be completed. You can try again.",
         confirmButtonText: "OK",
+        confirmButtonColor: "#5846d8",
       });
 
       resolve({ failed: true });
@@ -487,9 +768,7 @@ const openRazorpayCheckout = (booking, orderData) =>
   });
 
 const createBooking = async () => {
-  if (isProcessingPayment) {
-    return;
-  }
+  if (isProcessingPayment) return;
 
   const tickets = Object.entries(selectedTickets)
     .filter(([, quantity]) => quantity > 0)
@@ -515,6 +794,7 @@ const createBooking = async () => {
         body: JSON.stringify({
           eventId,
           tickets,
+          couponCode: appliedCoupon?.code || null,
         }),
       });
 
@@ -552,6 +832,7 @@ const createBooking = async () => {
         title: "Unable to Continue",
         text: error.message || "Something went wrong.",
         confirmButtonText: "OK",
+        confirmButtonColor: "#5846d8",
       });
     }
   } finally {
@@ -562,22 +843,36 @@ const createBooking = async () => {
 };
 
 document.addEventListener("click", (event) => {
-  const button = event.target.closest(".quantity-btn");
+  const quantityButton = event.target.closest(".quantity-btn");
 
-  if (!button || button.disabled) {
+  if (quantityButton && !quantityButton.disabled) {
+    changeQuantity(
+      quantityButton.dataset.ticketId,
+      quantityButton.dataset.action,
+      Number(quantityButton.dataset.available),
+    );
     return;
   }
 
-  changeQuantity(
-    button.dataset.ticketId,
-    button.dataset.action,
-    Number(button.dataset.available),
-  );
-});
-
-document.addEventListener("click", (event) => {
   if (event.target.closest("#continue-payment-btn")) {
     createBooking();
+    return;
+  }
+
+  if (event.target.closest("#apply-coupon-btn")) {
+    applyCoupon();
+    return;
+  }
+
+  if (event.target.closest("#remove-coupon-btn")) {
+    removeCoupon();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && event.target.id === "coupon-code") {
+    event.preventDefault();
+    applyCoupon();
   }
 });
 

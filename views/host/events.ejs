@@ -2,73 +2,198 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head", { title: "Eventure | My Events" }) %>
-    <link rel="stylesheet" href="/css/host/events.css">
+  <%- include("../partials/head", { title: "My Events | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/common/navbar.css">
+  <link rel="stylesheet" href="/css/common/sidebar.css">
+  <link rel="stylesheet" href="/css/host/events.css">
 </head>
 
-<body>
+<body class="host-events-page">
+
+  <%- include("../partials/navbar", { activePage: "events" }) %>
 
   <%- include("../partials/sidebar", { activePage: "events" }) %>
 
+  <div class="host-dashboard-layout">
+
     <main class="host-main">
 
-      <header class="host-header">
+      <div class="events-page-container">
 
-        <div>
-          <p class="section-label">HOST PANEL</p>
+        <header class="events-page-header">
 
-          <h1>My Events</h1>
+          <div class="page-heading">
+            <span class="section-label">HOST WORKSPACE</span>
 
-          <p>
-            Manage the events you have created.
-          </p>
-        </div>
+            <h1>My Events</h1>
 
-        <a href="/host/events/create" class="create-event-btn">
-          + Create Event
-        </a>
+            <p>
+              Manage your events, track their progress and reach your audience.
+            </p>
+          </div>
 
-      </header>
+          <a href="/host/events/create" class="create-event-btn">
+            <i class="bi bi-plus-lg"></i>
+            Create Event
+          </a>
 
-      <section class="events-toolbar">
+        </header>
 
-        <div class="search-wrapper">
-          <input type="text" id="eventSearch" placeholder="Search your events...">
-        </div>
 
-        <div class="filter-wrapper">
-          <select id="statusFilter">
-            <option value="all">All Events</option>
-            <option value="draft">Draft</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
+        <section class="event-stats-grid">
 
-      </section>
+          <article class="event-stat-card">
 
-      <section id="events-container">
+            <div class="event-stat-icon purple">
+              <i class="bi bi-calendar-event"></i>
+            </div>
 
-        <div id="events-loading" class="events-message">
-          <div class="loading-spinner"></div>
-          <p>Loading your events...</p>
-        </div>
+            <div class="event-stat-content">
+              <span>Total Events</span>
+              <strong id="totalEventsCount">0</strong>
+              <small>All created events</small>
+            </div>
 
-      </section>
+          </article>
+
+
+          <article class="event-stat-card">
+
+            <div class="event-stat-icon green">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div class="event-stat-content">
+              <span>Approved</span>
+              <strong id="approvedEventsCount">0</strong>
+              <small>Published events</small>
+            </div>
+
+          </article>
+
+
+          <article class="event-stat-card">
+
+            <div class="event-stat-icon orange">
+              <i class="bi bi-clock-history"></i>
+            </div>
+
+            <div class="event-stat-content">
+              <span>Pending Review</span>
+              <strong id="pendingEventsCount">0</strong>
+              <small>Awaiting approval</small>
+            </div>
+
+          </article>
+
+
+          <article class="event-stat-card">
+
+            <div class="event-stat-icon blue">
+              <i class="bi bi-flag"></i>
+            </div>
+
+            <div class="event-stat-content">
+              <span>Completed</span>
+              <strong id="completedEventsCount">0</strong>
+              <small>Past events</small>
+            </div>
+
+          </article>
+
+        </section>
+
+
+        <section class="events-management-section">
+
+          <div class="events-section-heading">
+
+            <div>
+              <h2>Your Events</h2>
+              <p>View and manage everything you've organized.</p>
+            </div>
+
+            <span class="events-total-label" id="eventsResultCount">
+              0 Events
+            </span>
+
+          </div>
+
+
+          <div class="events-toolbar">
+
+            <div class="search-wrapper">
+
+              <i class="bi bi-search"></i>
+
+              <input
+                type="search"
+                id="eventSearch"
+                placeholder="Search by event name, city or category..."
+                autocomplete="off"
+              >
+
+              <button
+                type="button"
+                id="clearEventSearch"
+                class="clear-search-btn"
+                aria-label="Clear search"
+                hidden
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
+
+            </div>
+
+
+            <div class="filter-wrapper">
+
+              <i class="bi bi-funnel"></i>
+
+              <select id="statusFilter">
+                <option value="all">All Events</option>
+                <option value="draft">Draft</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="completed">Completed</option>
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <section id="events-container">
+
+            <div id="events-loading" class="events-message">
+
+              <div class="loading-spinner"></div>
+
+              <p>Loading your events...</p>
+
+            </div>
+
+          </section>
+
+        </section>
+
+          </div>
 
     </main>
 
-    <script src="/js/auth-guard.js"></script>
-    <script src="/js/host/events.js"></script>
+  </div>
 
-    <script>
-      if (!redirectToLoginIfNotLoggedIn()) {
-        protectDashboardHistory();
-      }
-    </script>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/host/events.js"></script>
+
+  <script>
+    if (!redirectToLoginIfNotLoggedIn()) {
+      protectDashboardHistory();
+    }
+  </script>
 
 </body>
 

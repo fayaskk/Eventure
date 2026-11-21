@@ -1,12 +1,17 @@
 <%- include("../partials/head", { title: "My Profile | Eventure" }) %>
-
+<link rel="stylesheet" href="/css/common/navbar.css">
+<link rel="stylesheet" href="/css/common/host-layout.css">
 <link rel="stylesheet" href="/css/host/profile.css">
 
-<body>
+<body class="host-layout">
 
-    <%- include("../partials/sidebar", { activePage: "host-profile" }) %>
+    <%- include("../partials/navbar", { activePage: "profile" }) %>
 
-    <main class="host-main">
+    <div class="host-dashboard-layout">
+
+        <%- include("../partials/sidebar", { activePage: "host-profile" }) %>
+
+        <main class="host-main">
 
         <header class="host-header">
 
@@ -442,7 +447,8 @@
 
         </div>
 
-    </main>
+           </main>
+    </div>
 
 
     <script src="/js/auth-guard.js"></script>

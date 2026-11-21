@@ -68,7 +68,7 @@ const seedCategory = async ()=>{
  console.error("Category seeding failed:", error);
     }finally{
  await mongoose.connection.close();
- console.log("Category created")
+
     }
 }
 seedCategory()

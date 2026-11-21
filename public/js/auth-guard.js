@@ -67,7 +67,7 @@ function getDashboardUrl() {
   if (role === "admin") return "/admin/dashboard";
   if (role === "host") return "/host/dashboard";
 
-  return "/dashboard";
+  return "/events";
 }
 
 function redirectToDashboardIfLoggedIn() {

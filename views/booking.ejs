@@ -3,18 +3,24 @@
 
 <head>
     <%- include("partials/head", { title: "Eventure | Book Tickets" }) %>
-        <link rel="stylesheet" href="/css/common/sidebar.css">
-        <link rel="stylesheet" href="/css/booking.css">
+    <link rel="stylesheet" href="/css/common/sidebar.css">
+    <link rel="stylesheet" href="/css/booking.css">
 </head>
 
-<body>
+<body class="booking-page">
 
-    <%- include("partials/sidebar", { activePage: activePage || "events" }) %>
+    <%- include("partials/navbar", { activePage: "events" }) %>
+
+    <%- include("partials/sidebar", { activePage: "events" }) %>
+
+    <div class="booking-page-layout">
 
         <main class="booking-main">
             <div class="booking-container">
+
                 <a href="/events" class="back-link">
-                    ← Back to Events
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Events
                 </a>
 
                 <div id="booking-content" data-razorpay-key="<%= razorpayKeyId %>">
@@ -22,12 +28,14 @@
                         Loading booking details...
                     </div>
                 </div>
+
             </div>
         </main>
 
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-        <script src="/js/booking.js"></script>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/js/booking.js"></script>
 
 </body>
-
 </html>

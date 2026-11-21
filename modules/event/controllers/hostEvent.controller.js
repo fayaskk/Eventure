@@ -362,7 +362,6 @@ export const resubmitRejectedEvent = async (req, res) => {
       tickets,
       bookingPolicy,
     } = req.body;
-    console.log(req.body);
     if (
       !eventName ||
       !description ||

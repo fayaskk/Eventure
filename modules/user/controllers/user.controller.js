@@ -10,6 +10,16 @@ import {
   getUserBookingsService,
   getUserTicketService,
 } from "../../../services/booking.service.js";
+import {
+  getUserAttendedEventsService,
+  submitFeedbackService,
+  updateFeedbackService,
+} from "../../../services/feedback.service.js";
+import {
+  addToWishlistService,
+  removeFromWishlistService,
+  getWishlistService,
+} from "../../../services/wishlist.service.js";
 
 export const changePassword = async (req, res) => {
   try {
@@ -214,16 +224,16 @@ export const getUserBookings = async (req, res) => {
 
 export const getUserTicket = async (req, res) => {
   try {
-    console.log("Authenticated user:", req.user);
     const userId = req.user.userId;
     const { bookingId } = req.params;
 
-    const booking = await getUserTicketService(userId, bookingId);
+    const { booking, tickets } = await getUserTicketService(userId, bookingId);
 
     return res.status(200).json({
       success: true,
       message: "Ticket fetched successfully",
       booking,
+      tickets,
     });
   } catch (error) {
     console.error("Get user ticket error:", error);
@@ -231,6 +241,137 @@ export const getUserTicket = async (req, res) => {
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || "Unable to fetch ticket",
+    });
+  }
+};
+
+export const getUserAttendedEvents = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const events = await getUserAttendedEventsService(userId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Attended events fetched successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Get attended events error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Unable to fetch attended events",
+    });
+  }
+};
+
+export const submitFeedback = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { eventId } = req.params;
+    const { rating, comment } = req.body;
+
+    const feedback = await submitFeedbackService(userId, eventId, {
+      rating,
+      comment,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Feedback submitted successfully",
+      data: feedback,
+    });
+  } catch (error) {
+    console.error("Submit feedback error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Unable to submit feedback",
+    });
+  }
+};
+
+export const updateFeedback = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { eventId } = req.params;
+    const { rating, comment } = req.body;
+
+    const feedback = await updateFeedbackService(userId, eventId, {
+      rating,
+      comment,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Feedback updated successfully",
+      data: feedback,
+    });
+  } catch (error) {
+    console.error("Update feedback error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Unable to update feedback",
+    });
+  }
+};
+
+export const addToWishlist = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { eventId } = req.params;
+
+    const wishlistItem = await addToWishlistService(userId, eventId);
+
+    return res.status(201).json({
+      success: true,
+      message: "Event added to wishlist successfully",
+      data: wishlistItem,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Failed to add event to wishlist",
+    });
+  }
+};
+
+export const removeFromWishlist = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { eventId } = req.params;
+
+    await removeFromWishlistService(userId, eventId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Event removed from wishlist successfully",
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Failed to remove event from wishlist",
+    });
+  }
+};
+
+export const getWishlist = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const wishlist = await getWishlistService(userId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Wishlist fetched successfully",
+      data: wishlist,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Failed to fetch wishlist",
     });
   }
 };

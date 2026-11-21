@@ -12,6 +12,7 @@ import {
   approveUpdatedEvent,
   rejectUpdatedEvent,
   getPendingEventEditRequests,
+  updateEventPromotion
 } from "../controllers/adminEvent.controller.js";
 import { authMiddleware } from "../../../middleware/auth.middleware.js";
 import { authorizeRole } from "../../../middleware/role.middleware.js";
@@ -33,6 +34,8 @@ router.patch("/:eventId/edit-request/approve", approveEventEditRequest);
 router.patch("/:eventId/edit-request/reject", rejectEventEditRequest);
 router.patch("/:eventId/updated/approve", approveUpdatedEvent)
 router.patch("/:eventId/updated/reject", rejectUpdatedEvent)
+
+router.patch("/:eventId/promotion", updateEventPromotion);
 
 
 export default router;

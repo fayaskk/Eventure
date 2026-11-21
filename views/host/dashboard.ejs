@@ -1,15 +1,20 @@
-<%- include("../partials/head", { title: "Edit Host Profile | Eventure" }) %>
+<%- include("../partials/head", { title: "Host Dashboard | Eventure" }) %>
 
-  <link rel="stylesheet" href="/css/host/dashboard.css">
+<link rel="stylesheet" href="/css/common/navbar.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
+<link rel="stylesheet" href="/css/common/host-layout.css">
+<link rel="stylesheet" href="/css/host/dashboard.css">
 
+<body class="host-layout host-dashboard-page">
 
-  <body>
+<%- include("../partials/navbar", { activePage: "events" }) %>
 
-    <%- include("../partials/sidebar", { activePage: "host-dashboard" }) %>
+<%- include("../partials/sidebar", { activePage: "host-dashboard" }) %>
 
-      <main class="host-main">
+<div class="host-dashboard-layout">
+    <main class="host-main">
 
-        <header class="host-header">
+      <header class="host-header">
 
           <div>
 
@@ -264,22 +269,19 @@
 
         <p id="dashboardMessage" class="dashboard-message"></p>
 
-      </main>
+         </main>
 
+  </div>
 
-      <script src="/js/auth-guard.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/host/dashboard.js"></script>
 
-      <script src="/js/common/sidebar.js"></script>
+  <script>
+    if (!redirectToLoginIfNotLoggedIn()) {
+      protectDashboardHistory();
+      verifyAccountStatus();
+    }
+  </script>
 
-      <script src="/js/host/dashboard.js"></script>
-
-      <script>
-        if (!redirectToLoginIfNotLoggedIn()) {
-          protectDashboardHistory();
-          verifyAccountStatus();
-        }
-      </script>
-
-  </body>
-
-  </html>
+</body>
+</html>

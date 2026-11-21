@@ -111,14 +111,7 @@ export const hostForgotPasswordService = async (
     throw error;
   }
 
-  const otp =
-    await generateAndStoreOTP(
-      normalizedEmail,
-    );
 
-  console.log(
-    `OTP for ${normalizedEmail}: ${otp}`,
-  );
 };
 
 export const hostVerifyForgotPasswordOTPService =
@@ -351,14 +344,8 @@ export const hostRequestEmailChangeService =
       throw error;
     }
 
-    const otp =
-      await generateAndStoreOTP(
-        normalizedEmail,
-      );
 
-    console.log(
-      `OTP for ${normalizedEmail}: ${otp}`,
-    );
+
   };
 
 export const hostVerifyEmailChangeOTPService =
