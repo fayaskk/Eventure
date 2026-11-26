@@ -137,7 +137,7 @@ export const adminRequestEmailChangeService = async (adminId, newEmail) => {
 
   const otp = await generateAndStoreOTP(normalizedEmail);
 
-  console.log(`OTP for ${normalizedEmail}: ${otp}`);
+return otp;
 };
 
 export const adminVerifyEmailChangeService = async (adminId, newEmail, otp) => {

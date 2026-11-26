@@ -1,0 +1,88 @@
+<%- include("../partials/head", { title: "My Wishlist | Eventure" }) %>
+
+<link rel="stylesheet" href="/css/common/navbar.css"> <link rel="stylesheet" href="/css/common/sidebar.css"> <link rel="stylesheet" href="/css/user/wishlist.css">
+
+<body>
+
+<%- include("../partials/navbar") %>
+
+<%- include("../partials/sidebar", { activePage: "wishlist" }) %>
+
+&#x20; <div class="wishlist-layout">
+
+
+<main class="wishlist-main">
+
+  <section class="wishlist-header">
+
+    <div class="wishlist-heading-content">
+
+      <span class="wishlist-eyebrow">
+        <i class="bi bi-heart-fill"></i>
+        YOUR PERSONAL COLLECTION
+      </span>
+
+      <h1>My Wishlist</h1>
+
+      <p>
+        All the experiences you've saved, gathered in one place.
+      </p>
+
+    </div>
+
+    <div class="wishlist-count-card">
+
+      <div class="wishlist-count-icon">
+        <i class="bi bi-bookmark-heart-fill"></i>
+      </div>
+
+      <div>
+        <strong id="wishlist-count">0</strong>
+        <span>Saved Events</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="wishlist-content">
+
+    <div class="wishlist-toolbar">
+
+      <div>
+        <h2>Your Saved Events</h2>
+        <p id="wishlist-subtitle">
+          Loading your favourite events...
+        </p>
+      </div>
+
+      <a href="/events" class="wishlist-explore-link">
+        <i class="bi bi-compass"></i>
+        Explore Events
+      </a>
+
+    </div>
+
+    <div id="wishlist-container" class="wishlist-grid">
+
+      <div class="wishlist-loading">
+        <div class="wishlist-spinner"></div>
+        <p>Loading your wishlist...</p>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<%- include("../partials/footer") %>
+
+
+&#x20; </div>
+
+&#x20; <script src="/js/user/wishlist.js"></script>
+
+</body>
+
+</html>

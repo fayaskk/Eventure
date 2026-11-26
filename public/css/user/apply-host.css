@@ -616,3 +616,487 @@
     flex: none;
   }
 }
+/* =========================================
+   APPLY HOST PAGE - MAIN LAYOUT
+========================================= */
+
+.apply-host-page {
+  --apply-bg: #f7f8fc;
+  --apply-card: #ffffff;
+  --apply-text: #202438;
+  --apply-muted: #85899c;
+  --apply-border: #e8eaf2;
+  --apply-primary: #5b50df;
+  --apply-surface: #f5f5fc;
+
+  min-height: 100vh;
+  margin: 0;
+  background: var(--apply-bg);
+  color: var(--apply-text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* Main content container */
+
+.apply-host-page .apply-host-content {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 42px clamp(22px, 4vw, 60px) 70px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.apply-host-page .host-page-header {
+  margin-bottom: 32px;
+}
+
+.apply-host-page .host-page-header .welcome-label {
+  margin: 0 0 12px;
+  color: var(--apply-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+}
+
+.apply-host-page .host-page-header h1 {
+  margin: 0;
+  color: var(--apply-text);
+  font-size: clamp(30px, 3.5vw, 42px);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+
+.apply-host-page .host-page-header .welcome-text {
+  max-width: 650px;
+  margin: 13px 0 0;
+  color: var(--apply-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   APPLICATION STEPPER
+========================================= */
+
+.apply-host-page .application-stepper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 28px;
+  padding: 23px 28px;
+  background: var(--apply-card);
+  border: 1px solid var(--apply-border);
+  border-radius: 17px;
+  box-shadow: 0 5px 20px rgba(25, 30, 60, 0.035);
+  box-sizing: border-box;
+}
+
+.apply-host-page .step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.apply-host-page .step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--apply-surface);
+  color: var(--apply-muted);
+  font-size: 13px;
+  font-weight: 750;
+  flex-shrink: 0;
+}
+
+.apply-host-page .step-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.apply-host-page .step-info strong {
+  color: var(--apply-text);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.apply-host-page .step-info span {
+  color: var(--apply-muted);
+  font-size: 11px;
+}
+
+.apply-host-page .step.active .step-number,
+.apply-host-page .step.completed .step-number {
+  background: var(--apply-primary);
+  color: #ffffff;
+}
+
+.apply-host-page .step.active .step-info strong,
+.apply-host-page .step.completed .step-info strong {
+  color: var(--apply-primary);
+}
+
+.apply-host-page .step-line {
+  flex: 1;
+  min-width: 25px;
+  height: 2px;
+  margin: 0 18px;
+  background: var(--apply-border);
+}
+
+/* =========================================
+   APPLICATION FORM CARD
+========================================= */
+
+.apply-host-page #hostApplicationForm {
+  width: 100%;
+}
+
+.apply-host-page .application-card {
+  width: 100%;
+  padding: clamp(25px, 3.5vw, 42px);
+  background: var(--apply-card);
+  border: 1px solid var(--apply-border);
+  border-radius: 19px;
+  box-shadow: 0 7px 28px rgba(25, 30, 60, 0.04);
+  box-sizing: border-box;
+}
+
+.apply-host-page .card-heading {
+  margin-bottom: 32px;
+}
+
+.apply-host-page .card-heading h2 {
+  margin: 10px 0;
+  color: var(--apply-text);
+  font-size: clamp(22px, 2.5vw, 27px);
+  font-weight: 750;
+  letter-spacing: -0.7px;
+}
+
+.apply-host-page .card-heading p:not(.section-label) {
+  color: var(--apply-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.apply-host-page .section-label {
+  color: var(--apply-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+/* =========================================
+   FORM GRID
+========================================= */
+
+.apply-host-page .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 22px;
+}
+
+.apply-host-page .form-group {
+  min-width: 0;
+}
+
+.apply-host-page .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.apply-host-page .form-group label {
+  margin-bottom: 9px;
+  color: var(--apply-text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.apply-host-page .optional {
+  color: var(--apply-muted);
+}
+
+.apply-host-page .form-group input,
+.apply-host-page .form-group select,
+.apply-host-page .form-group textarea {
+  width: 100%;
+  min-height: 47px;
+  padding: 12px 14px;
+  border: 1px solid var(--apply-border);
+  border-radius: 10px;
+  background: var(--apply-card);
+  color: var(--apply-text);
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apply-host-page .form-group textarea {
+  min-height: 115px;
+  resize: vertical;
+}
+
+.apply-host-page .form-group input::placeholder,
+.apply-host-page .form-group textarea::placeholder {
+  color: var(--apply-muted);
+  opacity: 0.8;
+}
+
+.apply-host-page .form-group input:focus,
+.apply-host-page .form-group select:focus,
+.apply-host-page .form-group textarea:focus {
+  outline: none;
+  border-color: var(--apply-primary);
+  box-shadow: 0 0 0 4px rgba(91, 80, 223, 0.09);
+}
+
+.apply-host-page .form-group small {
+  color: var(--apply-muted);
+  line-height: 1.6;
+}
+
+/* =========================================
+   INFORMATION MESSAGE
+========================================= */
+
+.apply-host-page .info-message {
+  padding: 17px 19px;
+  border: 1px solid rgba(91, 80, 223, 0.15);
+  border-radius: 12px;
+  background: var(--apply-surface);
+}
+
+.apply-host-page .info-message p {
+  color: var(--apply-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   EXISTING DOCUMENT
+========================================= */
+
+.apply-host-page .existing-file {
+  background: var(--apply-surface);
+  color: var(--apply-primary);
+  border: 1px solid var(--apply-border);
+}
+
+/* =========================================
+   REVIEW SECTION
+========================================= */
+
+.apply-host-page .review-section {
+  border-color: var(--apply-border);
+}
+
+.apply-host-page .review-heading h3 {
+  color: var(--apply-text);
+  font-size: 16px;
+}
+
+.apply-host-page .review-grid span {
+  color: var(--apply-muted);
+}
+
+.apply-host-page .review-grid strong {
+  color: var(--apply-text);
+  font-size: 13px;
+}
+
+/* =========================================
+   TERMS BOX
+========================================= */
+
+.apply-host-page .terms-box {
+  background: var(--apply-surface);
+  border-color: var(--apply-border);
+}
+
+.apply-host-page .terms-box label {
+  color: var(--apply-text);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   FORM ACTION BUTTONS
+========================================= */
+
+.apply-host-page .step-actions {
+  margin-top: 35px;
+  padding-top: 25px;
+  border-color: var(--apply-border);
+}
+
+.apply-host-page .primary-btn {
+  min-height: 46px;
+  padding: 12px 23px;
+  border-radius: 10px;
+  background: var(--apply-primary);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 5px 14px rgba(91, 80, 223, 0.16);
+}
+
+.apply-host-page .primary-btn:hover {
+  background: #4840bd;
+  box-shadow: 0 7px 18px rgba(91, 80, 223, 0.23);
+}
+
+.apply-host-page .secondary-btn {
+  min-height: 46px;
+  padding: 12px 23px;
+  border-radius: 10px;
+  background: var(--apply-card);
+  color: var(--apply-text);
+  border-color: var(--apply-border);
+  font-size: 13px;
+}
+
+.apply-host-page .secondary-btn:hover {
+  border-color: var(--apply-primary);
+  color: var(--apply-primary);
+}
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+html[data-theme="dark"] .apply-host-page {
+  --apply-bg: #0b1120;
+  --apply-card: #151e30;
+  --apply-text: #f1f5f9;
+  --apply-muted: #a1abc0;
+  --apply-border: #29364b;
+  --apply-primary: #a39aff;
+  --apply-surface: #1c2940;
+}
+
+html[data-theme="dark"] .apply-host-page .application-stepper,
+html[data-theme="dark"] .apply-host-page .application-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="dark"] .apply-host-page .form-group input,
+html[data-theme="dark"] .apply-host-page .form-group select,
+html[data-theme="dark"] .apply-host-page .form-group textarea {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] .apply-host-page .terms-box,
+html[data-theme="dark"] .apply-host-page .info-message {
+  background: var(--apply-surface);
+  border-color: var(--apply-border);
+}
+
+html[data-theme="dark"] .apply-host-page .review-grid strong {
+  color: var(--apply-text);
+}
+
+
+
+@media (max-width: 900px) {
+  .apply-host-page .apply-host-content {
+    padding: 32px 24px 55px;
+  }
+
+  .apply-host-page .application-stepper {
+    padding: 19px;
+  }
+
+  .apply-host-page .step-line {
+    margin: 0 12px;
+  }
+}
+
+@media (max-width: 700px) {
+  .apply-host-page .apply-host-content {
+    padding: 28px 17px 45px;
+  }
+
+  .apply-host-page .host-page-header h1 {
+    font-size: 30px;
+  }
+
+  .apply-host-page .application-stepper {
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .apply-host-page .step {
+    flex-shrink: 0;
+  }
+
+  .apply-host-page .step-info span {
+    display: none;
+  }
+
+  .apply-host-page .step-line {
+    min-width: 20px;
+    margin: 0 10px;
+  }
+
+  .apply-host-page .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .apply-host-page .form-group.full-width {
+    grid-column: auto;
+  }
+
+  .apply-host-page .review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-host-page .review-grid .full-width {
+    grid-column: auto;
+  }
+
+  .apply-host-page .application-card {
+    padding: 23px 19px;
+  }
+}
+
+@media (max-width: 450px) {
+  .apply-host-page .application-stepper {
+    display: none;
+  }
+
+  .apply-host-page .step-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .apply-host-page .primary-btn,
+  .apply-host-page .secondary-btn {
+    width: 100%;
+    flex: none;
+  }
+
+  .apply-host-page .application-card {
+    padding: 20px 16px;
+  }
+}
+/* SweetAlert2 must appear above the navbar */
+.swal2-container {
+  z-index: 20000 !important;
+}
+
+.swal2-backdrop-show {
+  z-index: 19999 !important;
+}
+
+.swal2-popup {
+  z-index: 20001 !important;
+}

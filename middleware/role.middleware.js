@@ -1,4 +1,4 @@
-export const authorizeRole = (requiredRole) => {
+export const authorizeRole = (...requiredRoles) => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
@@ -7,7 +7,7 @@ export const authorizeRole = (requiredRole) => {
       });
     }
 
-    if (req.user.role !== requiredRole) {
+    if (!requiredRoles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",

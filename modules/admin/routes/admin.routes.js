@@ -40,6 +40,13 @@ import { authMiddleware } from "../../../middleware/auth.middleware.js";
 import { authorizeRole } from "../../../middleware/role.middleware.js";
 import { getAdminDashboardStats } from "../controllers/adminDashboard.controller.js";
 
+import {
+  getAllSettlements,
+  getSettlementById,
+  approveSettlement,
+  rejectSettlement,
+  markSettlementAsPaid,
+} from "../controllers/adminSettlement.controller.js";
 
 const router = express.Router();
 
@@ -70,5 +77,11 @@ router.post("/profile/request-email-change", adminRequestEmailChange,);
 router.patch( "/profile/verify-email-change", adminVerifyEmailChangeOTP,);
 router.get("/profile",  adminGetProfile);
 router.patch("/profile", adminUpdateProfile,);
+
+router.get("/settlements", getAllSettlements);
+router.get("/settlements/:id", getSettlementById);
+router.patch("/settlements/:id/approve", approveSettlement);
+router.patch("/settlements/:id/reject", rejectSettlement);
+router.patch("/settlements/:id/paid", markSettlementAsPaid);
 
 export default router;

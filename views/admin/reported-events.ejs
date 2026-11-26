@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "Reported Events | Eventure Admin" }) %>
+        <link rel="stylesheet" href="/css/common/admin-sidebar.css">
+        <link rel="stylesheet" href="/css/admin/reported-events.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <%- include("../partials/admin-sidebar", { activePage: "reported-events" }) %>
+
+            <main class="admin-main">
+                <header class="reported-header">
+                    <div>
+                        <p class="section-label">ADMIN PANEL</p>
+                        <h1>Reported Events</h1>
+                        <p>Review events reported by Eventure users.</p>
+                    </div>
+                </header>
+
+                <section class="report-stats">
+                    <article class="report-stat-card">
+                        <span>Total Reported Events</span>
+                        <strong id="totalReportedEvents">0</strong>
+                    </article>
+                    <article class="report-stat-card">
+                        <span>Pending Reports</span>
+                        <strong id="totalPendingReports">0</strong>
+                    </article>
+                </section>
+
+                <section class="reported-table-card">
+                    <div class="reported-table-header">
+                        <h2>Reported Events</h2>
+                        <button type="button" id="refreshReports" class="refresh-button">Refresh</button>
+                    </div>
+
+                    <div id="reportedEventsContainer">
+                        <div class="report-message">Loading reported events...</div>
+                    </div>
+                </section>
+            </main>
+    </div>
+
+    <script src="/js/admin/admin-auth.js"></script>
+    <script src="/js/admin/reported-events.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("../partials/head", { title: "Eventure | Booking Management" }) %>
+    <link rel="stylesheet" href="/css/common/navbar.css">
+    <link rel="stylesheet" href="/css/common/sidebar.css">
+    <link rel="stylesheet" href="/css/host/bookings.css">
+    <link rel="stylesheet" href="/css/common/host-layout.css">
+</head>
+
+<body class="host-layout host-bookings-page">
+
+    <%- include("../partials/navbar") %>
+
+    <%- include("../partials/sidebar", { activePage: "bookings" }) %>
+
+    <div class="host-dashboard-layout">
+
+        <main class="host-main bookings-main">
+
+            <header class="host-header bookings-header">
+                <div>
+                    <p class="section-label">HOST PANEL</p>
+                    <h1>Booking Management</h1>
+                    <p>Track attendees, monitor bookings and manage event participation.</p>
+                </div>
+            </header>
+
+            <section class="booking-stats">
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon purple">
+                        <i class="bi bi-ticket-perforated"></i>
+                    </div>
+                    <div>
+                        <p>Total Bookings</p>
+                        <h2 id="total-bookings">0</h2>
+                    </div>
+                </article>
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon blue">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div>
+                        <p>Upcoming Bookings</p>
+                        <h2 id="upcoming-bookings">0</h2>
+                    </div>
+                </article>
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon green">
+                        <i class="bi bi-activity"></i>
+                    </div>
+                    <div>
+                        <p>Ongoing Bookings</p>
+                        <h2 id="ongoing-bookings">0</h2>
+                    </div>
+                </article>
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon orange">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div>
+                        <p>Completed Bookings</p>
+                        <h2 id="completed-bookings">0</h2>
+                    </div>
+                </article>
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon teal">
+                        <i class="bi bi-currency-rupee"></i>
+                    </div>
+                    <div>
+                        <p>Total Revenue</p>
+                        <h2 id="total-revenue">₹0</h2>
+                    </div>
+                </article>
+
+                <article class="booking-stat-card">
+                    <div class="booking-stat-icon pink">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <p>Tickets Sold</p>
+                        <h2 id="total-tickets">0</h2>
+                    </div>
+                </article>
+
+            </section>
+
+            <section class="booking-attendance-card">
+
+                <div class="attendance-heading">
+                    <div>
+                        <h2>Attendance Overview</h2>
+                        <p>Check attendee participation across your events.</p>
+                    </div>
+                    <div class="attendance-total">
+                        <strong id="attendance-percentage">0%</strong>
+                        <span>Attendance</span>
+                    </div>
+                </div>
+
+                <div class="attendance-progress">
+                    <div id="attendance-progress-fill"></div>
+                </div>
+
+                <div class="attendance-legend">
+                    <span>
+                        <i class="attendance-dot checked"></i>
+                        Checked in
+                        <strong id="checked-in-tickets">0</strong>
+                    </span>
+                    <span>
+                        <i class="attendance-dot pending"></i>
+                        Not checked in
+                        <strong id="not-checked-in-tickets">0</strong>
+                    </span>
+                </div>
+
+            </section>
+
+            <section class="booking-management-section">
+
+                <div class="booking-section-heading">
+                    <div>
+                        <h2>All Bookings</h2>
+                        <p>View and manage attendees across your events.</p>
+                    </div>
+
+                    <button type="button" class="booking-refresh-btn" id="refresh-bookings">
+                        <i class="bi bi-arrow-clockwise"></i>
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="booking-toolbar">
+
+                    <div class="booking-search">
+                        <i class="bi bi-search"></i>
+                        <input
+                            type="search"
+                            id="booking-search"
+                            placeholder="Search attendee, event or booking ID..."
+                        >
+                    </div>
+
+                    <select id="booking-event-filter" aria-label="Filter by event">
+                        <option value="">All Events</option>
+                    </select>
+
+                    <select id="booking-status-filter" aria-label="Filter by booking status">
+                        <option value="all">All Bookings</option>
+                        <option value="upcoming">Upcoming Events</option>
+                        <option value="ongoing">Ongoing Events</option>
+                        <option value="completed">Completed Events</option>
+                        <option value="cancelled">Cancelled Bookings</option>
+                        <option value="refunded">Refunded Bookings</option>
+                    </select>
+
+                </div>
+
+                <div class="booking-table-wrapper">
+
+                    <table class="booking-table">
+
+                        <thead>
+                            <tr>
+                                <th>BOOKING</th>
+                                <th>ATTENDEE</th>
+                                <th>EVENT</th>
+                                <th>TICKETS</th>
+                                <th>AMOUNT PAID</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="booking-table-body">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="booking-state">
+                                        <div class="booking-spinner"></div>
+                                        <p>Loading bookings...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="booking-pagination" id="booking-pagination" hidden>
+
+                    <span id="booking-page-info">Page 1 of 1</span>
+
+                    <div>
+                        <button type="button" id="booking-prev" disabled>
+                            <i class="bi bi-chevron-left"></i>
+                            Previous
+                        </button>
+
+                        <button type="button" id="booking-next" disabled>
+                            Next
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <div class="booking-modal-overlay" id="booking-modal-overlay" hidden>
+
+        <section class="booking-details-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+
+            <div class="booking-modal-header">
+                <div>
+                    <p>BOOKING DETAILS</p>
+                    <h2 id="booking-modal-title">Booking Information</h2>
+                </div>
+
+                <button type="button" id="close-booking-modal" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div id="booking-modal-content">
+                <div class="booking-state">
+                    <div class="booking-spinner"></div>
+                    <p>Loading booking details...</p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/host/bookings.js"></script>
+
+    <script>
+        if (!redirectToLoginIfNotLoggedIn()) {
+            protectDashboardHistory();
+        }
+    </script>
+
+</body>
+</html>

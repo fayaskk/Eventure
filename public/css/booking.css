@@ -1,0 +1,681 @@
+.booking-page {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: #f6f7fb;
+}
+
+.booking-page > .eventure-navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1200;
+    width: 100%;
+    min-height: var(--navbar-height, 76px);
+}
+
+.booking-page-layout {
+    width: 100%;
+    min-height: calc(100vh - var(--navbar-height, 76px));
+    box-sizing: border-box;
+}
+
+body.host-layout .booking-page-layout {
+    width: calc(100% - var(--sidebar-width, 280px));
+    margin-left: var(--sidebar-width, 280px);
+}
+
+.booking-main {
+    width: 100%;
+    min-height: calc(100vh - var(--navbar-height, 76px));
+    margin: 0;
+    padding: 48px 32px 80px;
+    background: #f6f7fb;
+    box-sizing: border-box;
+}
+
+.booking-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 24px;
+    color: #5146d8;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #4035bf;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 28px;
+}
+
+.section-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #5146d8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+}
+
+.booking-header h1 {
+    margin: 0 0 10px;
+    color: #17213c;
+    font-size: 38px;
+    font-weight: 750;
+    line-height: 1.2;
+}
+
+.booking-header p {
+    margin: 0;
+    color: #697386;
+    font-size: 15px;
+}
+
+.booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 370px;
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+}
+
+.ticket-selection,
+.booking-summary {
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e5e7ef;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(30, 35, 70, 0.06);
+}
+
+.ticket-selection {
+    padding: 30px;
+}
+
+.section-title {
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eaebf1;
+}
+
+.section-title h2 {
+    margin: 0 0 7px;
+    color: #17213c;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.section-title p {
+    margin: 0;
+    color: #7a8192;
+    font-size: 14px;
+}
+
+.ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 22px;
+}
+
+.ticket-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 105px;
+    padding: 20px 22px;
+    background: #fafaff;
+    border: 1px solid #e5e6f0;
+    border-radius: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ticket-item:hover {
+    border-color: #cfcaff;
+    box-shadow: 0 5px 18px rgba(81, 70, 216, 0.06);
+}
+
+.ticket-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ticket-details h3 {
+    margin: 0;
+    color: #17213c;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.ticket-details strong {
+    color: #5146d8;
+    font-size: 18px;
+    font-weight: 750;
+}
+
+.ticket-details span {
+    color: #7a8192;
+    font-size: 13px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px;
+    background: #ffffff;
+    border: 1px solid #e1e3ec;
+    border-radius: 11px;
+}
+
+.quantity-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: #f1efff;
+    color: #5146d8;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover:not(:disabled) {
+    background: #5146d8;
+    color: #ffffff;
+}
+
+.quantity-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.quantity-value {
+    min-width: 28px;
+    color: #17213c;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.booking-summary {
+    position: sticky;
+    top: calc(var(--navbar-height, 76px) + 24px);
+    padding: 28px;
+}
+
+.booking-summary h2 {
+    margin: 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaebf1;
+    color: #17213c;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+#summary-items {
+    min-height: 70px;
+}
+
+.summary-empty {
+    margin: 24px 0;
+    color: #8a90a0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eaebf1;
+}
+
+.summary-item div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary-item strong {
+    color: #17213c;
+    font-size: 14px;
+}
+
+.summary-item span {
+    color: #858b9b;
+    font-size: 13px;
+}
+
+.coupon-section {
+    margin-top: 22px;
+    padding: 17px;
+    background: #faf9ff;
+    border: 1px dashed #d8d2ff;
+    border-radius: 12px;
+}
+
+.coupon-section label {
+    display: block;
+    margin-bottom: 12px;
+    color: #17213c;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.coupon-input-group {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.coupon-input-group input {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #dfe1eb;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: #17213c;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coupon-input-group input:focus {
+    border-color: #6555dc;
+    box-shadow: 0 0 0 3px rgba(81, 70, 216, 0.1);
+}
+
+.coupon-input-group input:disabled {
+    background: #f0eff6;
+    color: #777d8d;
+    cursor: not-allowed;
+}
+
+.coupon-input-group button {
+    flex-shrink: 0;
+    min-width: 75px;
+    height: 42px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 8px;
+    background: #5846d8;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.coupon-input-group button:hover:not(:disabled) {
+    background: #4635c5;
+}
+
+.coupon-input-group button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+#coupon-feedback {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#coupon-feedback:empty {
+    display: none;
+}
+
+.coupon-success {
+    color: #13834c;
+    font-weight: 600;
+}
+
+.coupon-error {
+    color: #d14343;
+    font-weight: 500;
+}
+
+#discount-summary {
+    margin-top: 15px;
+}
+
+.discount-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eaebf1;
+}
+
+.discount-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.discount-details strong {
+    color: #13834c;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.discount-details span {
+    color: #858b9b;
+    font-size: 12px;
+}
+
+.discount-value {
+    color: #13834c;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#remove-coupon-btn {
+    padding: 5px 8px;
+    border: none;
+    border-radius: 6px;
+    background: #fff0f0;
+    color: #d14343;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#remove-coupon-btn:hover {
+    background: #ffe0e0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    padding: 22px 0;
+}
+
+.summary-total span {
+    color: #697386;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.summary-total strong {
+    color: #17213c;
+    font-size: 25px;
+    font-weight: 750;
+}
+
+.continue-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #5846d8;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.continue-btn:hover:not(:disabled) {
+    background: #4635c5;
+    transform: translateY(-1px);
+}
+
+.continue-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.continue-btn:disabled {
+    background: #c9cbd5;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
+.loading-state,
+.error-state,
+.empty-state {
+    padding: 70px 30px;
+    background: #ffffff;
+    border: 1px solid #e5e7ef;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(30, 35, 70, 0.05);
+    color: #697386;
+    text-align: center;
+}
+
+.error-state h2 {
+    margin: 0 0 10px;
+    color: #17213c;
+}
+
+.error-state p {
+    margin: 0;
+}
+
+.back-events-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 9px;
+    background: #5846d8;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.back-events-btn:hover {
+    background: #4635c5;
+}
+
+html[data-theme="dark"] .booking-page,
+html[data-theme="dark"] .booking-main {
+    background: #0b1120;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .ticket-selection,
+html[data-theme="dark"] .booking-summary,
+html[data-theme="dark"] .loading-state,
+html[data-theme="dark"] .error-state,
+html[data-theme="dark"] .empty-state {
+    background: #111827;
+    border-color: #293548;
+    color: #e5e7eb;
+}
+
+html[data-theme="dark"] .ticket-item,
+html[data-theme="dark"] .coupon-section {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+html[data-theme="dark"] .quantity-control,
+html[data-theme="dark"] .coupon-input-group input {
+    background: #111827;
+    border-color: #374151;
+    color: #f3f4f6;
+}
+
+html[data-theme="dark"] .booking-header h1,
+html[data-theme="dark"] .section-title h2,
+html[data-theme="dark"] .booking-summary h2,
+html[data-theme="dark"] .ticket-details h3,
+html[data-theme="dark"] .quantity-value,
+html[data-theme="dark"] .summary-item strong,
+html[data-theme="dark"] .summary-total strong,
+html[data-theme="dark"] .coupon-section label,
+html[data-theme="dark"] .error-state h2 {
+    color: #f3f4f6;
+}
+
+html[data-theme="dark"] .booking-header p,
+html[data-theme="dark"] .section-title p,
+html[data-theme="dark"] .ticket-details span,
+html[data-theme="dark"] .summary-empty,
+html[data-theme="dark"] .summary-item span,
+html[data-theme="dark"] .summary-total span {
+    color: #a8b3c7;
+}
+
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .booking-summary h2,
+html[data-theme="dark"] .summary-item,
+html[data-theme="dark"] .discount-summary-row {
+    border-color: #293548;
+}
+
+html[data-theme="dark"] .coupon-input-group input:disabled {
+    background: #1f2937;
+    color: #9ca3af;
+}
+
+@media (max-width: 1100px) {
+    .booking-layout {
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 20px;
+    }
+
+    .booking-summary {
+        padding: 23px;
+    }
+}
+
+@media (max-width: 900px) {
+    body.host-layout .booking-page-layout {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .booking-main {
+        width: 100%;
+        margin: 0;
+        padding: 30px 18px 60px;
+    }
+
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 650px) {
+    .booking-header h1 {
+        font-size: 30px;
+    }
+
+    .ticket-selection,
+    .booking-summary {
+        padding: 22px;
+        border-radius: 14px;
+    }
+
+    .ticket-item {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-header h1 {
+        font-size: 26px;
+    }
+
+    .ticket-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .quantity-control {
+        align-self: flex-end;
+    }
+
+    .booking-summary {
+        padding: 20px;
+    }
+
+    .coupon-section {
+        padding: 14px;
+    }
+
+    .discount-summary-row {
+        flex-wrap: wrap;
+    }
+}
+@media (max-width: 900px) {
+    body.host-layout .booking-page-layout {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    body.host-layout .booking-page > .eventure-navbar,
+    body.host-layout .booking-page-layout > .eventure-navbar {
+        display: flex;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    body.host-layout .eventure-navbar .navbar-container {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        margin: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+        box-sizing: border-box;
+    }
+
+    body.host-layout .booking-main {
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+}

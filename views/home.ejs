@@ -1,128 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include("partials/head", {
-    title: "Eventure | Discover Events"
-  }) %>
+  <%- include("partials/head", { title: "Eventure | Discover Experiences" }) %>
 
-  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="stylesheet" href="/css/common/navbar.css">
+  <link rel="stylesheet" href="/css/home.css">
 </head>
 
-<body>
+<body class="home-page">
 
-  <nav class="home-navbar">
+  <%- include("partials/navbar", { activePage: "home" }) %>
 
-    <div class="home-logo">
-      <a href="/">
-        Eventure
-      </a>
-    </div>
+  <main>
 
-    <div class="home-nav-links">
-      <a href="/">
-        Home
-      </a>
+    <section class="hero-section">
 
-      <a href="/events">
-        Events
-      </a>
+      <div class="hero-background-glow hero-glow-one"></div>
+      <div class="hero-background-glow hero-glow-two"></div>
 
-      <a href="/about">
-        About
-      </a>
-    </div>
+      <div class="hero-container">
 
-    <div class="home-nav-actions">
-      <a
-        href="/login"
-        class="signin-link"
-      >
-        Sign In
-      </a>
+        <div class="hero-content">
 
-      <a
-        href="/register"
-        class="create-account-btn"
-      >
-        Create Account
-      </a>
-    </div>
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            DISCOVER EXPERIENCES THAT MATTER
+          </div>
 
-  </nav>
+          <h1>
+            Discover events.
+            <span>Create memories.</span>
+          </h1>
 
+          <p class="hero-description">
+            From unforgettable concerts to exciting sports events,
+            discover experiences that bring people together.
+            Your next great memory starts here.
+          </p>
 
-  <main class="home-main">
+          <div class="hero-actions">
 
-    <section class="home-hero">
+            <a href="/events" class="primary-btn">
+              Explore Events
+              <i class="bi bi-arrow-up-right"></i>
+            </a>
 
-      <div class="hero-content">
+            <a href="/register" class="secondary-btn">
+              Join Eventure
+            </a>
 
-        <p class="hero-tagline">
-          DISCOVER • EXPERIENCE • REMEMBER
-        </p>
+          </div>
 
-        <h1>
-          Discover Events<br />
-          That Create<br />
-          <span>Memories.</span>
-        </h1>
+          <div class="hero-trust">
 
-        <p class="hero-description">
-          Discover concerts, festivals, workshops, sports events
-          and unforgettable experiences near you.
-        </p>
+            <div class="trust-item">
+              <i class="bi bi-calendar-event"></i>
+              <span>Discover events</span>
+            </div>
 
-        <div class="hero-actions">
+            <div class="trust-divider"></div>
 
-          <a
-            href="/events"
-            class="explore-btn"
-          >
-            Explore Events →
-          </a>
+            <div class="trust-item">
+              <i class="bi bi-ticket-perforated"></i>
+              <span>Book your tickets</span>
+            </div>
 
-          <a
-            href="/register"
-            class="join-btn"
-          >
-            Join Eventure
-          </a>
+            <div class="trust-divider"></div>
+
+            <div class="trust-item">
+              <i class="bi bi-heart"></i>
+              <span>Create memories</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="hero-visual">
+
+          <div class="visual-orbit orbit-one"></div>
+          <div class="visual-orbit orbit-two"></div>
+
+          <div class="visual-floating-card floating-card-top">
+
+            <div class="floating-icon purple-icon">
+              <i class="bi bi-music-note-beamed"></i>
+            </div>
+
+            <div>
+              <span>Discover</span>
+              <strong>Live Concerts</strong>
+            </div>
+
+          </div>
+
+          <div class="hero-main-card">
+
+            <div class="hero-card-image">
+
+              <div class="hero-card-overlay"></div>
+
+              <div class="hero-card-content">
+
+                <span class="hero-card-tag">
+                  YOUR NEXT EXPERIENCE
+                </span>
+
+                <h2>
+                  Make every moment
+                  <span>unforgettable.</span>
+                </h2>
+
+                <div class="hero-card-bottom">
+
+                  <div class="hero-card-symbol">
+                    <i class="bi bi-stars"></i>
+                  </div>
+
+                  <span>Something amazing awaits you.</span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="visual-floating-card floating-card-bottom">
+
+            <div class="floating-icon orange-icon">
+              <i class="bi bi-ticket-perforated"></i>
+            </div>
+
+            <div>
+              <span>Your journey</span>
+              <strong>Starts Here</strong>
+            </div>
+
+            <i class="bi bi-arrow-up-right floating-arrow"></i>
+
+          </div>
+
+          <div class="visual-decoration decoration-one"></div>
+          <div class="visual-decoration decoration-two"></div>
 
         </div>
 
       </div>
 
+      <div class="hero-bottom-line"></div>
 
-      <div class="hero-visual">
+    </section>
 
-        <div class="event-visual-card visual-card-music">
-          <span class="event-icon">
-            🎵
-          </span>
 
-          <p>
-            Music Events
-          </p>
+    <section class="categories-section" id="categories">
+
+      <div class="section-container">
+
+        <div class="section-heading">
+
+          <div>
+            <p class="section-eyebrow">
+              EXPLORE YOUR INTERESTS
+            </p>
+
+            <h2>
+              Discover by Category
+            </h2>
+
+            <p class="section-description">
+              Find experiences that match your interests
+              and discover something new.
+            </p>
+          </div>
+
+          <a href="/events" class="section-link">
+            Explore all events
+            <i class="bi bi-arrow-up-right"></i>
+          </a>
+
         </div>
 
-        <div class="event-visual-card visual-card-workshop">
-          <span class="event-icon">
-            🎨
-          </span>
 
-          <p>
-            Creative Workshops
-          </p>
-        </div>
+        <div
+          id="categories-container"
+          class="categories-container"
+        >
 
-        <div class="event-visual-card visual-card-sports">
-          <span class="event-icon">
-            ⚽
-          </span>
+          <div class="categories-loading">
+            <div class="loading-spinner"></div>
+            <span>Discovering categories...</span>
+          </div>
 
-          <p>
-            Sports Events
-          </p>
         </div>
 
       </div>
@@ -130,29 +200,35 @@
     </section>
 
 
-    <section class="home-categories">
+    <section class="home-cta-section">
 
-      <div class="category-heading">
+      <div class="cta-glow"></div>
 
-        <p class="category-tagline">
-          EXPLORE
+      <div class="home-cta-content">
+
+        <div class="cta-icon">
+          <i class="bi bi-stars"></i>
+        </div>
+
+        <p class="section-eyebrow">
+          YOUR NEXT CHAPTER STARTS HERE
         </p>
 
         <h2>
-          Browse by Category
+          Don't just hear about it.
+          <span>Be part of it.</span>
         </h2>
 
-        <p class="category-description">
-          Find events that match your interests.
+        <p>
+          Discover amazing events, connect with people
+          and create memories worth sharing.
         </p>
 
-      </div>
+        <a href="/events" class="primary-btn">
+          Explore Experiences
+          <i class="bi bi-arrow-up-right"></i>
+        </a>
 
-
-      <div
-        id="category-container"
-        class="category-container"
-      >
       </div>
 
     </section>
@@ -160,22 +236,41 @@
   </main>
 
 
-  <%- include("partials/footer") %>
+  <footer class="home-footer">
+
+    <div class="footer-container">
+
+      <div class="footer-brand-section">
+
+        <a href="/" class="footer-brand">
+          <span class="footer-brand-icon">E</span>
+          Eventure
+        </a>
+
+        <p>
+          Discover experiences. Create memories.
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <a href="/events">Explore Events</a>
+        <a href="/register">Join Eventure</a>
+        <a href="/login">Login</a>
+
+      </div>
+
+      <div class="footer-copyright">
+        © <%= new Date().getFullYear() %> Eventure. All rights reserved.
+      </div>
+
+    </div>
+
+  </footer>
 
 
   <script src="/js/auth-guard.js"></script>
-
-  <script>
-    redirectToDashboardIfLoggedIn();
-
-    window.addEventListener(
-      "pageshow",
-      () => {
-        redirectToDashboardIfLoggedIn();
-      }
-    );
-  </script>
-
   <script src="/js/home.js"></script>
 
 </body>

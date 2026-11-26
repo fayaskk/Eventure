@@ -1,6 +1,6 @@
 import { User } from "../../../models/user.model.js";
 import bcrypt from "bcrypt";
-import { OTP } from "../../../models/otp.model.js";
+import process from "process";
 import { sendOTPEmail } from "../../../services/email.service.js";
 import {
   generateAndStoreOTP,
@@ -70,7 +70,7 @@ export const signup = async (req, res) => {
 
         await sendOTPEmail(normalizedEmail, otp);
 
-        console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
         return res.status(200).json({
           message:
@@ -115,7 +115,7 @@ export const signup = async (req, res) => {
 
     await sendOTPEmail(normalizedEmail, otp);
 
-    console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
     return res.status(200).json({
       success: true,
@@ -214,6 +214,12 @@ export const googleCallback = async (req, res) => {
     }
 
     const token = generateToken(user);
+    res.clearCookie("eventureToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
 
     const safeToken = JSON.stringify(token);
 
@@ -245,10 +251,7 @@ export const googleCallback = async (req, res) => {
       </html>
     `);
   } catch (error) {
-    console.error(
-      "Google authentication callback error:",
-      error
-    );
+    console.error("Google authentication callback error:", error);
 
     return res.send(`
       <!DOCTYPE html>
@@ -442,6 +445,13 @@ export const userLogin = async (req, res) => {
     }
 
     const token = generateToken(user);
+    res.cookie("eventureToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 1000,
+      path: "/",
+    });
 
     return res.status(200).json({
       success: true,
@@ -501,7 +511,7 @@ export const forgotPassword = async (req, res) => {
 
     await sendOTPEmail(normalizedEmail, otp);
 
-    console.log(`OTP for ${normalizedEmail}: ${otp}`);
+
 
     return res.status(200).json({
       success: true,
@@ -530,7 +540,8 @@ export const verifyForgotPasswordOTP = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedOTP = otp.trim();
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+ const emailRegex =
+  /^(?=.{6,254}$)(?=.{2,64}@)[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
 
     if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({
@@ -580,8 +591,7 @@ export const resetPassword = async (req, res) => {
     if (!resetToken || !newPassword || !confirmPassword) {
       return res.status(400).json({
         success: false,
-        message:
-          "Reset token, new password and confirm password are required",
+        message: "Reset token, new password and confirm password are required",
       });
     }
 
@@ -592,8 +602,7 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    const strongPassword =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     if (!strongPassword.test(newPassword)) {
       return res.status(400).json({

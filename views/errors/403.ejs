@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "Access Denied | Eventure" }) %>
+        <style>
+            .error-page {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+                background: #f6f7fb;
+                font-family: Arial, sans-serif;
+            }
+
+            .error-card {
+                width: 100%;
+                max-width: 520px;
+                padding: 48px 32px;
+                border: 1px solid #e5e7eb;
+                border-radius: 20px;
+                background: #ffffff;
+                text-align: center;
+                box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
+            }
+
+            .error-code {
+                margin: 0;
+                color: #6355e7;
+                font-size: 76px;
+                font-weight: 800;
+                line-height: 1;
+            }
+
+            .error-card h1 {
+                margin: 24px 0 12px;
+                color: #111827;
+                font-size: 28px;
+            }
+
+            .error-card p {
+                margin: 0;
+                color: #6b7280;
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .error-actions {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 28px;
+            }
+
+            .error-button {
+                display: inline-block;
+                padding: 12px 20px;
+                border-radius: 9px;
+                background: #6355e7;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 600;
+                transition: background 0.2s ease;
+            }
+
+            .error-button:hover {
+                background: #5043cc;
+            }
+
+            .error-button.secondary {
+                border: 1px solid #e5e7eb;
+                background: #ffffff;
+                color: #374151;
+            }
+
+            .error-button.secondary:hover {
+                background: #f9fafb;
+            }
+
+            @media (max-width: 480px) {
+                .error-card {
+                    padding: 36px 22px;
+                }
+
+                .error-code {
+                    font-size: 62px;
+                }
+
+                .error-card h1 {
+                    font-size: 24px;
+                }
+
+                .error-actions {
+                    flex-direction: column;
+                }
+
+                .error-button {
+                    width: 100%;
+                }
+            }
+        </style>
+</head>
+
+<body>
+    <main class="error-page">
+        <section class="error-card">
+            <p class="error-code">403</p>
+            <h1>Access Denied</h1>
+            <p>
+                You don't have permission to access this page.
+                This area is restricted to authorized Eventure hosts.
+            </p>
+
+            <div class="error-actions">
+                <a href="/dashboard" class="error-button">
+                    Back to Dashboard
+                </a>
+
+                <a href="/" class="error-button secondary">
+                    Go to Homepage
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

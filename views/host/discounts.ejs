@@ -1,0 +1,224 @@
+<%- include("../partials/head", { title: "Eventure | Manage Discounts" }) %>
+
+<link rel="stylesheet" href="/css/common/navbar.css">
+<link rel="stylesheet" href="/css/host/discounts.css">
+
+<body class="discount-page">
+
+  <%- include("../partials/navbar") %>
+  <%- include("../partials/sidebar", { activePage: "events" }) %>
+
+  <main class="discount-main">
+    <div class="discount-container">
+
+      <header class="discount-header">
+        <div>
+          <span class="section-label">EVENT MANAGEMENT</span>
+          <h1>Discount Management</h1>
+          <p>Create and manage promotional offers for your event.</p>
+        </div>
+
+        <a href="/host/events" class="back-events-btn">
+          <i class="bi bi-arrow-left"></i>
+          <span>Back to My Events</span>
+        </a>
+      </header>
+
+      <section id="event-summary" class="event-summary">
+        <div class="summary-loading">
+          <div class="loading-spinner"></div>
+          <p>Loading event information...</p>
+        </div>
+      </section>
+
+      <section class="discount-stats">
+        <article class="stat-card">
+          <div class="stat-icon total-icon">
+            <i class="bi bi-ticket-perforated"></i>
+          </div>
+          <div>
+            <p>Total Coupons</p>
+            <h3 id="totalCoupons">0</h3>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon active-icon">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div>
+            <p>Active Coupons</p>
+            <h3 id="activeCoupons">0</h3>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon expired-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <div>
+            <p>Expired Coupons</p>
+            <h3 id="expiredCoupons">0</h3>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon redeemed-icon">
+            <i class="bi bi-graph-up-arrow"></i>
+          </div>
+          <div>
+            <p>Total Redemptions</p>
+            <h3 id="totalRedemptions">0</h3>
+          </div>
+        </article>
+      </section>
+
+      <section class="discount-management">
+        <div class="discount-section-header">
+          <div>
+            <span class="section-label">PROMOTIONAL OFFERS</span>
+            <h2>Your Coupons</h2>
+            <p>Manage promotional codes associated with this event.</p>
+          </div>
+
+          <button type="button" id="addDiscountBtn" class="create-discount-btn">
+            <i class="bi bi-plus-lg"></i>
+            Create Discount
+          </button>
+        </div>
+
+        <div class="discount-toolbar">
+          <div class="discount-search">
+            <i class="bi bi-search"></i>
+            <input type="search" id="discountSearch" placeholder="Search coupon name or code..." autocomplete="off">
+          </div>
+
+          <div class="discount-filter">
+            <i class="bi bi-funnel"></i>
+            <select id="discountStatusFilter">
+              <option value="all">All Coupons</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="expired">Expired</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="exhausted">Usage Limit Reached</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="discount-list" class="discount-list">
+          <div class="discount-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading discounts...</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="discountModal" class="discount-modal" aria-hidden="true">
+    <div class="discount-modal-overlay"></div>
+
+    <div class="discount-modal-content" role="dialog" aria-modal="true" aria-labelledby="discountModalTitle">
+
+      <div class="modal-header">
+        <div>
+          <span class="section-label">PROMOTIONAL CAMPAIGN</span>
+          <h2 id="discountModalTitle">Create Discount</h2>
+          <p>Create an attractive offer for your audience.</p>
+        </div>
+
+        <button type="button" id="closeDiscountModal" class="modal-close-btn" aria-label="Close modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form id="discountForm" novalidate>
+        <div class="form-grid">
+
+          <div class="form-group full-width">
+            <label for="discountTitle">Discount Title *</label>
+            <input type="text" id="discountTitle" name="title" maxlength="100" placeholder="Example: Early Bird Offer">
+          </div>
+
+          <div class="form-group">
+            <label for="discountCode">Coupon Code *</label>
+            <input type="text" id="discountCode" name="code" maxlength="30" placeholder="EARLYBIRD20" autocomplete="off">
+            <small>3–30 characters. Letters, numbers, hyphens and underscores.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="discountType">Discount Type *</label>
+            <select id="discountType" name="discountType">
+              <option value="percentage">Percentage (%)</option>
+              <option value="fixed">Fixed Amount (₹)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="discountValue">Discount Value *</label>
+            <div class="input-with-symbol">
+              <span id="discountValueSymbol">%</span>
+              <input type="number" id="discountValue" name="discountValue" min="0.01" step="0.01">
+            </div>
+          </div>
+
+          <div class="form-group" id="maxDiscountGroup">
+            <label for="maxDiscount">Maximum Discount (₹)</label>
+            <input type="number" id="maxDiscount" name="maxDiscount" min="0.01" step="0.01" placeholder="Optional">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="discountDescription">Description</label>
+            <textarea id="discountDescription" name="description" maxlength="300" rows="3" placeholder="Describe your offer..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="minBookingAmount">Minimum Booking Amount (₹)</label>
+            <input type="number" id="minBookingAmount" name="minBookingAmount" min="0" step="0.01" value="0">
+          </div>
+
+          <div class="form-group">
+            <label for="usageLimit">Total Usage Limit</label>
+            <input type="number" id="usageLimit" name="usageLimit" min="1" step="1" placeholder="Unlimited">
+            <small>Leave empty for unlimited usage.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="perUserLimit">Per User Limit *</label>
+            <input type="number" id="perUserLimit" name="perUserLimit" min="1" step="1" value="1">
+          </div>
+
+          <div class="form-group">
+            <label for="startDate">Start Date & Time *</label>
+            <input type="datetime-local" id="startDate" name="startDate">
+          </div>
+
+          <div class="form-group">
+            <label for="endDate">End Date & Time *</label>
+            <input type="datetime-local" id="endDate" name="endDate">
+          </div>
+
+        </div>
+
+        <div id="discountFormError" class="discount-form-error" role="alert"></div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancelDiscountBtn" class="cancel-btn">Cancel</button>
+          <button type="submit" id="submitDiscountBtn" class="save-discount-btn">Create Discount</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    window.EVENTURE_EVENT_ID = <%- JSON.stringify(eventId) %>;
+  </script>
+
+  <script src="/js/auth-guard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/host/discounts.js"></script>
+
+</body>
+</html>

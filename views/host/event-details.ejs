@@ -6,33 +6,47 @@
   <link rel="stylesheet" href="/css/host/event-details.css">
 </head>
 
-<body>
+<body class="host-event-details-page">
 
-  <!-- <%- include("../partials/sidebar", { activePage: "events" }) %> -->
+  <%- include("../partials/sidebar", { activePage: "events" }) %>
 
-  <main class="host-main">
+  <div class="host-dashboard-layout">
 
-    <header class="host-header">
+    <%- include("../partials/navbar") %>
 
-      <div>
-        <p class="section-label">HOST PANEL</p>
-        <h1>Event Details</h1>
-        <p>View the details of your event.</p>
+    <main class="host-main">
+
+      <div class="event-details-page-container">
+
+        <header class="host-header">
+
+          <div class="host-header-content">
+            <p class="section-label">HOST PANEL</p>
+            <h1>Event Details</h1>
+            <p>View and manage your event.</p>
+          </div>
+
+          <a href="/host/events" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to My Events
+          </a>
+
+        </header>
+
+        <section id="event-details">
+
+          <div class="event-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading event details...</p>
+          </div>
+
+        </section>
+
       </div>
 
-      <a href="/host/events" class="back-btn">
-        ← Back to My Events
-      </a>
+    </main>
 
-    </header>
-
-    <section id="event-details">
-      <p id="event-loading">
-        Loading event...
-      </p>
-    </section>
-
-  </main>
+  </div>
 
   <script src="/js/host/event-details.js"></script>
 

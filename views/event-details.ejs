@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>   <%- include("partials/head", { title: "Eventure | Event Details" }) %>
+
+&#x20; <link rel="stylesheet" href="/css/common/navbar.css">
+&#x20; <link rel="stylesheet" href="/css/common/sidebar.css">
+&#x20; <link rel="stylesheet" href="/css/event-details.css">
+</head>
+
+<body class="event-details-page">
+
+<%- include("partials/sidebar", { activePage: "events" }) %>
+
+&#x20; <div class="event-details-layout">
+
+
+<%- include("partials/navbar", { activePage: activePage || "events" }) %>
+
+<main class="event-details-main">
+
+  <div class="event-details-container">
+
+    <a href="/events" class="back-link">
+      <i class="bi bi-arrow-left"></i>
+      Back to Events
+    </a>
+
+    <div id="event-details">
+
+      <div class="loading-state">
+        Loading event...
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+&#x20; </div>
+
+&#x20; <script src="/js/event-details.js"></script>
+
+</body>
+
+</html>

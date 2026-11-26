@@ -1,24 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
+  <%- include("partials/head", { title: "Explore Events | Eventure" }) %>
 
-    <%- include("partials/head", { title: "Eventure | Discover Events" }) %>
-
-        <link rel="stylesheet" href="/css/events.css">
-
+  <link rel="stylesheet" href="/css/common/navbar.css">
+  <link rel="stylesheet" href="/css/common/sidebar.css">
+  <link rel="stylesheet" href="/css/events.css">
 </head>
 
-<body>
+<body class="events-page">
 
-    <div id="category-filter"></div>
+  <%- include("partials/sidebar", { activePage: "events" }) %>
 
-    <div id="events-container"></div>
+  <%- include("partials/navbar", { activePage: activePage || "events" }) %>
 
-    <script src="/js/events.js"></script>
+  <div class="events-layout">
+
+    <main>
+
+      <section class="hero-section" aria-label="Discover events">
+
+        <div class="hero-track" id="offers-track">
+
+          <article class="hero-slide hero-slide-purple">
+
+            <div class="hero-content">
+
+              <span class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                DISCOVER SOMETHING EXTRAORDINARY
+              </span>
+
+              <h1>
+                Life is better<br>
+                <span>when experienced.</span>
+              </h1>
+
+              <p>
+                Discover concerts, sports, workshops and unforgettable
+                experiences happening around you.
+              </p>
+
+              <div class="hero-actions">
+
+                <a href="#events-content" class="hero-primary-btn">
+                  Explore events
+                  <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+              </div>
+
+              <div class="hero-trust">
+                <i class="bi bi-stars"></i>
+                <span>Find your next unforgettable moment</span>
+              </div>
+
+            </div>
+
+            <div class="hero-art">
+
+              <div class="hero-orbit hero-orbit-one"></div>
+              <div class="hero-orbit hero-orbit-two"></div>
+              <div class="hero-art-glow"></div>
+
+              <div class="hero-floating-card hero-card-main">
+
+                <div class="hero-card-top">
+
+                  <span class="hero-card-icon">
+                    <i class="bi bi-ticket-perforated-fill"></i>
+                  </span>
+
+                  <span>YOUR NEXT EXPERIENCE</span>
+
+                </div>
+
+                <div class="hero-ticket-content">
+                  <span>MAKE MEMORIES</span>
+                  <strong>Starts Here.</strong>
+                </div>
+
+                <div class="hero-ticket-bottom">
+                  <span>EVENTURE</span>
+                  <span>✦ ✦ ✦</span>
+                </div>
+
+              </div>
+
+              <div class="hero-floating-card hero-card-small hero-card-top">
+                <i class="bi bi-music-note-beamed"></i>
+                <span>Live music</span>
+              </div>
+
+              <div class="hero-floating-card hero-card-small hero-card-bottom">
+                <i class="bi bi-trophy"></i>
+                <span>Sports & more</span>
+              </div>
+
+              <span class="hero-sparkle sparkle-one">✦</span>
+              <span class="hero-sparkle sparkle-two">✧</span>
+              <span class="hero-sparkle sparkle-three">✦</span>
+
+            </div>
+
+          </article>
+
+
+          <article class="hero-slide hero-slide-orange">
+
+            <div class="hero-content">
+
+              <span class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                SOMETHING EXCITING AWAITS
+              </span>
+
+              <h1>
+                More moments.<br>
+                <span>More memories.</span>
+              </h1>
+
+              <p>
+                From unforgettable performances to exciting community
+                gatherings, find experiences worth looking forward to.
+              </p>
+
+              <div class="hero-actions">
+
+                <a href="#events-content" class="hero-primary-btn">
+                  Find your event
+                  <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+              </div>
+
+              <div class="hero-trust">
+                <i class="bi bi-heart-fill"></i>
+                <span>Experiences you'll love</span>
+              </div>
+
+            </div>
+
+            <div class="hero-art">
+
+              <div class="hero-orbit hero-orbit-one"></div>
+              <div class="hero-orbit hero-orbit-two"></div>
+              <div class="hero-art-glow"></div>
+
+              <div class="hero-promo-art">
+
+                <span class="promo-art-sparkle">✦</span>
+
+                <span class="promo-art-label">
+                  DISCOVER MORE
+                </span>
+
+                <strong>
+                  Something<br>Wonderful.
+                </strong>
+
+                <span class="promo-art-bottom">
+                  YOUR NEXT MEMORY STARTS HERE
+                </span>
+
+              </div>
+
+              <span class="hero-sparkle sparkle-one">✦</span>
+              <span class="hero-sparkle sparkle-two">✧</span>
+              <span class="hero-sparkle sparkle-three">✦</span>
+
+            </div>
+
+          </article>
+
+
+          <article class="hero-slide hero-slide-blue">
+
+            <div class="hero-content">
+
+              <span class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                YOUR NEXT ADVENTURE STARTS HERE
+              </span>
+
+              <h1>
+                Find your people.<br>
+                <span>Feel the moment.</span>
+              </h1>
+
+              <p>
+                Whether you love music, technology, sports or creativity,
+                there's an experience waiting for you.
+              </p>
+
+              <div class="hero-actions">
+
+                <a href="#events-content" class="hero-primary-btn">
+                  Discover experiences
+                  <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+              </div>
+
+              <div class="hero-trust">
+                <i class="bi bi-compass"></i>
+                <span>Your journey begins with Eventure</span>
+              </div>
+
+            </div>
+
+            <div class="hero-art">
+
+              <div class="hero-orbit hero-orbit-one"></div>
+              <div class="hero-orbit hero-orbit-two"></div>
+              <div class="hero-art-glow"></div>
+
+              <div class="hero-experience-art">
+
+                <i class="bi bi-stars"></i>
+
+                <span>LIVE THE</span>
+
+                <strong>EXPERIENCE.</strong>
+
+                <small>MUSIC · PEOPLE · MEMORIES</small>
+
+              </div>
+
+              <span class="hero-sparkle sparkle-one">✦</span>
+              <span class="hero-sparkle sparkle-two">✧</span>
+              <span class="hero-sparkle sparkle-three">✦</span>
+
+            </div>
+
+          </article>
+
+        </div>
+
+
+        <button type="button" class="hero-control hero-control-prev" id="offer-prev" aria-label="Previous slide">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+
+        <button type="button" class="hero-control hero-control-next" id="offer-next" aria-label="Next slide">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+
+
+        <div class="hero-indicators" id="offer-indicators">
+
+          <button type="button" class="hero-indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+
+          <button type="button" class="hero-indicator" data-slide="1" aria-label="Go to slide 2"></button>
+
+          <button type="button" class="hero-indicator" data-slide="2" aria-label="Go to slide 3"></button>
+
+        </div>
+
+
+        <div class="hero-slide-count">
+
+          <span id="hero-current-slide">01</span>
+
+          <span class="slide-count-divider"></span>
+
+          <span>03</span>
+
+        </div>
+
+      </section>
+
+
+
+      <div class="page-container discovery-sections">
+
+
+        <section class="event-collection-section" id="highlighted-section" hidden>
+
+          <div class="collection-heading">
+
+            <div>
+
+              <span class="section-eyebrow">
+                DON'T MISS THESE
+              </span>
+
+              <h2>Highlighted events</h2>
+
+              <p>
+                Experiences worth putting on your calendar.
+              </p>
+
+            </div>
+
+
+            <div class="collection-navigation">
+
+              <button type="button" class="rail-control" data-target="highlighted-events"
+                aria-label="Scroll highlighted events left">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+
+              <button type="button" class="rail-control" data-target="highlighted-events" data-direction="right"
+                aria-label="Scroll highlighted events right">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="event-rail highlighted-rail" id="highlighted-events"></div>
+
+        </section>
+
+
+
+        <section class="event-collection-section" id="featured-section" hidden>
+
+          <div class="collection-heading">
+
+            <div>
+
+              <span class="section-eyebrow">
+                HANDPICKED FOR YOU
+              </span>
+
+              <h2>Featured events</h2>
+
+              <p>
+                Explore experiences selected by Eventure.
+              </p>
+
+            </div>
+
+
+            <div class="collection-navigation">
+
+              <button type="button" class="rail-control" data-target="featured-events"
+                aria-label="Scroll featured events left">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+
+              <button type="button" class="rail-control" data-target="featured-events" data-direction="right"
+                aria-label="Scroll featured events right">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="event-rail" id="featured-events"></div>
+
+        </section>
+
+
+
+        <section class="event-collection-section" id="popular-section" hidden>
+
+          <div class="collection-heading">
+
+            <div>
+
+              <span class="section-eyebrow">
+                LOVED BY THE COMMUNITY
+              </span>
+
+              <h2>Most booked events</h2>
+
+              <p>
+                See what other event lovers are booking.
+              </p>
+
+            </div>
+
+
+            <div class="collection-navigation">
+
+              <button type="button" class="rail-control" data-target="popular-events"
+                aria-label="Scroll popular events left">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+
+              <button type="button" class="rail-control" data-target="popular-events" data-direction="right"
+                aria-label="Scroll popular events right">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="event-rail" id="popular-events"></div>
+
+        </section>
+
+      </div>
+
+
+
+      <section class="events-section" id="events-content">
+
+        <div class="page-container">
+
+
+          <div class="events-section-heading">
+
+            <div>
+
+              <span class="section-eyebrow">
+                FIND YOUR NEXT EXPERIENCE
+              </span>
+
+              <h2 id="events-section-title">
+                Explore all events
+              </h2>
+
+              <p id="event-count">
+                Discover experiences waiting for you.
+              </p>
+
+            </div>
+
+
+            <div class="events-sort-controls">
+
+              <div class="filter-control">
+
+                <label for="category-filter">
+                  Category
+                </label>
+
+                <select id="category-filter">
+
+                  <option value="">
+                    All categories
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="filter-control">
+
+                <label for="date-sort">
+                  Sort by
+                </label>
+
+                <select id="date-sort">
+
+                  <option value="newest">
+                    Recently added
+                  </option>
+
+                  <option value="oldest">
+                    Oldest added
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div id="active-filters" class="active-filters" hidden>
+
+            <span id="active-filter-text"></span>
+
+            <button type="button" id="clear-filters">
+
+              Clear filters
+
+              <i class="bi bi-x"></i>
+
+            </button>
+
+          </div>
+
+
+
+          <div id="events-container" class="events-grid">
+
+            <div class="events-loading">
+
+              <span class="loading-spinner"></span>
+
+              <p>Discovering experiences...</p>
+
+            </div>
+
+          </div>
+
+
+
+          <div id="events-pagination" class="events-pagination"></div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <section class="host-cta-section">
+
+        <div class="page-container">
+
+          <div class="host-cta-card">
+
+            <div class="host-cta-content">
+
+              <span class="section-eyebrow">
+                HAVE SOMETHING TO SHARE?
+              </span>
+
+              <h2>
+                Bring your event to life with Eventure.
+              </h2>
+
+              <p>
+                Create memorable experiences, connect with your audience
+                and bring people together.
+              </p>
+
+              <a href="/apply-host" class="host-cta-btn">
+
+                Become a host
+
+                <i class="bi bi-arrow-up-right"></i>
+
+              </a>
+
+            </div>
+
+
+            <div class="host-cta-art">
+
+              <div class="host-art-circle">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+
+              <span class="host-art-sparkle">✦</span>
+
+              <span class="host-art-sparkle host-art-sparkle-two">
+                ✧
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+       </main>
+
+    <footer class="events-footer">
+
+      <div class="page-container">
+
+        <div class="footer-main">
+
+          <a href="/" class="footer-brand">
+            <span class="footer-brand-mark">E</span>
+            <span>Eventure</span>
+          </a>
+
+          <p>
+            Discover experiences. Create memories.
+          </p>
+
+        </div>
+
+        <div class="footer-bottom">
+
+          <span>
+            © <%= new Date().getFullYear() %> Eventure. All rights reserved.
+          </span>
+
+          <span>
+            Made for moments that matter.
+          </span>
+
+        </div>
+
+      </div>
+
+    </footer>
+
+  </div>
+
+  <script src="/js/events.js"></script>
 
 </body>
 

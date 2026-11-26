@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head", { title: "Transaction History | Eventure" }) %>
+
+  <link rel="stylesheet" href="/css/common/navbar.css">
+  <link rel="stylesheet" href="/css/common/sidebar.css">
+  <link rel="stylesheet" href="/css/user/transaction-history.css">
+</head>
+
+<body class="transaction-history-page">
+
+    <%- include("../partials/sidebar", { activePage: "transactions" }) %>
+
+    <%- include("../partials/navbar", { activePage: "transactions" }) %>
+
+    <div class="transaction-history-layout">
+
+        <main class="transaction-history-content">
+
+      <header class="history-page-header">
+
+        <div>
+          <a href="/user/wallet" class="back-to-wallet">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Wallet
+          </a>
+
+          <p class="history-eyebrow">FINANCIAL OVERVIEW</p>
+
+          <h1>Transaction History</h1>
+
+          <p class="history-description">
+            Keep track of your payments, refunds and wallet activity
+            in one place.
+          </p>
+        </div>
+
+        <div class="history-header-icon">
+          <i class="fa-solid fa-receipt"></i>
+        </div>
+
+      </header>
+
+      <section class="history-summary">
+
+        <article class="history-summary-card">
+          <div class="summary-card-top">
+            <span class="summary-icon payment-summary-icon">
+              <i class="fa-solid fa-credit-card"></i>
+            </span>
+            <span class="summary-label">TOTAL PAYMENTS</span>
+          </div>
+
+          <h2 id="totalPayments">₹0.00</h2>
+
+          <p>Successful ticket payments</p>
+        </article>
+
+        <article class="history-summary-card">
+          <div class="summary-card-top">
+            <span class="summary-icon refund-summary-icon">
+              <i class="fa-solid fa-arrow-rotate-left"></i>
+            </span>
+            <span class="summary-label">TOTAL REFUNDS</span>
+          </div>
+
+          <h2 id="totalRefunds">₹0.00</h2>
+
+          <p>Successfully processed refunds</p>
+        </article>
+
+        <article class="history-summary-card">
+          <div class="summary-card-top">
+            <span class="summary-icon credit-summary-icon">
+              <i class="fa-solid fa-wallet"></i>
+            </span>
+            <span class="summary-label">WALLET CREDITS</span>
+          </div>
+
+          <h2 id="totalCredits">₹0.00</h2>
+
+          <p>Money credited to your wallet</p>
+        </article>
+
+        <article class="history-summary-card">
+          <div class="summary-card-top">
+            <span class="summary-icon transaction-summary-icon">
+              <i class="fa-solid fa-list-check"></i>
+            </span>
+            <span class="summary-label">TOTAL ACTIVITY</span>
+          </div>
+
+          <h2 id="totalTransactions">0</h2>
+
+          <p>Recorded financial activities</p>
+        </article>
+
+      </section>
+
+      <section class="history-transactions-section">
+
+        <div class="history-section-header">
+
+          <div>
+            <p class="history-eyebrow">ACCOUNT ACTIVITY</p>
+            <h2>All Transactions</h2>
+            <p>Review your complete financial activity.</p>
+          </div>
+
+          <div class="history-filter-wrapper">
+
+            <label for="transactionFilter">
+              <i class="fa-solid fa-filter"></i>
+              Filter
+            </label>
+
+            <select id="transactionFilter">
+              <option value="all">All Transactions</option>
+              <option value="payments">Payments</option>
+              <option value="credits">Wallet Credits</option>
+              <option value="debits">Wallet Debits</option>
+              <option value="refunds">Refunds</option>
+              <option value="failed">Failed Transactions</option>
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="history-table-container">
+
+          <table class="history-table">
+
+            <thead>
+              <tr>
+                <th>TRANSACTION DETAILS</th>
+                <th>REFERENCE</th>
+                <th>DATE</th>
+                <th>METHOD</th>
+                <th>STATUS</th>
+                <th>AMOUNT</th>
+              </tr>
+            </thead>
+
+            <tbody id="historyTableBody">
+
+              <tr>
+                <td colspan="6">
+                  <div class="history-loading">
+                    <span class="history-spinner"></span>
+                    Loading transactions...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <div class="history-mobile-list" id="historyMobileList"></div>
+
+        </div>
+
+        <div class="history-pagination">
+
+          <p id="historyCount">
+            Showing 0 transactions
+          </p>
+
+          <div class="history-pagination-controls">
+
+            <button id="historyPrevPage" disabled>
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <span id="historyPaginationInfo">Page 1 of 1</span>
+
+            <button id="historyNextPage" disabled>
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="history-information">
+
+        <div class="history-information-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <h3>Your financial records matter.</h3>
+
+          <p>
+            Eventure maintains transaction records to help you track
+            payments, wallet activity and refunds. All financial
+            calculations are handled using precise paise values.
+          </p>
+        </div>
+
+      </section>
+
+          </main>
+    </div>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/user/transaction-history.js"></script>
+
+    <script>
+        if (!redirectToLoginIfNotLoggedIn()) {
+            protectDashboardHistory();
+            verifyAccountStatus();
+        }
+    </script>
+
+</body>
+</html>

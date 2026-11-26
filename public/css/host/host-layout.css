@@ -1,0 +1,59 @@
+.host-page-layout {
+  width: calc(100% - 260px);
+  min-height: 100vh;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  background: var(--host-page-bg);
+  transition: background 0.25s ease, width 0.25s ease;
+}
+
+.host-main {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  margin: 0;
+  padding: 30px 34px 45px;
+  background: var(--host-page-bg);
+}
+
+:root {
+  --host-page-bg: #f6f7fb;
+  --host-surface: #ffffff;
+  --host-surface-secondary: #f8f9fc;
+  --host-border: #e7e9f0;
+  --host-text: #202033;
+  --host-muted: #77788d;
+  --host-primary: #6355e7;
+  --host-primary-hover: #5143d5;
+  --host-shadow: 0 8px 30px rgba(25, 25, 50, 0.06);
+}
+
+html[data-theme="dark"] {
+  --host-page-bg: #0b1020;
+  --host-surface: #111827;
+  --host-surface-secondary: #182235;
+  --host-border: #293548;
+  --host-text: #f1f3fa;
+  --host-muted: #9aa5b8;
+  --host-primary: #8b80ff;
+  --host-primary-hover: #7669ed;
+  --host-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 900px) {
+  .host-page-layout {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .host-main {
+    padding: 26px 22px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .host-main {
+    padding: 22px 15px 32px;
+  }
+}

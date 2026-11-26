@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head", { title: "My Attended Events | Eventure" }) %>
+    <link rel="stylesheet" href="/css/common/navbar.css">
+    <link rel="stylesheet" href="/css/user/attended-events.css">
+</head>
+
+<body class="attended-events-page">
+
+    <%- include("../partials/sidebar", { activePage: "attended-events" }) %>
+
+    <%- include("../partials/navbar") %>
+
+    <main class="attended-content">
+
+        <header class="attended-header">
+            <p class="section-label">YOUR EVENTURE JOURNEY</p>
+            <h1>My Attended Events</h1>
+            <p class="header-description">
+                Share your experience and let others know what you thought.
+            </p>
+        </header>
+
+        <section class="attended-section">
+
+            <div class="attended-section-header">
+                <div>
+                    <h2>Events You've Attended</h2>
+                    <p id="attended-count">Loading your events...</p>
+                </div>
+            </div>
+
+            <div id="attended-events-container" class="attended-events-container">
+                <div class="attended-message">
+                    Loading your attended events...
+                </div>
+            </div>
+
+        </section>
+
+        <section class="explore-section">
+            <p>Ready for another experience?</p>
+            <a href="/events" class="explore-button">Explore Events</a>
+        </section>
+
+    </main>
+
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/user/attended-events.js"></script>
+
+</body>
+
+</html>

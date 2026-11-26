@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%- include("../partials/head", { title: "Eventure | Event Applications" }) %>
+
+       <link rel="stylesheet" href="/css/admin/event-applications.css">
+
+</head>
+
+
+<body>
+
+    <%- include("../partials/admin-sidebar", { activePage: "event-applications" }) %>
+
+
+        <main class="main-content">
+
+            <header class="page-header">
+
+                <div>
+
+                    <p class="section-label">
+                        EVENT MANAGEMENT
+                    </p>
+
+                    <h1>
+                        Event Applications
+                    </h1>
+
+                    <p>
+                        Review and manage events submitted by hosts.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <section class="content-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Pending Applications
+                        </h2>
+
+                        <p id="event-count">
+                            Events waiting for approval
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div id="events-container">
+
+                    <div id="events-loading">
+                        Loading event applications...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <script src="/js/admin/admin-auth.js"></script>
+
+        <script src="/js/admin/event-applications.js"></script>
+</body>
+
+</html>

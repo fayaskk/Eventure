@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="/css/common/navbar.css">
+
+<header class="eventure-navbar" id="eventureNavbar">
+  <div class="navbar-container">
+
+    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false"
+      aria-controls="sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <a href="/events" class="navbar-brand" aria-label="Eventure home">
+      <span class="navbar-brand-mark">E</span>
+      <span class="navbar-brand-name">Eventure</span>
+    </a>
+
+    <nav class="navbar-center" aria-label="Main navigation">
+      <a href="/events" class="navbar-link" data-nav-link="events">
+        Explore Events
+      </a>
+    </nav>
+
+    <div class="navbar-actions">
+
+      <button type="button" class="navbar-icon-btn navbar-search-toggle" id="navbarSearchToggle"
+        aria-label="Search events" aria-expanded="false" aria-controls="navbarSearchPanel" title="Search events">
+        <i class="bi bi-search"></i>
+      </button>
+
+      <div class="navbar-notification-wrapper" id="navbarNotificationWrapper">
+        <button type="button" class="navbar-icon-btn navbar-notification-toggle" id="navbarNotificationToggle"
+          aria-label="Notifications" aria-expanded="false" aria-controls="navbarNotificationDropdown"
+          title="Notifications">
+          <i class="bi bi-bell"></i>
+          <span class="notification-badge hidden" id="navbarNotificationBadge">0</span>
+        </button>
+
+        <div class="navbar-notification-dropdown" id="navbarNotificationDropdown">
+          <div class="notification-dropdown-header">
+            <div>
+              <h3>Notifications</h3>
+              <p id="notificationHeaderSubtitle">Stay updated with Eventure</p>
+            </div>
+
+            <button type="button" id="markAllNotificationsRead" class="notification-mark-all">
+              Mark all read
+            </button>
+          </div>
+
+          <div class="notification-dropdown-list" id="navbarNotificationList">
+            <div class="notification-loading">
+              Loading notifications...
+            </div>
+          </div>
+
+          <a href="/user/notifications" class="notification-view-all">
+            View all notifications
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <button type="button" class="navbar-icon-btn navbar-theme-toggle" id="themeToggle"
+        aria-label="Switch to dark mode" title="Switch theme">
+        <i class="bi bi-moon-stars"></i>
+      </button>
+
+      <div class="navbar-auth-actions" id="navbarAuthActions">
+        <a href="/login" class="navbar-login-link">Login</a>
+        <a href="/register" class="navbar-register-btn">Get Started</a>
+      </div>
+
+      <div class="navbar-profile-wrapper hidden" id="navbarProfileWrapper">
+        <button type="button" class="navbar-profile-trigger" id="navbarProfileTrigger" aria-expanded="false"
+          aria-controls="navbarProfileDropdown">
+          <span class="navbar-avatar" id="navbarAvatar">U</span>
+          <span class="navbar-profile-name" id="navbarProfileName">Account</span>
+          <i class="bi bi-chevron-down navbar-profile-chevron"></i>
+        </button>
+
+        <div class="navbar-profile-dropdown" id="navbarProfileDropdown" aria-label="Account menu">
+
+          <div class="dropdown-user-info">
+            <span class="dropdown-user-label">SIGNED IN AS</span>
+            <span class="dropdown-user-name" id="dropdownUserName">User</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-section-label">YOUR ACCOUNT</div>
+
+          <a href="/user/notifications" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-bell"></i>
+            <span>Notifications</span>
+          </a>
+
+          <a href="/profile" class="dropdown-link" id="navbarProfileLink" data-role-link="user,host,admin">
+            <i class="bi bi-person"></i>
+            <span>My Profile</span>
+          </a>
+
+          <a href="/user/wishlist" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-heart"></i>
+            <span>Wishlist</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-section-label">MY ACTIVITIES</div>
+
+          <a href="/user/bookings" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-ticket-perforated"></i>
+            <span>My Tickets</span>
+          </a>
+
+          <a href="/user/attended-events" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-calendar-check"></i>
+            <span>Attended Events</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-section-label">MY FINANCES</div>
+
+          <a href="/user/wallet" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-wallet2"></i>
+            <span>Wallet</span>
+          </a>
+
+          <a href="/user/transactions" class="dropdown-link" data-role-link="user,host">
+            <i class="bi bi-arrow-left-right"></i>
+            <span>Transaction History</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <a href="/apply-host" class="dropdown-link" data-role-link="user">
+            <i class="bi bi-building"></i>
+            <span>Become a Host</span>
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button type="button" class="dropdown-link dropdown-logout" id="navbarLogoutBtn">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="navbar-search-panel" id="navbarSearchPanel">
+    <form action="/events" method="GET" class="navbar-search-form" id="navbarSearchForm">
+      <i class="bi bi-search"></i>
+
+      <input type="search" name="search" id="navbarSearchInput" placeholder="Search events, categories or locations..."
+        aria-label="Search events">
+
+      <button type="submit">
+        Search Events
+        <i class="bi bi-arrow-right"></i>
+      </button>
+    </form>
+  </div>
+</header>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socket.js"></script>
+<script src="/js/common/navbar.js"></script>
+<script src="/js/common/notification-navbar.js"></script>

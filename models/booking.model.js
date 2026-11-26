@@ -6,12 +6,14 @@ const bookingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       required: true,
+      index: true,
     },
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
 
     tickets: [
@@ -31,12 +33,16 @@ const bookingSchema = new mongoose.Schema(
           type: Number,
           required: true,
           min: 1,
+          validate: {
+            validator: Number.isInteger,
+            message: "Ticket quantity must be an integer",
+          },
         },
 
         price: {
           type: Number,
           required: true,
-          min: 0.01,
+          min: 0,
         },
 
         subtotal: {
@@ -46,13 +52,43 @@ const bookingSchema = new mongoose.Schema(
         },
       },
     ],
+    ticketSubtotal: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
 
     totalAmount: {
       type: Number,
       required: true,
       min: 0,
     },
-
+    discount: {
+      discountId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Discount",
+      },
+      code: String,
+      title: String,
+      discountType: {
+        type: String,
+        enum: ["percentage", "fixed"],
+      },
+      discountValue: Number,
+      maxDiscount: {
+        type: Number,
+        default: null,
+      },
+      discountAmount: {
+        type: Number,
+        min: 0,
+      },
+    },
+    discountReservationStatus: {
+      type: String,
+      enum: ["reserved", "consumed", "released"],
+      default: null,
+    },
     bookingReference: {
       type: String,
       required: true,
@@ -64,17 +100,20 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "confirmed", "cancelled"],
       default: "pending",
+      index: true,
     },
 
     paymentStatus: {
       type: String,
       enum: ["pending", "successful", "failed", "expired", "refunded"],
       default: "pending",
+      index: true,
     },
 
     paymentExpiresAt: {
       type: Date,
       required: true,
+      index: true,
     },
   },
   {
@@ -84,5 +123,13 @@ const bookingSchema = new mongoose.Schema(
     },
   },
 );
+
+bookingSchema.index({ user: 1, created_at: -1 });
+
+bookingSchema.index({
+  bookingStatus: 1,
+  paymentStatus: 1,
+  paymentExpiresAt: 1,
+});
 
 export const Booking = mongoose.model("Booking", bookingSchema);

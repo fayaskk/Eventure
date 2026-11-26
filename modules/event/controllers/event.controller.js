@@ -1,8 +1,10 @@
 import {
   getPublicEventsService,
   getPublicEventByIdService,
+  getFeaturedEventsService,
+getHighlightedEventsService,
+getMostBookedEventsService,
 } from "../../../services/event.service.js";
-
 
 export const getEvents = async (req, res) => {
   try {
@@ -15,14 +17,14 @@ export const getEvents = async (req, res) => {
     } = req.query;
 
     const normalizedSearch = typeof search === "string" ? search.trim() : "";
-    console.log("category:", category);
+
     const normalizedCategory =
       typeof category === "string" ? category.trim().toLowerCase() : "";
-    console.log("normalizedCategory :", normalizedCategory);
+
     const currentPage = Number(page);
     const currentLimit = Number(limit);
 
-    const allowedSorts = ["newest", "oldest"];
+    const allowedSorts = ["newest", "oldest", "price_low", "price_high"];
 
     if (!Number.isInteger(currentPage) || currentPage < 1) {
       return res.status(400).json({
@@ -45,7 +47,7 @@ export const getEvents = async (req, res) => {
     if (!allowedSorts.includes(sort)) {
       return res.status(400).json({
         success: false,
-        message: "Sort must be  newest or oldest",
+        message: "Invalid sort option",
       });
     }
 
@@ -85,9 +87,91 @@ export const getEventById = async (req, res) => {
     });
   } catch (error) {
     console.error("Get event by Id error:", error);
+
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || "Internal server error",
     });
   }
 };
+
+export const getFeaturedEvents = async (req, res) => {
+  try {
+    const limit = Number(req.query.limit ?? 6);
+
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      return res.status(400).json({
+        success: false,
+        message: "Limit must be between 1 and 100",
+      });
+    }
+
+    const events = await getFeaturedEventsService(limit);
+
+    return res.status(200).json({
+      success: true,
+      message: "Featured events fetched successfully",
+      events,
+    });
+  } catch (error) {
+    console.error("Featured events error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+export const getHighlightedEvents = async (req, res) => {
+  try {
+    const limit = Number(req.query.limit ?? 6);
+
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      return res.status(400).json({
+        success: false,
+        message: "Limit must be between 1 and 100",
+      });
+    }
+
+    const events = await getHighlightedEventsService(limit);
+
+    return res.status(200).json({
+      success: true,
+      message: "Highlighted events fetched successfully",
+      events,
+    });
+  } catch (error) {
+    console.error("Highlighted events error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+export const getMostBookedEvents = async (req,res)=>{
+  try{
+    const limit = Number(req.query.limit ?? 6);
+        if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      return res.status(400).json({
+        success: false,
+        message: "Limit must be between 1 and 100",
+      });
+    }
+    const events = await getMostBookedEventsService(limit);
+        return res.status(200).json({
+      success: true,
+      message: "Most Booked events fetched successfully",
+      events,
+    });
+  }catch(error){
+    console.error("Most booked events error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+}
